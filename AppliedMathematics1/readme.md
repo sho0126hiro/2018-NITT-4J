@@ -1,2 +1,2 @@
-*Applied Mathematics1
+# Applied Mathematics1
 (Fourier transform ed.)
