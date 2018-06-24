@@ -1,24 +1,24 @@
-//–––H30”N“xEDSP1-4E”Ô†42–––
+//ï¼Šï¼Šï¼ŠH30å¹´åº¦ãƒ»DSP1-4ãƒ»ç•ªå·42ï¼Šï¼Šï¼Š
 
 #include <stdio.h>
 
-#define DATASIZE 701 //‘ŠŒİ‘ŠŠÖŒW”@data size
-#define DATASIZE_2 71 //©ŒÈ‘ŠŠÖŒW”@data size
+#define DATASIZE 701 //ç›¸äº’ç›¸é–¢ä¿‚æ•°ã€€data size
+#define DATASIZE_2 71 //è‡ªå·±ç›¸é–¢ä¿‚æ•°ã€€data size
 
 //Signature
 void Signature(){
-	printf("//H30”N“x");
+	printf("//H30å¹´åº¦");
 	printf("/dsp1-4");
-	printf("/42 œA£@ãÄ");
+	printf("/42 å»£ç€¬ã€€ç¿”");
 	//how to use
-	printf("\n1Da.txt‚Æb.txt‚ğ“Ç‚İ‚İA‘ŠŒİ‘ŠŠÖŒW”‚ğ‹‚ß‚éB\n");
-	printf("@@‚Ü‚½Aw’è‚³‚ê‚½‘ŠŒİ‘ŠŠÖŒW”‚Ìˆê•”‚ğƒ^[ƒ~ƒiƒ‹‚Éo—Í‚·‚éB\n");
-	printf("2D‹‚ß‚½‘ŠŒİ‘ŠŠÖŒW”‚ğRxy.txt‚Æ‚µ‚Äƒtƒ@ƒCƒ‹o—Í‚·‚éBB\n");
-	printf("3Dc.txt‚ğ“Ç‚İ‚İA©ŒÈ‘ŠŠÖŒW”‚ğ‹‚ß‚éB\n");
-	printf("@@‚Ü‚½Aw’è‚³‚ê‚½©ŒÈ‘ŠŠÖŒW”‚Ìˆê•”‚ğƒ^[ƒ~ƒiƒ‹‚Éo—Í‚·‚éB\n");
-	printf("4D‹‚ß‚½©ŒÈ‘ŠŠÖŒW”‚ğRxx.txt‚Æ‚µ‚Äƒtƒ@ƒCƒ‹o—Í‚·‚éB\n");
+	printf("\n1ï¼a.txtã¨b.txtã‚’èª­ã¿è¾¼ã¿ã€ç›¸äº’ç›¸é–¢ä¿‚æ•°ã‚’æ±‚ã‚ã‚‹ã€‚\n");
+	printf("ã€€ã€€ã¾ãŸã€æŒ‡å®šã•ã‚ŒãŸç›¸äº’ç›¸é–¢ä¿‚æ•°ã®ä¸€éƒ¨ã‚’ã‚¿ãƒ¼ãƒŸãƒŠãƒ«ã«å‡ºåŠ›ã™ã‚‹ã€‚\n");
+	printf("2ï¼æ±‚ã‚ãŸç›¸äº’ç›¸é–¢ä¿‚æ•°ã‚’Rxy.txtã¨ã—ã¦ãƒ•ã‚¡ã‚¤ãƒ«å‡ºåŠ›ã™ã‚‹ã€‚ã€‚\n");
+	printf("3ï¼c.txtã‚’èª­ã¿è¾¼ã¿ã€è‡ªå·±ç›¸é–¢ä¿‚æ•°ã‚’æ±‚ã‚ã‚‹ã€‚\n");
+	printf("ã€€ã€€ã¾ãŸã€æŒ‡å®šã•ã‚ŒãŸè‡ªå·±ç›¸é–¢ä¿‚æ•°ã®ä¸€éƒ¨ã‚’ã‚¿ãƒ¼ãƒŸãƒŠãƒ«ã«å‡ºåŠ›ã™ã‚‹ã€‚\n");
+	printf("4ï¼æ±‚ã‚ãŸè‡ªå·±ç›¸é–¢ä¿‚æ•°ã‚’Rxx.txtã¨ã—ã¦ãƒ•ã‚¡ã‚¤ãƒ«å‡ºåŠ›ã™ã‚‹ã€‚\n");
 }
-//file“Ç‚İ‚İ
+//fileèª­ã¿è¾¼ã¿
 void FileRead(char *filename,double data[]){
 	FILE *fp;
 	//printf("| function : %s | filename:%s |\n",__FUNCTION__,filename);
@@ -32,7 +32,7 @@ void FileRead(char *filename,double data[]){
 	while(fscanf(fp,"%lf",&data[i])!= EOF)i++;
 	fclose(fp);
 }
-//File‘‚«‚İ
+//Fileæ›¸ãè¾¼ã¿
 void FileWrite(char *filename,double data[],int length){
 	FILE *fp;
 	//printf("| function : %s | filename:%s |\n",__FUNCTION__,filename);
@@ -47,16 +47,16 @@ void FileWrite(char *filename,double data[],int length){
 	}
 	fclose(fp);
 }
-//‘ŠŒİ‘ŠŠÖŒW”‚ÌZo
+//ç›¸äº’ç›¸é–¢ä¿‚æ•°ã®ç®—å‡º
 void CrossCorrelation(double data1[],double data2[],double Rxy[]){
-	//Rxy:Xi,Yi+m‚Ì“àÏŒ‹‰ÊŠi”[”z—ñ
-	/******Zoè‡*****************
-	Rxy(m) = 1/N ƒ°(i:0 ~ N-1) X(i) ~ Y(i+m)
+	//Rxy:Xi,Yi+mã®å†…ç©çµæœæ ¼ç´é…åˆ—
+	/******ç®—å‡ºæ‰‹é †*****************
+	Rxy(m) = 1/N Î£(i:0 ~ N-1) X(i) Ã— Y(i+m)
 	N : datasize
-	m : ŠÔ·
-	1. Xi‚ÆYi+m‚Ì“àÏ‚ğ‚Æ‚èA”z—ñ‚ÉŠi”[‚·‚é
-	2D”z—ñ‚Ì’†g‚ğ‘S•”‘«‚·
-	3Dƒf[ƒ^ƒTƒCƒY‚ÅŠ„‚éB
+	m : æ™‚é–“å·®
+	1. Xiã¨Yi+mã®å†…ç©ã‚’ã¨ã‚Šã€é…åˆ—ã«æ ¼ç´ã™ã‚‹
+	2ï¼é…åˆ—ã®ä¸­èº«ã‚’å…¨éƒ¨è¶³ã™
+	3ï¼ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚ºã§å‰²ã‚‹ã€‚
 	*******************************/
 	int i,m,j;
 	double sum;
@@ -69,20 +69,20 @@ void CrossCorrelation(double data1[],double data2[],double Rxy[]){
         Rxy[m]=sum;
 		//printf("Rxy[%d]=%f",m,Rxy[m]);
 	}
-	printf("\n===‘ŠŒİ‘ŠŠÖŒW”===\n");
+	printf("\n===ç›¸äº’ç›¸é–¢ä¿‚æ•°===\n");
 	int x[10]={0,100,200,300,400,500,600,700};
 	for(i=0;i<8;i++)printf("Rxy(%d)=%f\n",x[i],Rxy[x[i]]);
 }
-//©ŒÈ‘ŠŠÖŒW”‚ÌZo
+//è‡ªå·±ç›¸é–¢ä¿‚æ•°ã®ç®—å‡º
 void AutoCorrelation(double data1[],double Rxx[]){
-	//Rxx:Xi,Xi+m‚Ì“àÏŒ‹‰ÊŠi”[”z—ñ
-	/******Zoè‡*****************
-	Rxx(m) = 1/N ƒ°(i:0 ~ N-1) X(i) ~ X(i+m)
+	//Rxx:Xi,Xi+mã®å†…ç©çµæœæ ¼ç´é…åˆ—
+	/******ç®—å‡ºæ‰‹é †*****************
+	Rxx(m) = 1/N Î£(i:0 ~ N-1) X(i) Ã— X(i+m)
 	N : datasize
-	m : ŠÔ·
-	1. Xi‚ÆXi+m‚Ì“àÏ‚ğ‚Æ‚èA”z—ñ‚ÉŠi”[‚·‚é
-	2D”z—ñ‚Ì’†g‚ğ‘S•”‘«‚·
-	3Dƒf[ƒ^ƒTƒCƒY‚ÅŠ„‚éB
+	m : æ™‚é–“å·®
+	1. Xiã¨Xi+mã®å†…ç©ã‚’ã¨ã‚Šã€é…åˆ—ã«æ ¼ç´ã™ã‚‹
+	2ï¼é…åˆ—ã®ä¸­èº«ã‚’å…¨éƒ¨è¶³ã™
+	3ï¼ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚ºã§å‰²ã‚‹ã€‚
 	*******************************/ 
 	int i,m,j;
 	double sum;
@@ -95,34 +95,34 @@ void AutoCorrelation(double data1[],double Rxx[]){
         Rxx[m]=sum;
 		//printf("Rxy[%d]=%f",m,Rxy[m]);
 	}
-	printf("\n===©ŒÈ‘ŠŠÖŒW”===\n");
+	printf("\n===è‡ªå·±ç›¸é–¢ä¿‚æ•°===\n");
 	int x[10]={0,10,20,30,40,50,60,70};
 	for(i=0;i<8;i++)printf("Rxx(%d)=%f\n",x[i],Rxx[x[i]]);
 }
 //main
 int main(){
-	//–¼
+	//ç½²å
 	Signature();
-	//lŒûƒf[ƒ^Ši”[”z—ñ
+	//äººå£ãƒ‡ãƒ¼ã‚¿æ ¼ç´é…åˆ—
 	double data1[DATASIZE]={0};//a.txt
 	double data2[DATASIZE]={0};//b.txt
 	double data3[DATASIZE_2]={0};//b.txt
-	//ƒtƒ@ƒCƒ‹‚Ì’†g‚ğ“Ç‚İ‚İAdata‚ÉŠi”[‚·‚é
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã®ä¸­èº«ã‚’èª­ã¿è¾¼ã¿ã€dataã«æ ¼ç´ã™ã‚‹
 	FileRead("a.txt",data1);
 	FileRead("b.txt",data2);
-	//Ši”[I—¹
-	double Rxy[DATASIZE-1]={0};//‘ŠŒİ‘ŠŠÖŒW”Ši”[—p”z—ñ
+	//æ ¼ç´çµ‚äº†
+	double Rxy[DATASIZE-1]={0};//ç›¸äº’ç›¸é–¢ä¿‚æ•°æ ¼ç´ç”¨é…åˆ—
 	CrossCorrelation(data1,data2,Rxy);
 	FileWrite("Rxy.txt",Rxy,DATASIZE);
 
 	FileRead("c.txt",data3);
-	double Rxx[DATASIZE_2-1]={0};//©ŒÈ‘ŠŠÖŒW”Ši”[—p”z—ñ
+	double Rxx[DATASIZE_2-1]={0};//è‡ªå·±ç›¸é–¢ä¿‚æ•°æ ¼ç´ç”¨é…åˆ—
 	AutoCorrelation(data3,Rxx);
 	FileWrite("Rxx.txt",Rxx,DATASIZE_2);
 	return 0;
 }
-/****ÀsŒ‹‰Ê*****
-===‘ŠŒİ‘ŠŠÖŒW”===
+/****å®Ÿè¡Œçµæœ*****
+===ç›¸äº’ç›¸é–¢ä¿‚æ•°===
 Rxy(0)=0.025116
 Rxy(100)=0.075794
 Rxy(200)=0.029542
@@ -132,13 +132,13 @@ Rxy(500)=0.007679
 Rxy(600)=0.001238
 Rxy(700)=0.000000
 
-===©ŒÈ‘ŠŠÖŒW”===
-Rxx(0)=0.153434
-Rxx(10)=0.017043
-Rxx(200)=0.018082
-Rxx(30)=-0.029945
-Rxx(40)=-0.041221
-Rxx(50)=-0.042206
-Rxx(60)=-0.015651
-Rxx(70)=-0.025268
+===è‡ªå·±ç›¸é–¢ä¿‚æ•°===
+Rxx(0)=0.180281
+Rxx(10)=-0.027261
+Rxx(20)=-0.056572
+Rxx(30)=0.013220
+Rxx(40)=0.002022
+Rxx(50)=-0.012665
+Rxx(60)=0.000095
+Rxx(70)=0.010008
 ****************/
