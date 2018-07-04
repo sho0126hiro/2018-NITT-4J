@@ -1,0 +1,236 @@
+/***  C2asm03.txt  ***/
+/***  s16306  4J42  廣瀬 翔  ***/
+
+1．課題
+	次のＣプログラムを，アセンブリプログラムに変換して，主要部分を説明しなさい。
+	また4つの関数がどのようにアセンブリ言語に変換されているか違いを調べ，気づいた事柄・考察した事柄を述べなさい。
+	1行ずつの説明はなくてもよい。
+	特に第1 引数，第2引数，．．．はどのようにして関数に運ばれるのか，
+	    関数の戻す値はどのように運ばれるのかに着目して説明しなさい。
+	引数の取り扱い，戻り値の取り扱いのルールを明らかにしておくと，
+	Cプログラムからアセンブリで記述した関数を呼び出す場合や，
+	アセンブリプログラムからCで書いた関数を呼び出す時の作法がわかる。
+2．使用したプログラム・実行結果
+	==Cのプログラム==
+	int ans1;
+	long int ans2;
+
+	int test1(int a, int b)
+	{
+	    int ret;
+	    ret=a-b;
+	    return ret;
+	}
+
+	int test2(int a, int b, int c)
+	{
+	    int ret;
+	    ret=a-b-(c-1);
+	    return ret;
+	}
+
+	long int test3(long int a, long int b)
+	{
+	    long int ret;
+	    ret=a-b;
+	    return ret;
+	}
+
+	long int test4(long int a, long int b, long int c)
+	{
+	    long int ret;
+	    ret=a-b-(c-1);
+	    return ret;
+	}
+
+	int main(void)
+	{
+	    ans1=test1(0x123,0x456);
+	    ans1=test2(0x123,0x456,0x789);
+	    ans2=test3(0x123,0x456);
+	    ans2=test4(0x123,0x456,0x789);
+	}
+	
+	===アセンブリ言語への変換，主要部分===
+	          .CPU        300HA
+	          .EXPORT     _ans1
+	          .EXPORT     _ans2
+	          .EXPORT     _test1
+	          .EXPORT     _test2
+	          .EXPORT     _test3
+	          .EXPORT     _test4
+	          .EXPORT     _main
+	          .SECTION    P,CODE,ALIGN=2
+	_test1:                          ; function: test1
+	          MOV.W       R0,R1
+	          SUB.W       E0,R1
+	          MOV.W       R1,R0
+	          RTS
+	_test2:                          ; function: test2
+	          MOV.W       R0,E1
+	          SUB.W       E0,E1
+	          SUB.W       R1,E1
+	          INC.W       #1,E1
+	          MOV.W       E1,R0
+	          RTS
+	_test3:                          ; function: test3
+	          PUSH.L      ER6
+	          MOV.L       ER0,ER6
+	          SUB.L       ER1,ER6
+	          MOV.L       ER6,ER0
+	          POP.L       ER6
+	          RTS
+	_test4:                          ; function: test4
+	          PUSH.L      ER6
+	          MOV.L       ER0,ER6
+	          SUB.L       ER1,ER6
+	          MOV.L       @(8:16,SP),ER0
+	          SUB.L       ER0,ER6
+	          INC.L       #1,ER6
+	          MOV.L       ER6,ER0
+	          POP.L       ER6
+	          RTS
+	_main:                           ; function: main
+	          MOV.W       #1110:16,E0;0x456
+	          MOV.W       #291:16,R0 ;0x123
+	          BSR         _test1:8
+	          MOV.W       R0,@_ans1:24
+	          MOV.W       #1929:16,R1
+	          MOV.W       #1110:16,E0
+	          MOV.W       #291:16,R0
+	          BSR         _test2:8
+	          MOV.W       R0,@_ans1:24
+	          MOV.L       #1110:32,ER1
+	          MOV.L       #291:32,ER0
+	          BSR         _test3:8
+	          MOV.L       ER0,@_ans2:24
+	          MOV.L       #1929:32,ER0
+	          PUSH.L      ER0
+	          MOV.L       #1110:32,ER1
+	          MOV.L       #291:32,ER0
+	          BSR         _test4:8
+	          ADDS.L      #4,SP
+	          MOV.L       ER0,@_ans2:24
+	          RTS
+	          .SECTION    B,DATA,ALIGN=2
+	_ans1:                           ; static: ans1
+	          .RES.W      1
+	_ans2:                           ; static: ans2
+	          .RES.L      1
+	          .END
+
+3．考察
+	主要部分の説明  /  C言語プログラムとの比較
+		test1:
+			int(2byte)変数を2つ受け取ってintの値を返している．
+			test1(R0,E0)と関数に飛んでいる．
+			関数の戻す値はR0である．
+		test2:
+			int(2byte)変数を3つ受け取ってintを返している．
+			test2(R0,E0,R1)と関数に飛んでいる．
+			関数の戻す値はR0である．
+		test3:
+			long int(4byte)変数を2つ受け取ってlong intの値を返している．
+			test3(ER0,ER1)と関数に飛んでいる．
+			関数の戻す値はER0であるが，ER6は関数内で計算処理をしているため，
+			push/popを行って処理の退避および復帰をしている．
+		test4:
+			long int(4byte)変数を3つ受け取ってlong intの値を返している．
+			test4(ER0,ER1,ER0(pushしている/SPに入っている)）のように飛んでいて，
+			今までの関数と異なっている．
+			関数の戻す値はER0であるが，test3と同様，ER6は関数内で計算処理をしているため，
+			push/popを行って処理の退避および復帰をしている．
+			関数に飛んだ時に，SPには，戻るべきアドレス（4byte)が乗っているが，
+			SP+4の位置に，関数の第三引数が入っている．
+			関数に飛んだあとは，popをしている(ER6)ため，このpush後は，
+			  SP   |       SP+4         |     SP+8        
+			ER6の値|関数から戻るアドレス|関数の第三引数
+			となっている．
+			test4から戻ると，SPにはまだ第三引数が残っている．
+			関数から戻るとき，SP内のアドレスを参照する必要があるため，
+			ADDS.L      #4,SP をしている(SP+4)．
+			popすることでレジスタの変更が少なくなっている．
+4．まとめ
+	関数呼び出しを行うとき、次のような規則になっている。
+	関数はどこから呼び出されても良いように、引数と返す値は統一されている。
+	1.関数呼び出しの引数
+		int型(2byte)      : R0,E0,R1,E1の順で引数に載る。これ以上はスタックに積まれる。
+		long int型(4byte) : ER0,ER1の順で引数に載る。    これ以上はスタックに積まれる。
+		>>ER2以降は因数伝達に使われない。
+	2.関数の返り値
+		int型(2byte)      : R0に積まれる。
+		long int型(4byte) : ER0に積まれる。
+	3．レジスタ利用の制限
+		関数側：ER0,ER1は必要な引数を壊さない限り、自由に使える。
+		ER2意向を使う場合は、レジスタをスタックにpushし、関数から戻す直前にpopする。
+		関数の呼び出し側:ER0,ER1は引数及び返す値に用いるが、使用中の場合は、スタックにpushする。
+		
+		これは以下のプログラムとアセンブリプログラムの変換結果を見てわかる。
+		引用：（http://coskx.webcrow.jp/mrr/for_students/H8/3048fone/consideration.html）
+		==テストのCプログラム==
+		int ans1;
+		int ans2;
+
+		test1(int a,int b,int c,int d)
+		{
+		    return a+b+c+d;
+		}
+
+		test2(int a,int b,int c,int d,int e)
+		{
+		    return a+b+c+d+e;
+		}
+
+		main()
+		{
+		    ans1=test1(100,200,300,400);
+		    ans2=test2(100,200,300,400,500);
+		}
+
+		==翻訳されたアセンブリ言語ソース==
+
+		_test1:
+		  PUSH.W      R6
+		  MOV.W       R0,R6
+		  ADD.W       E0,R6
+		  ADD.W       R1,R6
+		  ADD.W       E1,R6
+		  MOV.W       R6,R0
+		  POP.W       R6
+		  RTS
+
+		_test2:
+		  PUSH.W      R6
+		  MOV.W       R0,R6
+		  ADD.W       E0,R6
+		  ADD.W       R1,R6
+		  ADD.W       E1,R6
+		  MOV.W       @(6:16,SP),R0
+		  ADD.W       R6,R0
+		  POP.W       R6
+		  RTS
+
+		_main:
+		  MOV.W       #400:16,E1
+		  MOV.W       #300:16,R1
+		  MOV.W       #200:16,E0
+		  MOV.W       #100:16,R0
+		  BSR         _test1:8
+		  MOV.W       R0,@_ans1:24
+
+		  MOV.W       #500:16,R0
+		  PUSH.W      R0
+		  MOV.W       #400:16,E1
+		  MOV.W       #300:16,R1
+		  MOV.W       #200:16,E0
+		  MOV.W       #100:16,R0
+		  BSR         _test2:8
+		  ADDS.L      #2,SP
+		  MOV.W       R0,@_ans2:24
+		  RTS
+		  .SECTION    B,DATA,ALIGN=2
+		_ans1:
+		  .RES.W      1
+		_ans2:
+		  .RES.W      1
+		  .END

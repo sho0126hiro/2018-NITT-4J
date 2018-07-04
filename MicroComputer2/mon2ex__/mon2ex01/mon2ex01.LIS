@@ -1,0 +1,47 @@
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 05/24/18 12:58:18                                                              PAGE     1
+PROGRAM NAME =
+
+    1                             1         .CPU 300HA
+    2 0FF030                      2         .SECTION A,DATA,LOCATE=H'0FF030
+    3 0FF030 000FF200             3         .DATA.L H'0FF200  ;リセットベクトル
+    4                             4     
+    5 0FF200                      5         .SECTION P,CODE,LOCATE=H'0FF200
+    6 0FF200 7A07000FFF00         6         MOV.L  #H'FFF00,ER7  ;スタックポインタ設定
+    7 0FF206 7A01000FF800         7         MOV.L  #area,ER1     ;作業対象先頭アドレスをレジスタer1へ
+    8 0FF20C F8CC                 8         MOV.B  #H'cc, r0l    ;埋める値0xccをレジスタr0lへ
+    9 0FF20E 79020200             9         MOV.W  #H'200, r2    ;埋める個数0x200をレジスタr2
+   10 0FF212                     10     L001:
+   11 0FF212 6898                11         MOV.B  r0l,@ER1      ;0xccをER1の指しているところへ
+   12 0FF214 0B71                12         INC.L  #1,ER1        ;ER1を1増やす（32bit操作）
+   13 0FF216 1B52                13         DEC.W  #1,r2         ;R2を1減らす（16bit操作）
+   14 0FF218 46F8                14         BNE    L001:8       ; r2!=0の場合はL001へジャンプ
+   15 0FF21A                     15     EternalLoop:
+   16 0FF21A 40FE                16         BRA EternalLoop ;永久ループ
+   17                            17     
+   18 0FF800                     18         .SECTION D,DATA,LOCATE=H'0FF800   ;データ領域0FF800から
+   19 0FF800                     19     area:
+   20 0FF800 00000200            20         .res.b H'200          ;40バイトの領域を確保　先頭アドレスはFF800になる
+   21                            21         .END
+  *****TOTAL ERRORS       0
+  *****TOTAL WARNINGS     0
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 05/24/18 12:58:18                                                              PAGE     2
+
+*** CROSS REFERENCE LIST
+
+NAME                             SECTION  ATTR VALUE             SEQUENCE
+
+A                                A        SCT  000FF030      2*
+D                                D        SCT  000FF800     18*
+EternalLoop                      P             000FF21A     15*   16 
+L001                             P             000FF212     10*   14 
+P                                P        SCT  000FF200      5*
+area                             D             000FF800      7    19*
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 05/24/18 12:58:18                                                              PAGE     3
+
+*** SECTION DATA LIST
+
+SECTION                          ATTRIBUTE    SIZE             START
+
+A                                ABS-DATA    0000004           0FF030          
+P                                ABS-CODE    000001C           0FF200          
+D                                ABS-DATA    0000200           0FF800          

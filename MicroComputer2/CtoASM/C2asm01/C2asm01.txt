@@ -1,0 +1,84 @@
+/***  C2asm01.txt  ***/
+/***  s16306  4J42  廣瀬 翔  ***/
+
+1．課題
+	sumdiff.cにおいてlong int型の変数に変更して，アセンブリプログラムに変換して，
+	主要部分を説明しなさい。
+	int型変数，long int型変数は，何バイトの値として扱われているか。
+	アセンブリプログラムから読み取りなさい。
+	sumdiff.srcとここで作成したアセンブリプログラムでは，どこが異なるのか，
+	またそれはなぜか考察しなさい。
+
+2．使用したプログラム・実行結果
+	//sumdiff.c
+	long int data1=123;
+	long int data2=456;
+	long int sum;
+	long int diff;
+
+	int main()
+	{
+	    sum=data1+data2;
+	    diff=data1-data2;
+	}
+	
+	//sumdiff_1.scr(主要部分のみ）
+	          .CPU        300HA
+	          .EXPORT     _data1
+	          .EXPORT     _data2
+	          .EXPORT     _sum
+	          .EXPORT     _diff
+	          .EXPORT     _main
+	          .SECTION    P,CODE,ALIGN=2
+	_main:                           ; function: main
+	          MOV.L       @_data1:24,ER0
+	          MOV.L       @_data2:24,ER1
+	          ADD.L       ER1,ER0
+	          MOV.L       ER0,@_sum:24
+	          MOV.L       @_data1:24,ER0
+	          SUB.L       ER1,ER0
+	          MOV.L       ER0,@_diff:24
+	          RTS
+	          .SECTION    D,DATA,ALIGN=2
+	_data1:                          ; static: data1
+	          .DATA.L     H'0000007B
+	_data2:                          ; static: data2
+	          .DATA.L     H'000001C8
+	          .SECTION    B,DATA,ALIGN=2
+	_sum:                            ; static: sum
+	          .RES.L      1
+	_diff:                           ; static: diff
+	          .RES.L      1
+	          .END
+	
+3．考察
+	主要部分の説明
+	_main:                                  ; function: main
+	          MOV.L       @_data1:24,ER0    ; data1の値（アドレスが24ビットで表現）→(Long word幅で)→R0
+	          MOV.L       @_data2:24,ER1    ; data2の値（アドレスが24ビットで表現）→(Long word幅で)→R1
+	          ADD.L       ER1,ER0           ; R0+R1→(Long word幅で)→R0
+	          MOV.L       ER0,@_sum:24      ; R0→(Long word幅で)→sum（アドレスが24ビットで表現）へ保存
+
+	          
+	          MOV.L       @_data1:24,ER0    ; data1の値（アドレスが24ビットで表現）→(Long word幅で)→R0
+	          SUB.L       ER1,ER0           : R0-R1→(Long word幅で)→R0
+	          MOV.L       ER0,@_diff:24     ; R0→(Long word幅で)→diff（アドレスが24ビットで表現）へ保存
+	          RTS                           ; mainを呼び出したスタートアップルーチンへ戻る
+	
+	int と long int のバイトの値
+		intの場合，       MOV.W @******;24:**
+		long intの場合，  MOV.L @******;24:**
+		となっていることから，以下のことが読み取れる．
+			int変数       : 2バイトの値として扱われている．
+			long int変数  : 4バイトの値として扱われている．
+		
+	講義資料と異なる点(intとlong intを使用した場合の異なる点
+		int     に保存（格納）する命令/関係する命令の場合，***.W
+		long intに保存（格納）する命令/関係する命令の場合，***.L
+	
+	理由：
+		long int(4バイト)のサイズをint(2バイト)変数に代入した場合、オーバーフローが生じる。
+		例えば、ADD.W [変数1][変数2]があるとき、どちらかがlong intの場合正しく動作しないと考えられるからである。
+	
+4．まとめ
+	Cで書かれたプログラムをアセンブリ言語で書かれたプログラムに変換する方法の概要を理解した。

@@ -1,0 +1,36 @@
+    .CPU 300HA
+    .SECTION A,DATA,LOCATE=H'0FF030
+    .DATA.L H'0FF200  ;リセットベクトル
+
+    .SECTION P,CODE,LOCATE=H'0FF200
+    MOV.L  #H'FFF00,ER7  ;スタックポインタ設定
+_main:                           ; function: main
+    MOV.W       @H'0FF800:24,R1      ; x1 : R1
+    MOV.W       @H'0FF802,R0      ; x0 : R0
+    SUB.W       E1,E1            ; x2 : E1
+    MOV.W       #1:16,E0         ; x3 : E0
+    BRA         L15:8
+L14:                              
+    SHLL.W      R0
+    SHLL.W      E0
+L15:                              
+    CMP.W       R1,R0
+    BLT         L14:8            ; Less Than (x1<x0)
+    BRA         L17:8
+L16:                              
+    CMP.W       R1,R0
+    BGT         L18:8            ; Greater Than(x1>x0)
+    SUB.W       R0,R1
+    ADD.W       E0,E1
+L18:                              
+    SHAR.W      R0
+    SHAR.W      E0
+L17:                              
+    MOV.W       E0,E0
+    BNE         L16:8
+    MOV.W       E1,@H'0FF804:24
+    MOV.W       R1,@H'0FF806:24
+EternalLoop:
+    BRA EternalLoop ;永久ループ
+
+    .END

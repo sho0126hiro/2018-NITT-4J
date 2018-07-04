@@ -1,0 +1,30 @@
+H8S,H8/300 SERIES C COMPILER (Ver. 2.0D for Evaluation)17-May-2018  12:45:57  PAGE   1
+
+************ SOURCE LISTING ************
+
+FILE NAME: sumdiff.c
+
+  Seq File        Line Pi 0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+
+    1 sumdiff.c      1     long int data1=123;
+    2 sumdiff.c      2     long int data2=456;
+    3 sumdiff.c      3     long int sum;
+    4 sumdiff.c      4     long int diff;
+    5 sumdiff.c      5     
+    6 sumdiff.c      6     int main()
+    7 sumdiff.c      7     {
+    8 sumdiff.c      8         sum=data1+data2;
+    9 sumdiff.c      9         diff=data1-data2;
+   10 sumdiff.c     10     }
+H8S,H8/300 SERIES C COMPILER (Ver. 2.0D for Evaluation)17-May-2018  12:45:57  PAGE   1
+
+** ASSEMBLER/LINKAGE EDITOR LIMITS INFORMATION **
+
+NUMBER OF EXTERNAL REFERENCE  SYMBOLS:        0 
+NUMBER OF EXTERNAL DEFINITION SYMBOLS:        5 
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:          5 
+
+
+
+********* CPU MODE INFORMATION *********
+
+cpu=300ha

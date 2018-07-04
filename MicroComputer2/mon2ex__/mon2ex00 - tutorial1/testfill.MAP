@@ -1,0 +1,41 @@
+                                        H SERIES LINKAGE EDITOR Ver. 5.3B
+
+
+LINK COMMAND LINE
+
+
+LNK testfill -PRINT=testfill 
+
+
+
+                                  H SERIES LINKAGE EDITOR Ver. 5.3B                      PAGE :     1
+
+                                        ***     LINKAGE EDITOR LINK MAP LIST      ***
+
+
+SECTION   NAME                       START      -      END         LENGTH
+                                                              UNIT NAME                          MODULE NAME
+
+
+ATTRIBUTE  :   DATA  NOSHR
+
+A                                 H'000FF030    -    H'000FF033   H'00000004
+                                                              testfill                           testfill                        
+
+* TOTAL ADDRESS *                 H'000FF030    -    H'000FF033   H'00000004
+
+
+ATTRIBUTE  :   CODE  NOSHR
+
+P                                 H'000FF200    -    H'000FF219   H'0000001A
+                                                              testfill                           testfill                        
+
+* TOTAL ADDRESS *                 H'000FF200    -    H'000FF219   H'0000001A
+
+
+ATTRIBUTE  :   DATA  NOSHR
+
+D                                 H'000FF800    -    H'000FF83F   H'00000040
+                                                              testfill                           testfill                        
+
+* TOTAL ADDRESS *                 H'000FF800    -    H'000FF83F   H'00000040

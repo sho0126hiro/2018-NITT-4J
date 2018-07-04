@@ -1,0 +1,21 @@
+    .CPU 300HA
+    .SECTION A,DATA,LOCATE=H'0FF030
+    .DATA.L H'0FF200  ;リセットベクトル
+
+    .SECTION P,CODE,LOCATE=H'0FF200
+    MOV.L  #H'FFF00,ER7  ;スタックポインタ設定
+    MOV.L  #area,ER1     ;作業対象先頭アドレスをレジスタer1へ
+    MOV.B  #H'cc, r0l    ;埋める値0xccをレジスタr0lへ
+    MOV.W  #H'200, r2    ;埋める個数0x200をレジスタr2
+L001:
+    MOV.B  r0l,@ER1      ;0xccをER1の指しているところへ
+    INC.L  #1,ER1        ;ER1を1増やす（32bit操作）
+    DEC.W  #1,r2         ;R2を1減らす（16bit操作）
+    BNE    L001:8       ; r2!=0の場合はL001へジャンプ
+EternalLoop:
+    BRA EternalLoop ;永久ループ
+
+    .SECTION D,DATA,LOCATE=H'0FF800   ;データ領域0FF800から
+area:
+    .res.b H'200          ;40バイトの領域を確保　先頭アドレスはFF800になる
+    .END

@@ -1,0 +1,136 @@
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 06/23/18 14:08:32                                                              PAGE     1
+PROGRAM NAME =
+
+    1                             1         .CPU 300HA
+    2 0FF030                      2         .SECTION A,DATA,LOCATE=H'0FF030
+    3 0FF030 000FF200             3         .DATA.L H'0FF200  ;リセットベクトル
+    4                             4     
+    5 0FF200                      5         .SECTION P,CODE,LOCATE=H'0FF200
+    6 0FF200 7A07000FFF00         6         MOV.L  #H'FFF00,ER7  ;スタックポインタ設定
+    7 0FF206                      7     _main:                           ; function: main
+    8 0FF206 01006DF4             8               PUSH.L      ER4
+    9 0FF20A 6B28000FF800         9               MOV.W       @H'0FF800:24,E0
+   10 0FF210 6B20000FF802        10               MOV.W       @H'0FF802:24,R0
+   11 0FF216 0D01                11               MOV.W       R0,R1
+   12 0FF218 0D0C                12               MOV.W       R0,E4
+   13 0FF21A 0D88                13               MOV.W       E0,E0
+   14 0FF21C 4F14                14               BLE         L27:8
+   15 0FF21E 0D11                15               MOV.W       R1,R1
+   16 0FF220 4F04                16               BLE         L28:8
+   17 0FF222 1944                17               SUB.W       R4,R4
+   18 0FF224 4032                18               BRA         L30:8
+   19 0FF226                     19     L28:
+   20 0FF226 79040001            20               MOV.W       #1:16,R4
+   21 0FF22A 0D10                21               MOV.W       R1,R0
+   22 0FF22C 1790                22               NEG.W       R0
+   23 0FF22E 0D01                23               MOV.W       R0,R1
+   24 0FF230 4026                24               BRA         L30:8
+   25 0FF232                     25     L27:
+   26 0FF232 0D11                26               MOV.W       R1,R1
+   27 0FF234 4F0C                27               BLE         L31:8
+   28 0FF236 79040002            28               MOV.W       #2:16,R4
+   29 0FF23A 0D80                29               MOV.W       E0,R0
+   30 0FF23C 1790                30               NEG.W       R0
+   31 0FF23E 0D08                31               MOV.W       R0,E0
+   32 0FF240 4016                32               BRA         L32:8
+   33 0FF242                     33     L31:
+   34 0FF242 79040003            34               MOV.W       #3:16,R4
+   35 0FF246 0D10                35               MOV.W       R1,R0
+   36 0FF248 1790                36               NEG.W       R0
+   37 0FF24A 0D01                37               MOV.W       R0,R1
+   38 0FF24C 0D80                38               MOV.W       E0,R0
+   39 0FF24E 1790                39               NEG.W       R0
+   40 0FF250 0D08                40               MOV.W       R0,E0
+   41 0FF252 0DC0                41               MOV.W       E4,R0
+   42 0FF254 1790                42               NEG.W       R0
+   43 0FF256 0D0C                43               MOV.W       R0,E4
+   44 0FF258                     44     L32:
+   45 0FF258                     45     L30:
+   46 0FF258 1999                46               SUB.W       E1,E1
+   47 0FF25A 79000001            47               MOV.W       #1:16,R0
+   48 0FF25E 4004                48               BRA         L34:8
+   49 0FF260                     49     L33:
+   50 0FF260 1011                50               SHLL.W      R1
+   51 0FF262 1010                51               SHLL.W      R0
+   52 0FF264                     52     L34:
+   53 0FF264 1D81                53               CMP.W       E0,R1
+   54 0FF266 4DF8                54               BLT         L33:8
+   55 0FF268 400C                55               BRA         L36:8
+   56 0FF26A                     56     L35:
+   57 0FF26A 1D81                57               CMP.W       E0,R1
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 06/23/18 14:08:32                                                              PAGE     2
+PROGRAM NAME =
+
+   58 0FF26C 4E04                58               BGT         L37:8
+   59 0FF26E 1918                59               SUB.W       R1,E0
+   60 0FF270 0909                60               ADD.W       R0,E1
+   61 0FF272                     61     L37:
+   62 0FF272 1191                62               SHAR.W      R1
+   63 0FF274 1190                63               SHAR.W      R0
+   64 0FF276                     64     L36:
+   65 0FF276 0D00                65               MOV.W       R0,R0
+   66 0FF278 46F0                66               BNE         L35:8
+   67 0FF27A 0D44                67               MOV.W       R4,R4
+   68 0FF27C 4724                68               BEQ         L39:8
+   69 0FF27E 79240001            69               CMP.W       #1:16,R4
+   70 0FF282 4608                70               BNE         L40:8
+   71 0FF284 0D90                71               MOV.W       E1,R0
+   72 0FF286 1790                72               NEG.W       R0
+   73 0FF288 0D09                73               MOV.W       R0,E1
+   74 0FF28A 4016                74               BRA         L41:8
+   75 0FF28C                     75     L40:
+   76 0FF28C 0D88                76               MOV.W       E0,E0
+   77 0FF28E 4F06                77               BLE         L42:8
+   78 0FF290 198C                78               SUB.W       E0,E4
+   79 0FF292 0DC8                79               MOV.W       E4,E0
+   80 0FF294 0B59                80               INC.W       #1,E1
+   81 0FF296                     81     L42:
+   82 0FF296 79240002            82               CMP.W       #2:16,R4
+   83 0FF29A 4606                83               BNE         L43:8
+   84 0FF29C 0D90                84               MOV.W       E1,R0
+   85 0FF29E 1790                85               NEG.W       R0
+   86 0FF2A0 0D09                86               MOV.W       R0,E1
+   87 0FF2A2                     87     L43:
+   88 0FF2A2                     88     L41:
+   89 0FF2A2                     89     L39:
+   90 0FF2A2 6BA9000FF804        90               MOV.W       E1,@H'0FF804:24
+   91 0FF2A8 6BA8000FF806        91               MOV.W       E0,@H'0FF806:24
+   92 0FF2AE 01006D74            92               POP.L       ER4
+   93 0FF2B2                     93     EternalLoop:
+   94 0FF2B2 40FE                94         BRA EternalLoop ;永久ループ
+   95                            95         .END
+  *****TOTAL ERRORS       0
+  *****TOTAL WARNINGS     0
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 06/23/18 14:08:32                                                              PAGE     3
+
+*** CROSS REFERENCE LIST
+
+NAME                             SECTION  ATTR VALUE             SEQUENCE
+
+A                                A        SCT  000FF030      2*
+EternalLoop                      P             000FF2B2     93*   94 
+L27                              P             000FF232     14    25*
+L28                              P             000FF226     16    19*
+L30                              P             000FF258     18    24    45*
+L31                              P             000FF242     27    33*
+L32                              P             000FF258     32    44*
+L33                              P             000FF260     49*   54 
+L34                              P             000FF264     48    52*
+L35                              P             000FF26A     56*   66 
+L36                              P             000FF276     55    64*
+L37                              P             000FF272     58    61*
+L39                              P             000FF2A2     68    89*
+L40                              P             000FF28C     70    75*
+L41                              P             000FF2A2     74    88*
+L42                              P             000FF296     77    81*
+L43                              P             000FF2A2     83    87*
+P                                P        SCT  000FF200      5*
+_main                            P             000FF206      7*
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 06/23/18 14:08:32                                                              PAGE     4
+
+*** SECTION DATA LIST
+
+SECTION                          ATTRIBUTE    SIZE             START
+
+A                                ABS-DATA    0000004           0FF030          
+P                                ABS-CODE    00000B4           0FF200          

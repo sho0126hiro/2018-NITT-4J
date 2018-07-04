@@ -1,0 +1,195 @@
+/***  mon2ex08.txt  ***/
+/***  s16306  4J42  廣瀬 翔  ***/
+
+1．課題
+	テキストエディタとアセンブラを用いて次のプログラムを作成 しなさい。
+	FF200から機械語プログラムを置きなさい。
+	FF800番地 - FF801番地に2バイトの値が，FF802番地 - FF803番地に2バイトの値があり，
+	それぞれ整数であるとして，この2数の積を求め，FF804番地 - FF805番地に保存するプログラム。
+	値が正の数・負の数にかかわらず正しい答えを出すようにすること
+	掛け算の結果がオーバーフローしても構わない。
+	ただしMULで始まる掛け算命令を用いてはならな い。
+
+	プログラム本体および以下を報告しなさい。
+	プログラムが正しく動作していることを検証し，検証の様子も報告しなさい。
+	検証では0xaa×0xbb，0xaa×(-0xbb)，(-0xaa)×0xbb，(-0xaa)×(-0xbb)を行い，
+	手計算の値と比較しなさい。
+	実行結果を貼り付けるだけでなく，まとめのところで実行検証結果についてまとめなさい．
+
+2．使用したプログラム・実行結果
+	//もとにしたCプログラム
+	unsigned short int x00=0x55;
+	unsigned short int x10=0x02;
+	unsigned short int y0; /* y0=x00*x10 */
+	int main()
+	{
+	    unsigned short int x0,x1,x2;
+	    x0=x00;
+	    x1=x10;
+	    x2=0;
+	    do {
+	        if(x1&1) x2+=x0;
+	        x0<<=1;
+	        x1>>=1;
+	    } while (x1);
+	    y0=x2;
+	}
+	//作成したアセンブリプログラム
+	    .CPU 300HA
+	    .SECTION A,DATA,LOCATE=H'0FF030
+	    .DATA.L H'0FF200  ;リセットベクトル
+
+	    .SECTION P,CODE,LOCATE=H'0FF200
+	    MOV.L  #H'FFF00,ER7  ;スタックポインタ設定
+	_main:                           ; function: main
+	    MOV.W       @H'FF800:24,E0   ; @H'0ff800->E0
+	    MOV.W       @H'FF802:24,R0   ; @H'0ff802->R0
+	    SUB.W       R1,R1            ; R1=0
+	L10:                              
+	    BTST.B      #0,R0L
+	    BEQ         L11:8
+	    ADD.W       E0,R1
+	L11:                             
+	    SHLL.W      E0
+	    SHLR.W      R0
+	    BNE         L10:8
+	    MOV.W       R1,@H'FF804:24
+	EternalLoop:
+	    BRA EternalLoop ;永久ループ
+	    .END
+
+	//Tera Termのログ
+
+	 H8/3048 Series Advanced Mode Monitor Ver. 3.0A
+	 Copyright (C) 2003 Renesas Technology Corp.
+
+	: l
+	  Top Address=FF030
+	  End Address=FF227
+	: da ff200 ff226
+	  <ADDR>  <CODE>                <MNEMONIC> <OPERAND>
+	  FF200   7A07000FFF00          MOV.L      #H'000FFF00:32,ER7
+	  FF206   6B28000FF800          MOV.W      @H'FF800:24,E0
+	  FF20C   6B20000FF802          MOV.W      @H'FF802:24,R0
+	  FF212   1911                  SUB.W      R1,R1
+	  FF214   7308                  BTST       #0:3,R0L
+	  FF216   4702                  BEQ        FF21A:8
+	  FF218   0981                  ADD.W      E0,R1
+	  FF21A   1018                  SHLL.W     E0
+	  FF21C   1110                  SHLR.W     R0
+	  FF21E   46F4                  BNE        FF214:8
+	  FF220   6BA1000FF804          MOV.W      R1,@H'FF804:24
+	  FF226   40FE                  BRA        FF226:8
+	: b ff226
+	: d ff800 ff80f
+	  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+	  FF800   FF 56 FF 45 7C 2E 00 77  7F FF FF FF FB FF F7 FF   ".V.E|..w........"
+	: .pc
+	  PC=0FF200  ?  ff200
+	  CCR=80  ?  . 
+	: m ff800    
+	  FF800   FF  ?  00
+	  FF801   56  ?  aa
+	  FF802   FF  ?  00
+	  FF803   45  ?  bb
+	  FF804   7C  ?  .
+	: g
+	  Break at PC=FF226
+	  PC=0FF226  CCR=81:I......C  SP=000FFF00
+	  ER0=AA000000  ER1=00007C2E  ER2=00000000  ER3=00000000
+	  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFF00
+	: d ff800 ff80f
+	  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+	  FF800   00 AA 00 BB 7C 2E 00 77  7F FF FF FF FB FF F7 FF   "....|..w........"
+	: .pc
+	  PC=0FF226  ?  ff200
+	  CCR=81  ?  .
+	: m ff800
+	  FF800   00  ?  00
+	  FF801   AA  ?  aa
+	  FF802   00  ?  ff
+	  FF803   BB  ?  45
+	  FF804   7C  ?  .
+	: g
+	  Break at PC=FF226
+	  PC=0FF226  CCR=89:I...N..C  SP=000FFF00
+	  ER0=00000000  ER1=000083D2  ER2=00000000  ER3=00000000
+	  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFF00
+	: d ff800 ff80f
+	  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+	  FF800   00 AA FF 45 83 D2 00 77  7F FF FF FF FB FF F7 FF   "...E...w........"
+	: .pc
+	  PC=0FF226  ?  ff200
+	  CCR=89  ?  .
+	: m ff800
+	  FF800   00  ?  ff
+	  FF801   AA  ?  56
+	  FF802   FF  ?  00
+	  FF803   45  ?  bb
+	  FF804   83  ?  .
+	: g
+	  Break at PC=FF226
+	  PC=0FF226  CCR=A9:I.H.N..C  SP=000FFF00
+	  ER0=56000000  ER1=000083D2  ER2=00000000  ER3=00000000
+	  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFF00
+	: d ff800 ff80f
+	  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+	  FF800   FF 56 00 BB 83 D2 00 77  7F FF FF FF FB FF F7 FF   ".V.....w........"
+	: .pc
+	  PC=0FF226  ?  ff200
+	  CCR=A9  ?  .
+	: m ff800
+	  FF800   FF  ?  ff
+	  FF801   56  ?  56
+	  FF802   00  ?  ff
+	  FF803   BB  ?  45
+	  FF804   83  ?  .
+	: g
+	  Break at PC=FF226
+	  PC=0FF226  CCR=81:I......C  SP=000FFF00
+	  ER0=00000000  ER1=00007C2E  ER2=00000000  ER3=00000000
+	  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFF00
+	: d ff800 ff80f
+	  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+	  FF800   FF 56 FF 45 7C 2E 00 77  7F FF FF FF FB FF F7 FF   ".V.E|..w........"
+	: 
+
+3．考察
+	手計算の結果
+	  0xaa  *   0xbb  = 0x00aa * 0x00bb =   0x7c2e  
+	  0xaa  * (-0xbb) = 0x00aa * 0xff45 = (-0x7c2e) = 0x83d2
+	(-0xaa) *   0xbb  = 0xff56 * 0x00bb = (-0x7c2e) = 0x83d2
+	(-0xaa) * (-0xbb) = 0xff56 * 0xff45 =   0x7c2e
+	
+	メモリの値
+	 0xaa  *   0xbb の演算後
+	: d ff800 ff80f
+	  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+	  FF800   00 AA 00 BB 7C 2E 00 77  7F FF FF FF FB FF F7 FF   "....|..w........"
+	ff804-ff805の値が、7C2Eになっており、正しい値がメモリに格納されていることがわかる。
+	
+	 0xaa  * (-0xbb) の演算後
+	: d ff800 ff80f
+	  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+	  FF800   00 AA FF 45 83 D2 00 77  7F FF FF FF FB FF F7 FF   "...E...w........"
+	ff804-ff805の値が、83D2になっており、正しい値がメモリに格納されていることがわかる。
+
+	(-0xaa) *   0xbb の演算後
+	 d ff800 ff80f
+	  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+	  FF800   FF 56 00 BB 83 D2 00 77  7F FF FF FF FB FF F7 FF  
+	ff804-ff805の値が、83D2になっており、正しい値がメモリに格納されていることがわかる。
+
+	(-0xaa) * (-0xbb) の演算後
+	: d ff800 ff80f
+	  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+	  FF800   FF 56 FF 45 7C 2E 00 77  7F FF FF FF FB FF F7 FF   ".V.E|..w........"
+	ff804-ff805の値が、7C2Eになっており、正しい値がメモリに格納されていることがわかる。
+
+	実行結果を見ると、すべての動作結果が手計算と同じ値になっているため、正しく動作していると考えられる。
+
+4．まとめ
+	mon2ex06の課題のプログラムを改変することで、負の数が含まれた乗算プログラムを作成し、
+	アルゴリズム及び動作を理解することができた。
+
+

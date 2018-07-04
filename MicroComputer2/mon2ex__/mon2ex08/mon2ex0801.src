@@ -1,0 +1,43 @@
+          .CPU        300HA
+          .EXPORT     _x00
+          .EXPORT     _x10
+          .EXPORT     _y0
+          .EXPORT     _main
+          .SECTION    P,CODE,ALIGN=2
+;*** File mon2ex0801, Line 4     ; block
+_main:                           ; function: main
+;*** File mon2ex0801, Line 5     ; block
+;*** File mon2ex0801, Line 7     ; expression statement
+          MOV.W       @_x00:24,E0
+;*** File mon2ex0801, Line 8     ; expression statement
+          MOV.W       @_x10:24,R0
+;*** File mon2ex0801, Line 9     ; expression statement
+          SUB.W       R1,R1
+;*** File mon2ex0801, Line 10    ; do
+L10:                              
+;*** File mon2ex0801, Line 10    ; block
+;*** File mon2ex0801, Line 11    ; if
+          BTST.B      #0,R0L
+          BEQ         L11:8
+;*** File mon2ex0801, Line 11    ; expression statement
+          ADD.W       E0,R1
+L11:                              
+;*** File mon2ex0801, Line 12    ; expression statement
+          SHLL.W      E0
+;*** File mon2ex0801, Line 13    ; expression statement
+          SHLR.W      R0
+;*** File mon2ex0801, Line 14    ; expression statement
+          BNE         L10:8
+;*** File mon2ex0801, Line 15    ; expression statement
+          MOV.W       R1,@_y0:24
+;*** File mon2ex0801, Line 16    ; block
+          RTS
+          .SECTION    D,DATA,ALIGN=2
+_x00:                            ; static: x00
+          .DATA.W     H'0055
+_x10:                            ; static: x10
+          .DATA.W     H'0002
+          .SECTION    B,DATA,ALIGN=2
+_y0:                             ; static: y0
+          .RES.W      1
+          .END

@@ -1,0 +1,36 @@
+H8S,H8/300 SERIES C COMPILER (Ver. 2.0D for Evaluation)21-Jun-2018  12:24:32  PAGE   1
+
+************ SOURCE LISTING ************
+
+FILE NAME: mon2ex0801.c
+
+  Seq File        Line Pi 0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+
+    1 mon2ex0801     1     unsigned short int x00=0x55;
+    2 mon2ex0801     2     unsigned short int x10=0x02;
+    3 mon2ex0801     3     unsigned short int y0; /* y0=x00*x10 */
+    4 mon2ex0801     4     int main()
+    5 mon2ex0801     5     {
+    6 mon2ex0801     6         unsigned short int x0,x1,x2;
+    7 mon2ex0801     7         x0=x00;
+    8 mon2ex0801     8         x1=x10;
+    9 mon2ex0801     9         x2=0;
+   10 mon2ex0801    10         do {
+   11 mon2ex0801    11             if(x1&1) x2+=x0;
+   12 mon2ex0801    12             x0<<=1;
+   13 mon2ex0801    13             x1>>=1;
+   14 mon2ex0801    14         } while (x1);
+   15 mon2ex0801    15         y0=x2;
+   16 mon2ex0801    16     }
+H8S,H8/300 SERIES C COMPILER (Ver. 2.0D for Evaluation)21-Jun-2018  12:24:32  PAGE   1
+
+** ASSEMBLER/LINKAGE EDITOR LIMITS INFORMATION **
+
+NUMBER OF EXTERNAL REFERENCE  SYMBOLS:        0 
+NUMBER OF EXTERNAL DEFINITION SYMBOLS:        4 
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:          6 
+
+
+
+********* CPU MODE INFORMATION *********
+
+cpu=300ha

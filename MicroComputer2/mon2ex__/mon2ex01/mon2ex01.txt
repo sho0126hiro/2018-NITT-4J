@@ -1,0 +1,286 @@
+/***  mon2ex01.txt  ***/
+/***  s16306  4J42  廣瀬 翔  ***/
+
+1．課題
+	テキストエディタとアセンブラを用いて次のプログラムを作成しなさい。
+	（FF200から機械語プログラムを置きなさい。）
+	FF800番地 - FF9FF番地メモリすべてに0xccを埋めるプログラム。
+
+	プログラム本体および以下を報告しなさい。
+	（このプログラムの実行の正しさを検証するために工夫すること）
+	（---プログラムの実行前にfコマンドでFF800番地 - FFA0F番地に55を埋めておくとよい）
+
+	実行前のFF800番地 - FFA0F番地の様子
+	プログラムの逆アッセンブル結果
+	ブレークポイントを設定して実行した時の実行の様子
+	実行後のFF800番地 - FFA0F番地の様子
+	実行前の様子と比較して，意図した動作ができていることを確認する。
+	(mon2ex01.txt)
+
+	ヒント　8bitのレジスタの扱うことのできる値の範囲は0 - 255
+	　　　　16bitのレジスタの扱うことのできる値の範囲は0 - 65535
+	ヒント　dec命令では8bitレジスタに対する場合と16bit以上のレジスタに対する場合で
+	　　　　書式が異なる。8bitレジスタ向けdec命令では増分は1と決まっているが，
+	　　　　16bitレジスタ向けでは増分は1と2の2種類あり，どちらであるかを指定する。
+
+2．使用したプログラム・実行結果
+	//mon02ex01.src
+	    .CPU 300HA
+	    .SECTION A,DATA,LOCATE=H'0FF030
+	    .DATA.L H'0FF200  ;リセットベクトル
+
+	    .SECTION P,CODE,LOCATE=H'0FF200
+	    MOV.L  #H'FFF00,ER7  ;スタックポインタ設定
+	    MOV.L  #area,ER1     ;作業対象先頭アドレスをレジスタer1へ
+	    MOV.B  #H'cc, r0l    ;埋める値0xccをレジスタr0lへ
+	    MOV.W  #H'200, r2    ;埋める個数0x200をレジスタr2
+	L001:
+	    MOV.B  r0l,@ER1      ;0xccをER1の指しているところへ
+	    INC.L  #1,ER1        ;ER1を1増やす（32bit操作）
+	    DEC.W  #1,r2         ;R2を1減らす（16bit操作）
+	    BNE    L001:8       ; r2!=0の場合はL001へジャンプ
+	EternalLoop:
+	    BRA EternalLoop ;永久ループ
+
+	    .SECTION D,DATA,LOCATE=H'0FF800   ;データ領域0FF800から
+	area:
+	    .res.b H'200          ;40バイトの領域を確保　先頭アドレスはFF800になる
+	    .END
+
+	teratarmのログを以下に示す．
+	
+	 H8/3048 Series Advanced Mode Monitor Ver. 3.0A
+	 Copyright (C) 2003 Renesas Technology Corp.
+
+	/*RAMに入力*/
+	: l
+	  Top Address=FF030
+	  End Address=FF21B
+	/*逆アセンブルで確認*/
+	: da ff200 ff21b
+	  <ADDR>  <CODE>                <MNEMONIC> <OPERAND>
+	  FF200   7A07000FFF00          MOV.L      #H'000FFF00:32,ER7
+	  FF206   7A01000FF800          MOV.L      #H'000FF800:32,ER1
+	  FF20C   F8CC                  MOV.B      #H'CC:8,R0L
+	  FF20E   79020200              MOV.W      #H'0200:16,R2
+	  FF212   6898                  MOV.B      R0L,@ER1
+	  FF214   0B71                  INC.L      #1,ER1
+	  FF216   1B52                  DEC.W      #1,R2
+	  FF218   46F8                  BNE        FF212:8
+	  FF21A   40FE                  BRA        FF21A:8
+
+	/*メモリの確認*/
+	: d ff800 ffa0f
+	  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+	  FF800   FF FF FF FF FF FE FF 7F  7F FF FF EF FB FF F7 FF   "................"
+	  FF810   FE FF DE AF FE FF FB EF  FF CF AE BF FF FF FF EF   "................"
+	  FF820   FF FF FF FF FF FF DB AF  EF FF FF FF FF F7 FF FF   "................"
+	  FF830   DF BE FF DF DF B7 FB BF  DF 77 F5 FB FF FF FC FB   ".........w......"
+	  FF840   FF FF FF FF EF FF FD FF  FF FF FB BF FF FF FF FD   "................"
+	  FF850   FF FF FE FF FF FF CF FF  FD FF FF DB FF CE FF FF   "................"
+	  FF860   FE FF FF FF FF FD FF FF  FF ED FF F7 FF FF AF FF   "................"
+	  FF870   BC FF FF EF FF FF 6B 7D  F3 E7 7E F7 EF B6 FB FF   "......k}..~....."
+	  FF880   FF FF FF 76 EF FF FF 7F  FE FF CF FE FF FF FB FF   "...v............"
+	  FF890   FF DF FF BF EF FF D9 EF  FF FD F3 EF EF FF FF FF   "................"
+	  FF8A0   FF FF F7 FF FF FF FF FF  FF FF FF BF FF BF FF FF   "................"
+	  FF8B0   ED 77 FE 9B FF FA FE DF  7F FF 7F 3D FF DB FB EF   ".w.........=...."
+	  FF8C0   FF FE FB FF FF FF FF FF  FF FF FF FF FF FF DF FF   "................"
+	  FF8D0   F3 FF BF 7E 9E FF FF C7  FF A9 FF EB FF FF FF EF   "...~............"
+	  FF8E0   F7 FF FF BF FF F3 FF 5F  FF FF FF FF FF FF 7F FF   "......._........"
+	  FF8F0   FE 7D FF 77 FB F7 FF BF  F7 FF 75 7F F3 DB BE 7F   ".}.w......u....."
+	  FF900   FF FF F7 FF FD FF FD FF  FF FF EF FF FF FF FF FF   "................"
+	  FF910   FF AD F9 EF FF FF FE DF  FF BD BF FF F7 FF E5 FB   "................"
+	  FF920   FF FE D7 FF FF FF FF FF  FF FF BB FF FF FF FE FF   "................"
+	  FF930   EF FF FB FF CE 2F FF F3  DB F7 FF BF FD FF F7 DF   "...../.........."
+	  FF940   FF FF EF FF FF FF F7 BF  DF FF FF FF FF FB FE FF   "................"
+	  FF950   F7 FF FB FF FC F3 FE FF  7F FF EE FD FF FF F7 FF   "................"
+	  FF960   FF FF FF 7F FF FE FB 6F  FF BF FF FF BF FF FF F7   ".......o........"
+	  FF970   7E FB FB BB FF FF F6 FF  AF FD BA FF FF FF FF 3F   "~..............?"
+	  FF980   FF BF F3 F7 FF FD FF FF  FF FE FB FF FF BB FF FF   "................"
+	  FF990   FF DF BF FF F6 FF FB FB  FD FE FB FF FF EF FF 3D   "...............="
+	  FF9A0   F7 9F FF FF FD FF FF FD  7F BF F7 FF FF FD 9F 7F   "................"
+	  FF9B0   F7 FD FF FD DF FF AB FF  6E FB 7F DB FF D6 FD FF   "........n......."
+	  FF9C0   FF FF 7F FF FF F7 FF FF  FF F7 FF FF FF FE DF FF   "................"
+	  FF9D0   FB 7D FD 7F FD 5F FF F3  FF BF F3 FF FF FF FA 6F   ".}..._.........o"
+	  FF9E0   DF EF FF FD FE FB FF F7  FF FB FF FF FF FF FF FF   "................"
+	  FF9F0   BF FF FE FF FF FF DF 7F  EF FF FC FF FF FF DF 7F   "................"
+	  FFA00   FF FF EF FF FF FF FF EF  FF FF FE FF FF FF FF EF   "................"
+
+	/*メモリの値を変更する*/
+	: f ff800 ffa0f 55
+	/*メモリの確認*/
+	: d ff800 ffa0f
+	  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+	  FF800   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF810   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF820   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF830   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF840   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF850   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF860   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF870   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF880   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF890   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF8A0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF8B0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF8C0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF8D0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF8E0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF8F0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF900   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF910   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF920   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF930   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF940   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF950   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF960   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF970   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF980   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF990   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF9A0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF9B0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF9C0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF9D0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF9E0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FF9F0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	  FFA00   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	
+	/*プログラムカウンタをセット*/
+	: .pc
+	  PC=000000  ?  ff200
+	  CCR=80  ?  .
+
+	/*ブレークポイントの設定*/
+	: b ff21c
+
+	/*プログラムカウンタの確認*/
+	: r
+	  PC=000000  CCR=80:I.......  SP=000FFF00
+	  ER0=00000000  ER1=00000000  ER2=00000000  ER3=00000000
+	  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFF00
+	
+	/*実行*/
+	: g
+	  Break at PC=FF21A
+	  PC=0FF21A  CCR=84:I....Z..  SP=000FFF00
+	  ER0=000000CC  ER1=000FFA00  ER2=00000000  ER3=00000000
+	  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFF00
+	/*メモリの確認*/
+	: d ff800 ffa0f
+	  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+	  FF800   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF810   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF820   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF830   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF840   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF850   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF860   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF870   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF880   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF890   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF8A0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF8B0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF8C0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF8D0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF8E0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF8F0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF900   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF910   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF920   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF930   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF940   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF950   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF960   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF970   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF980   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF990   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF9A0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF9B0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF9C0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF9D0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF9E0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FF9F0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+	  FFA00   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+
+3．考察
+	メモリはプログラムによって以下のように変化した。
+	実行前
+			  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+		  FF800   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF810   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF820   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF830   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF840   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF850   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF860   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF870   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF880   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF890   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF8A0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF8B0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF8C0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF8D0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF8E0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF8F0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF900   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF910   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF920   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF930   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF940   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF950   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF960   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF970   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF980   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF990   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF9A0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF9B0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF9C0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF9D0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF9E0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FF9F0   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+		  FFA00   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	実行後
+		: d ff800 ffa0f
+		  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+		  FF800   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF810   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF820   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF830   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF840   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF850   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF860   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF870   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF880   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF890   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF8A0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF8B0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF8C0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF8D0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF8E0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF8F0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF900   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF910   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF920   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF930   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF940   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF950   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF960   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF970   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF980   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF990   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF9A0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF9B0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF9C0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF9D0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF9E0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FF9F0   CC CC CC CC CC CC CC CC  CC CC CC CC CC CC CC CC   "................"
+		  FFA00   55 55 55 55 55 55 55 55  55 55 55 55 55 55 55 55   "UUUUUUUUUUUUUUUU"
+	上の実行結果より、ff800から、ff9ffまでが、㏄に置き換わっていることがわかる。
+	テキストエディタとアセンブラを用いてプログラムを作成する場合、モニタプログラムより便利な点が多い。
+	ただし、終端処理は無限ループにすることと
+	ブレークポイントを設定する必要がある。
+	ブレークポイントは、b [address]と入力する。address：無限ループにしたアドレス
+	
+4．まとめ
+	テキストエディタを用いたプログラムの作成及び実行方法を理解した。
+	
