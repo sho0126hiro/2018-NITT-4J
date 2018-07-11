@@ -1,4 +1,4 @@
-#include<3694.h>
+#include <3694.h>
 #include "ltrc_lib.h"
 
 void msecWait(unsigned long int length)
@@ -9,36 +9,37 @@ void msecWait(unsigned long int length)
   }
 }
 
+long int GRset(int duty){
+    long int pwm;
+    pwm=0.01*duty*625; //GRA=625に対するdutyの割合を出す
+    return pwm;
+}
+
 int main(void)
 {
     //P86,P87を出力ポートに設定
     IO.PCR8|=0xc0;
     initSCI3();
-    AD.ADCSR.BYTE = 0x39; //AD変換初期設定
-                          //0011 1001
-                          //AD変換開始
-                          //Scan mode
-                          //(70ステート)
-                          //AN0-AN1
-    //出力レジスタの初期化
-    AD.ADDRA.BYTE=0x0000;
-    AD.ADDRB.BYTE=0x0000;
+    TW.TMRW.BYTE=0x03 //(0000 0011) : FTIOB FTIOC >> pwm mode
+    TW.TCRW.BYTE=0xB6 //(1011 0110) : コンペアマッチAでTNCTがクリア
+                                 // : クロックφ/8 
+                                 // : FTIOB FTIOC 出力端子の出力値の設定(1)
+    TW.TCNT=0x0000;    // TCNの初期化 
+    TW.GRA=625;       // 0.25ms (4kHz)
+    TW.TMRW.BIT.CTS=1; // TCNTカウンタスタート 
     unsigned int left,right;
+    int B_duty[10]={100,80,50,20,0};
+    int C_duty[10]={0,20,50,80,100};
+    int i;
+    long int B_pwm,C_pwm;
     while(1){
-        while(AD.ADCSR.BIT.ADF!=1);  /* 変換結果がでるまで待つ  */
-	    //A-D変換終了
-        left  = AD.ADDRA; //left  : AN0 : P80
-        right = AD.ADDRB; //right : AN1 : P81
-
-        IO.PDR8.BYTE &=0x3f;  //LED1とLED2を消灯
-        if(left>right){
-            IO.PDR8.BYTE |= 0x40;   //LED1を点灯
-        }else if (left<right){
-            IO.PDR8.BYTE |= 0x80;  //LED2を点灯
-        }else{
-            IO.PDR8.BYTE |= 0xc0;  //LED1とLED2を点灯
-        }   
-        msecWait(1000); //1秒待機
-        AD.ADCSR.BIT.ADF=0;           /* 終了ﾌﾗｸﾞを０に戻す  */
+        for(i=0;i<5;i++){
+            B_pwm=GRset(B_duty[i]);
+            C_pwm=GRset(C_duty[i]);
+            TW.GRB=B_pwm;
+            TW.GRC=C_pwm;
+            SCI3print("FTIOB duty : %d [%%] FTIOC duty : %d [%%]",B_duty[i],C_duty[i]);
+            msecWait(3000) //3s
+        }
     }
 }
