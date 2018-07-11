@@ -3,43 +3,37 @@
 
 void msecWait(unsigned long int length)
 {
-    //æ™‚é–“å¾…ã¡ã‚’ã™ã‚‹å‡¦ç†
+    //ŠÔ‘Ò‚¿‚ğ‚·‚éˆ—
     volatile unsigned long int i;
     for(i=0;i<length*568;i++){ 
   }
 }
 
-long int GRset(int duty){
-    long int pwm;
-    pwm=0.01*duty*625; //GRA=625ã«å¯¾ã™ã‚‹dutyã®å‰²åˆã‚’å‡ºã™
-    return pwm;
+void GRset(int dutyL,int dutyR){
+    TW.GRB=0.01*dutyL*625; //GRA=625‚É‘Î‚·‚édutyL‚ÌŠ„‡‚ğo‚·
+    TW.GRC=0.01*dutyR*625; //GRA=625‚É‘Î‚·‚édutyR‚ÌŠ„‡‚ğo‚·
 }
 
 int main(void)
 {
-    //P86,P87ã‚’å‡ºåŠ›ãƒãƒ¼ãƒˆã«è¨­å®š
+    //P86,P87‚ğo—Íƒ|[ƒg‚Éİ’è
     IO.PCR8|=0xc0;
     initSCI3();
-    TW.TMRW.BYTE=0x03 //(0000 0011) : FTIOB FTIOC >> pwm mode
-    TW.TCRW.BYTE=0xB6 //(1011 0110) : ã‚³ãƒ³ãƒšã‚¢ãƒãƒƒãƒAã§TNCTãŒã‚¯ãƒªã‚¢
-                                 // : ã‚¯ãƒ­ãƒƒã‚¯Ï†/8 
-                                 // : FTIOB FTIOC å‡ºåŠ›ç«¯å­ã®å‡ºåŠ›å€¤ã®è¨­å®š(1)
-    TW.TCNT=0x0000;    // TCNã®åˆæœŸåŒ– 
-    TW.GRA=625;       // 0.25ms (4kHz)
-    TW.TMRW.BIT.CTS=1; // TCNTã‚«ã‚¦ãƒ³ã‚¿ã‚¹ã‚¿ãƒ¼ãƒˆ 
-    unsigned int left,right;
+    TW.TMRW.BYTE=0x4B; //(0100 1011) : FTIOB FTIOC >> pwm mode
+    TW.TCRW.BYTE=0xB6; //(1011 0110) : ƒRƒ“ƒyƒAƒ}ƒbƒ`A‚ÅTCNT‚ªƒNƒŠƒA
+                                  // : ƒNƒƒbƒNƒÓ/8 
+                                  // : FTIOB FTIOC o—Í’[q‚Ìo—Í’l‚Ìİ’è(1)
+    TW.TCNT=0x0000;    // TCN‚Ì‰Šú‰» 
+    TW.GRA=625;        // 0.25ms (4kHz)
+    TW.TMRW.BIT.CTS=1; // TCNTƒJƒEƒ“ƒ^ƒXƒ^[ƒg 
     int B_duty[10]={100,80,50,20,0};
     int C_duty[10]={0,20,50,80,100};
     int i;
-    long int B_pwm,C_pwm;
     while(1){
         for(i=0;i<5;i++){
-            B_pwm=GRset(B_duty[i]);
-            C_pwm=GRset(C_duty[i]);
-            TW.GRB=B_pwm;
-            TW.GRC=C_pwm;
-            SCI3print("FTIOB duty : %d [%%] FTIOC duty : %d [%%]",B_duty[i],C_duty[i]);
-            msecWait(3000) //3s
+            GRset(B_duty[i],C_duty[i]);
+            SCI3printf("FTIOB duty : %d [%%] FTIOC duty : %d [%%]\n",B_duty[i],C_duty[i]);
+            msecWait(3000);//3s
         }
     }
 }
