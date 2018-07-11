@@ -3,21 +3,25 @@
 
 void msecWait(unsigned long int length)
 {
-    //æ™‚é–“å¾…ã¡ã‚’ã™ã‚‹å‡¦ç†
+    //ŠÔ‘Ò‚¿‚ğ‚·‚éˆ—
     volatile unsigned long int i;
     for(i=0;i<length*568;i++){ 
   }
 }
 
-long int GRset(int duty){
-    long int pwm;
-    pwm=0.01*duty*625; //GRA=625ã«å¯¾ã™ã‚‹dutyã®å‰²åˆã‚’å‡ºã™
-    return pwm;
+void GRset(int dutyL,int dutyR){
+    unsigned int b=0.01*dutyL*625; //GRA=625‚É‘Î‚·‚édutyL‚ÌŠ„‡‚ğo‚·
+    unsigned int c=0.01*dutyR*625; //GRA=625‚É‘Î‚·‚édutyR‚ÌŠ„‡‚ğo‚·
+    if(b==625)b--; //duty=100
+    else if(b==0)b++; //duty=0
+    if(c==625)c--;
+    else if(c==0)c++;
+    TW.GRB=b;
+    TW.GRC=c;
 }
 
-long int setOperation(int B_duty,int C_duty,time){
-    TW.GRB=GRset(B_duty[i]);
-    TW.GRC=GRset(C_duty[i]);
+long int setOperation(int B_duty,int C_duty,int time){
+    GRset(B_duty,C_duty);
     if(time==0){
         return 1;
     }else return 2000;
@@ -25,21 +29,21 @@ long int setOperation(int B_duty,int C_duty,time){
 
 int main(void)
 {
-    //P86,P87ã‚’å‡ºåŠ›ãƒãƒ¼ãƒˆã«è¨­å®š
+    //P86,P87‚ğo—Íƒ|[ƒg‚Éİ’è
     IO.PCR8|=0xc0;
     initSCI3();
-    TW.TMRW.BYTE=0x03 //(0000 0011) : FTIOB FTIOC >> pwm mode
-    TW.TCRW.BYTE=0xB6 //(1011 0110) : ã‚³ãƒ³ãƒšã‚¢ãƒãƒƒãƒAã§TNCTãŒã‚¯ãƒªã‚¢
-                                 // : ã‚¯ãƒ­ãƒƒã‚¯Ï†/8 
-                                 // : FTIOB FTIOC å‡ºåŠ›ç«¯å­ã®å‡ºåŠ›å€¤ã®è¨­å®š(1)
-    TW.TCNT=0x0000;    // TCNã®åˆæœŸåŒ– 
+    TW.TMRW.BYTE=0x03; //(0000 0011) : FTIOB FTIOC >> pwm mode
+    TW.TCRW.BYTE=0xB6; //(1011 0110) : ƒRƒ“ƒyƒAƒ}ƒbƒ`A‚ÅTNCT‚ªƒNƒŠƒA
+                                 // : ƒNƒƒbƒNƒÓ/8 
+                                 // : FTIOB FTIOC o—Í’[q‚Ìo—Í’l‚Ìİ’è(1)
+    TW.TCNT=0x0000;    // TCN‚Ì‰Šú‰» 
     TW.GRA=625;       // 0.25ms (4kHz)
-    TW.TMRW.BIT.CTS=1; // TCNTã‚«ã‚¦ãƒ³ã‚¿ã‚¹ã‚¿ãƒ¼ãƒˆ 
-    //B:left C:rightã¨ã™ã‚‹
+    TW.TMRW.BIT.CTS=1; // TCNTƒJƒEƒ“ƒ^ƒXƒ^[ƒg 
+    //B:left C:right‚Æ‚·‚é
     unsigned int left,right;
-    int B_duty[10] = {  0,100,100,  0, 50,  0,  0,  0,100,  0,  0};//left
-    int C_duty[10] = {  0,100,  0,100, 50,  0,  0,  0,100,  0,  0};//right
-    int time[10]   = {  0,  1,  1,  1,  1,  0,  1,  0,  1,  0,  1};//time(0:1ms,1:2s)
+    int B_duty[11] = {  0,100,100,  0, 50,  0,  0,  0,100,  0,  0};//left
+    int C_duty[11] = {  0,100,  0,100, 50,  0,  0,  0,100,  0,  0};//right
+    int time[11]   = {  0,  1,  1,  1,  1,  0,  1,  0,  1,  0,  1};//time(0:1ms,1:2s)
     int i;
     long int B_pwm,C_pwm;
     while(1){
