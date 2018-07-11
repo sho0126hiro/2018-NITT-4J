@@ -15,7 +15,9 @@ long int GRset(int duty){
     return pwm;
 }
 
-long int GetCycle(int time){
+long int setOperation(int B_duty,int C_duty,time){
+    TW.GRB=GRset(B_duty[i]);
+    TW.GRC=GRset(C_duty[i]);
     if(time==0){
         return 1;
     }else return 2000;
@@ -42,10 +44,8 @@ int main(void)
     long int B_pwm,C_pwm;
     while(1){
         for(i=0;i<10;i++){
-            TW.GRB=GRset(B_duty[i]);
-            TW.GRC=GRset(C_duty[i]);
             //SCI3print("FTIOB duty : %d [%%] FTIOC duty : %d [%%]",B_duty[i],C_duty[i]);
-            msecWait(getCycle(time[i])); 
+            msecWait(setOperation(B_duty[i],C_duty[i],time[i]));
         }
     }
 }
