@@ -20,36 +20,41 @@ void GRset(int dutyL,int dutyR){
     TW.GRC=c;
 }
 
-long int setOperation(int B_duty,int C_duty,int time){
-    GRset(B_duty,C_duty);
-    if(time==0){
-        return 1;
-    }else return 2000;
+void setOperation(int B_duty,int C_duty){
+    if(B_duty==-1 || C_duty==-1){
+        //Brake
+        IO.PDR1.BYTE|=0x06; // 0000 0110
+        GRset(100,100);
+    }else {
+        IO.PDR1.BYTE&=0xf9; // 1111 1001
+        GRset(B_duty,C_duty);
+    }
 }
 
 int main(void)
 {
-    //P86,P87を出力ポートに設定
+    //P86,P87を出力ポートに設定（動作確認用LED）
     IO.PCR8|=0xc0;
+    //P11,P12を出力ポートに設定（モータ）
+    IO.PCR1|=0x06;
     initSCI3();
     TW.TMRW.BYTE=0x03; //(0000 0011) : FTIOB FTIOC >> pwm mode
     TW.TCRW.BYTE=0xB6; //(1011 0110) : コンペアマッチAでTNCTがクリア
-                                 // : クロックφ/8 
-                                 // : FTIOB FTIOC 出力端子の出力値の設定(1)
-    TW.TCNT=0x0000;    // TCNの初期化 
+                                     //クロックφ/8
+                                     //FTIOB FTIOC 出力端子の出力値の設定(1)
+    TW.TCNT=0x0000;    // TCNTの初期化 
     TW.GRA=625;       // 0.25ms (4kHz)
-    TW.TMRW.BIT.CTS=1; // TCNTカウンタスタート 
-    //B:left C:rightとする
-    unsigned int left,right;
-    int B_duty[11] = {  0,100,100,  0, 50,  0,  0,  0,100,  0,  0};//left
-    int C_duty[11] = {  0,100,  0,100, 50,  0,  0,  0,100,  0,  0};//right
-    int time[11]   = {  0,  1,  1,  1,  1,  0,  1,  0,  1,  0,  1};//time(0:1ms,1:2s)
+    TW.TMRW.BIT.CTS=1; // TCNTカウンタスタート
+    //正転：デューティ比を設定　停止：デューティ比0％　ブレーキ：-1
+    //                    1     2     3     4     5     6     7     8     9    10    11
+    int B_duty[11] = {    0,  100,  100,    0,   50,    0,   -1,    0,  100,    0,   -1};//left
+    int C_duty[11] = {    0,  100,    0,  100,   50,    0,   -1,    0,  100,    0,   -1};//right
+    int time[11]   = {    1, 2000, 2000, 2000, 2000,    1, 2000,    1, 2000,    1, 2000};//time(ms)
     int i;
-    long int B_pwm,C_pwm;
     while(1){
         for(i=0;i<10;i++){
-            //SCI3print("FTIOB duty : %d [%%] FTIOC duty : %d [%%]",B_duty[i],C_duty[i]);
-            msecWait(setOperation(B_duty[i],C_duty[i],time[i]));
+            setOperation(B_duty[i],C_duty[i]);
+            msecWait(time[i]);
         }
     }
 }
