@@ -1,0 +1,9 @@
+INPUT   crt0,vector,sample,MinSys3069,kernel_cfg
+LIBRARY \Progra~1\h8v2\lib\c38ha
+LIBRARY \hos_v4\lib\h83\akih8\h4h83aki
+DEFINE  STACK(0FFFF20)
+PRINT   sample.map
+OUTPUT  sample.abs
+ROM     (D,X)
+START VECT(0),P,C,D(100),X,B(0400000)
+EXIT

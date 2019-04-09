@@ -1,0 +1,181 @@
+/***  sup04.txt  ***/
+
+1．課題
+	課題４  実際に動作させ，考察しなさい。
+	「_count1，_count2の２つの変数がRAM領域にあるのがわかる。」の根拠を示しなさい。
+	また調べたことも書きなさい。
+
+	count1が正常に表示されるからくりについて，説明しなさい。
+
+2．使用したプログラム・実行結果
+	//ex2.c
+	/**********************************************************
+	msecwait関数で0.25秒ごとのLEDのON-OFFを行う
+	**********************************************************/
+	#include <3048fone.h>
+	#include "h8_3048fone.h"
+
+	void msecwait(int msec)
+	{
+		int i,j;
+		for (i=0;i<msec;i++) {
+			for (j=0;j<3352;j++);    /*3352は実測によって求めた値*/
+		}
+	}
+
+	int count1=1000;
+	int count2;
+
+	main()
+	{
+		int count3=3000;
+		count2=2000;
+		initSCI1(); /*シリアル通信ユニットSCI1の初期化*/
+		initLed();  /*LED初期化*/
+		while(1) {
+			SCI1_printf("%5d %5d %5d\n",count1++,count2++,count3++);
+			turnOnLed(0); /*LED0のON*/
+			turnOffLed(1); /*LED1のOFF*/
+			msecwait(250);
+			turnOffLed(0); /*LED0のOFF*/
+			turnOnLed(1); /*LED1のON*/
+			msecwait(250);
+		}
+	}
+	
+	//ex4.sub
+	START P,C,D(100),B(0FEF10)
+	EXIT
+	
+	//ex2.src(重要部分のみ）
+	          .EXPORT     _msecwait
+	          .EXPORT     _count1
+	          .EXPORT     _count2
+	          .EXPORT     _main
+	          .SECTION    P,CODE,ALIGN=2
+	_msecwait:                       ; function: msecwait
+	          SUB.W       R1,R1
+	          BRA         L456:8
+	L455:                             
+	          MOV.W       #3352:16,E0
+	L457:                             
+	          DEC.W       #1,E0
+	          BNE         L457:8
+	          INC.W       #1,R1
+	L456:                             
+	          CMP.W       R0,R1
+	          BLT         L455:8
+	          RTS
+	_main:                           ; function: main
+	          SUB.W       R3,R3
+	          MOV.W       #1:16,E4
+	          MOV.W       #250:16,R4
+	          MOV.L       #_count1:32,ER5
+	          MOV.L       #_count2:32,ER6
+	          MOV.W       #3000:16,E3
+	          MOV.W       #2000:16,R0
+	          MOV.W       R0,@ER6
+	          JSR         @_initSCI1:24
+	          JSR         @_initLed:24
+	L458:                             
+	          MOV.W       E3,R0
+	          INC.W       #1,E3
+	          PUSH.W      R0
+	          MOV.W       @ER6,R0
+	          INC.W       #1,R0
+	          MOV.W       R0,@ER6
+	          DEC.W       #1,R0
+	          PUSH.W      R0
+	          MOV.W       @ER5,R0
+	          INC.W       #1,R0
+	          MOV.W       R0,@ER5
+	          DEC.W       #1,R0
+	          PUSH.W      R0
+	          MOV.L       #L254:32,ER0
+	          PUSH.L      ER0
+	          JSR         @_SCI1_printf:24
+	          ADD.L       #10:32,SP
+	          MOV.W       R3,R0
+	          JSR         @_turnOnLed:24
+	          MOV.W       E4,R0
+	          JSR         @_turnOffLed:24
+	          MOV.W       R4,R0
+	          BSR         _msecwait:8
+	          MOV.W       R3,R0
+	          JSR         @_turnOffLed:24
+	          MOV.W       E4,R0
+	          JSR         @_turnOnLed:24
+	          MOV.W       R4,R0
+	          JSR         @_msecwait:24
+	          BRA         L458:8
+	          .SECTION    C,DATA,ALIGN=2
+	_count1:                         ; static: count1
+	          .DATA.W     H'03E8
+	          .SECTION    C,DATA,ALIGN=2
+	L254:
+	          .SDATAZ     "%5d %5d %5d"<H'0A>
+	          .SECTION    B,DATA,ALIGN=2
+	L134:                            ; static: currentstrptr
+	          .RES.L      1
+	_count2:                         ; static: count2
+	          .RES.W      1
+	          .END
+	
+	//ex2.MAP(重要部分のみ）
+	_count1                              H'000FEF10
+	_count2                              H'000FEF16
+	
+	//実行結果 LEDの様子
+	LEDは1秒間に2回交互に点滅をする．
+	（以下の動作を1秒で行い，これを繰り返す）
+			LED0  ON LED1 OFF
+			LED0 OFF LED1  ON
+			LED0  ON LED1 OFF
+			LED0 OFF LED1  ON
+			
+	ターミナルの出力：
+			 1000  2000  3000
+			 1001  2001  3001
+			 1002  2002  3002
+			 1003  2003  3003
+			 1004  2004  3004
+			 1005  2005  3005
+			 1006  2006  3006
+			 1007  2007  3007
+			 1008  2008  3008
+			 1009  2009  3009
+			 1010  2010  3010
+			::::::::::::::::::
+3．考察
+	(1)[_count1，_count2の２つの変数がRAM領域にあるのがわかる。」の根拠
+		MAPファイル内の，各変数の格納アドレスを見ると，以下のようになっていた．
+			_count1                              H'000FEF10
+			_count2                              H'000FEF16
+		ここで，RAM領域のアドレスは	0xFEF10-0xFFF0Fの間であり，count1,count2,
+		共にRAM領域にあるのがわかる．
+		
+	(2)count1が正常に表示されるからくりについて
+		　課題2（sup02)では，オプションをつけずに変数をRAMに設定したため，
+		変数の値が変化しなかった．
+		　これは，定数を格納するRAMに変数を代入したため，値が変化しなかった．
+		　課題3(sup03)では，変数をRAMではなく，ROMに設定した．
+		　プログラム入力時には正しく初期化することができたが，電源を切って実行モード
+		にしたときに内容が消滅し，不定値になったため，正しく動作しなかった．
+		
+		　今回は，初期化時にはROMに設定し，変数の値を変化させるときのみ，
+		RAMのような動作をさせたい．
+		
+		　つまり，以下のような手順を踏んで動作させる．（スタートアップルーチン）
+			1．初期化時はROMに設定するため，ROMに格納するセクションを用意する
+			2．変数の値を変化するときにRAMのふるまいをさせたいので．
+			　RAMのセクションを用意する．
+			3．スタートアップルーチンの初めに，ROM領域の変数をRAM領域にコピーする．
+			4．リンカによって実際のアドレスをセットする
+			
+		初期化する変数は，RAM領域にあるセクションを利用するため，
+		値の変更が可能で，かつスタートアップルーチンでROM領域から値をコピーしているため，
+		RAMのような振る舞いをさせることができる．
+
+4．まとめ
+	スタートアップルーチンにおける初期化された変数の取り扱いについて理解することができた．
+	初期化する値のコピーを行ってから，コピー先の変更可能な変数でプログラムを動作している．

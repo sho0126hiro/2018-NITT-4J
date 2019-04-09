@@ -1,0 +1,110 @@
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 06/28/18 13:46:59                                                              PAGE     1
+PROGRAM NAME =
+
+    1                             1               .CPU        300HA
+    2                             2               .EXPORT     _x00
+    3                             3               .EXPORT     _x10
+    4                             4               .EXPORT     _y0
+    5                             5               .EXPORT     _y1
+    6                             6               .EXPORT     _Division
+    7                             7               .EXPORT     _main
+    8 000000                      8               .SECTION    P,CODE,ALIGN=2
+    9                             9     ;*** File mon2ex1101, Line 5     ; block
+   10 000000                     10     _Division:                       ; function: Division
+   11                            11     ;*** File mon2ex1101, Line 5     ; block
+   12                            12     ;*** File mon2ex1101, Line 7     ; expression statement
+   13 000000 1999                13               SUB.W       E1,E1
+   14                            14     ;*** File mon2ex1101, Line 8     ; expression statement
+   15 000002 79010001            15               MOV.W       #1:16,R1
+   16                            16     ;*** File mon2ex1101, Line 9     ; while
+   17 000006 4004                17               BRA         L21:8
+   18 000008                     18     L20:
+   19                            19     ;*** File mon2ex1101, Line 9     ; block
+   20                            20     ;*** File mon2ex1101, Line 10    ; expression statement
+   21 000008 1018                21               SHLL.W      E0
+   22                            22     ;*** File mon2ex1101, Line 11    ; expression statement
+   23 00000A 1011                23               SHLL.W      R1
+   24 00000C                     24     L21:
+   25                            25     ;*** File mon2ex1101, Line 9     ; expression statement
+   26 00000C 1D08                26               CMP.W       R0,E0
+   27 00000E 45F8                27               BCS         L20:8
+   28                            28     ;*** File mon2ex1101, Line 13    ; while
+   29 000010 400C                29               BRA         L23:8
+   30 000012                     30     L22:
+   31                            31     ;*** File mon2ex1101, Line 13    ; block
+   32                            32     ;*** File mon2ex1101, Line 14    ; if
+   33 000012 1D08                33               CMP.W       R0,E0
+   34 000014 4204                34               BHI         L24:8
+   35                            35     ;*** File mon2ex1101, Line 14    ; block
+   36                            36     ;*** File mon2ex1101, Line 15    ; expression statement
+   37 000016 1980                37               SUB.W       E0,R0
+   38                            38     ;*** File mon2ex1101, Line 16    ; expression statement
+   39 000018 0919                39               ADD.W       R1,E1
+   40 00001A                     40     L24:
+   41                            41     ;*** File mon2ex1101, Line 18    ; expression statement
+   42 00001A 1118                42               SHLR.W      E0
+   43                            43     ;*** File mon2ex1101, Line 19    ; expression statement
+   44 00001C 1111                44               SHLR.W      R1
+   45 00001E                     45     L23:
+   46                            46     ;*** File mon2ex1101, Line 13    ; expression statement
+   47 00001E 0D11                47               MOV.W       R1,R1
+   48 000020 46F0                48               BNE         L22:8
+   49                            49     ;*** File mon2ex1101, Line 21    ; return
+   50 000022 0D90                50               MOV.W       E1,R0
+   51                            51     ;*** File mon2ex1101, Line 22    ; block
+   52 000024 5470                52               RTS
+   53                            53     ;*** File mon2ex1101, Line 24    ; block
+   54 000026                     54     _main:                           ; function: main
+   55                            55     ;*** File mon2ex1101, Line 25    ; block
+   56                            56     ;*** File mon2ex1101, Line 27    ; expression statement
+   57 000026 6B2800000000        57               MOV.W       @_x10:24,E0
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 06/28/18 13:46:59                                                              PAGE     2
+PROGRAM NAME =
+
+   58 00002C 6B2000000000        58               MOV.W       @_x00:24,R0
+   59 000032 55CC                59               BSR         _Division:8
+   60 000034 6BA000000000        60               MOV.W       R0,@_y1:24
+   61                            61     ;*** File mon2ex1101, Line 28    ; block
+   62 00003A 5470                62               RTS
+   63 000000                     63               .SECTION    D,DATA,ALIGN=2
+   64 000000                     64     _x00:                            ; static: x00
+   65 000000 0003                65               .DATA.W     H'0003
+   66 000002                     66     _x10:                            ; static: x10
+   67 000002 0002                67               .DATA.W     H'0002
+   68 000000                     68               .SECTION    B,DATA,ALIGN=2
+   69 000000                     69     _y0:                             ; static: y0
+   70 000000 00000002            70               .RES.W      1
+   71 000002                     71     _y1:                             ; static: y1
+   72 000002 00000002            72               .RES.W      1
+   73                            73               .END
+  *****TOTAL ERRORS       0
+  *****TOTAL WARNINGS     0
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 06/28/18 13:46:59                                                              PAGE     3
+
+*** CROSS REFERENCE LIST
+
+NAME                             SECTION  ATTR VALUE             SEQUENCE
+
+B                                B        SCT  00000000     68*
+D                                D        SCT  00000000     63*
+L20                              P             00000008     18*   27 
+L21                              P             0000000C     17    24*
+L22                              P             00000012     30*   48 
+L23                              P             0000001E     29    45*
+L24                              P             0000001A     34    40*
+P                                P        SCT  00000000      8*
+_Division                        P        EXPT 00000000      6    10*   59 
+_main                            P        EXPT 00000026      7    54*
+_x00                             D        EXPT 00000000      2    58    64*
+_x10                             D        EXPT 00000002      3    57    66*
+_y0                              B        EXPT 00000000      4    69*
+_y1                              B        EXPT 00000002      5    60    71*
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 06/28/18 13:46:59                                                              PAGE     4
+
+*** SECTION DATA LIST
+
+SECTION                          ATTRIBUTE    SIZE             START
+
+P                                REL-CODE    000003C          
+D                                REL-DATA    0000004          
+B                                REL-DATA    0000004          

@@ -1,0 +1,16 @@
+    .CPU 300HA        ;CPUは300Hシリーズアドバンストモード
+
+    .IMPORT _main     ;mainはこのファイル以外に定義されているのでそれをつかえという意味
+    
+    .SECTION A,DATA,LOCATE=H'000000
+RSTVEC:
+    .DATA.L START       ;アドレス0にスタートアップルーチンのアドレスを書いておく
+
+    .SECTION    P,CODE,ALIGN=2    ;ここがスタートアップルーチンの先頭
+START:
+    MOV.L #H'FFF10,ER7 ;スタックポインタ設定
+    JSR @_main        ; Call main()
+EternalLoop:
+    BRA EternalLoop ;万が一戻ってきても永久ループ
+
+    .END

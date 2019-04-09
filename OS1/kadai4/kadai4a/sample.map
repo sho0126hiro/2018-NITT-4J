@@ -1,0 +1,577 @@
+                                        H SERIES LINKAGE EDITOR Ver. 5.3B
+
+
+LINK COMMAND LINE
+
+
+LNK /SUB=link.sub 
+
+
+
+LINK SUBCOMMANDS
+
+
+INPUT   crt0,vector,sample,MinSys3069,kernel_cfg
+LIBRARY \Progra~1\h8v2\lib\c38ha
+LIBRARY \hos_v4\lib\h83\akih8\h4h83aki
+DEFINE  STACK(0FFFF20)
+PRINT   sample.map
+OUTPUT  sample.abs
+ROM     (D,X)
+START VECT(0),P,C,D(100),X,B(0400000)
+EXIT
+
+
+
+                                  H SERIES LINKAGE EDITOR Ver. 5.3B                      PAGE :     1
+
+                                        ***     LINKAGE EDITOR LINK MAP LIST      ***
+
+
+SECTION   NAME                       START      -      END         LENGTH
+                                                              UNIT NAME                          MODULE NAME
+
+
+ATTRIBUTE  :   DATA  NOSHR
+
+VECT                              H'00000000    -    H'000000FF   H'00000100
+                                                              vector                             vector                          
+
+* TOTAL ADDRESS *                 H'00000000    -    H'000000FF   H'00000100
+
+
+ATTRIBUTE  :   CODE  NOSHR
+
+P                                 H'00000100    -    H'000001B3   H'000000B4
+                                                              crt0                               crt0                            
+                                  H'000001B4    -    H'0000054B   H'00000398
+                                                              sample                             sample                          
+                                  H'0000054C    -    H'00000F5D   H'00000A12
+                                                              MinSys3069                         MinSys3069                      
+                                  H'00000F5E    -    H'00000FEB   H'0000008E
+                                                              kernel_cfg                         kernel_cfg                      
+                                  H'00000FEC    -    H'00001027   H'0000003C
+                                                              divul3                             divul3                          
+                                  H'00001028    -    H'00001047   H'00000020
+                                                              mull3                              mull3                           
+                                  H'00001048    -    H'0000106F   H'00000028
+                                                              mvn3                               mvn3                            
+                                  H'00001070    -    H'00001097   H'00000028
+                                                              spregsv3                           spregsv3                        
+                                  H'00001098    -    H'000010AD   H'00000016
+                                                              sprgld23                           sprgld23                        
+                                  H'000010AE    -    H'0000111F   H'00000072
+                                                              acre_cyc                           acre_cyc                        
+                                  H'00001120    -    H'00001199   H'0000007A
+                                                              acre_flg                           acre_flg                        
+                                  H'0000119A    -    H'0000120B   H'00000072
+                                                              acre_tsk                           acre_tsk                        
+                                  H'0000120C    -    H'0000131D   H'00000112
+                                                              act_tsk                            act_tsk                         
+                                  H'0000131E    -    H'00001389   H'0000006C
+                                                              clr_flg                            clr_flg                         
+                                  H'0000138A    -    H'00001431   H'000000A8
+                                                              ext_tsk                            ext_tsk                         
+                                  H'00001432    -    H'0000144F   H'0000001E
+                                                              ini_mem                            ini_mem                         
+                                  H'00001450    -    H'000014DD   H'0000008E
+                                                              ini_tsk                            ini_tsk                         
+                                  H'000014DE    -    H'000015B9   H'000000DC
+                                                              isig_tim                           isig_tim                        
+                                  H'000015BA    -    H'00001955   H'0000039C
+                                                              pacint                             pacint                          
+
+
+
+                                  H SERIES LINKAGE EDITOR Ver. 5.3B                      PAGE :     2
+
+                                        ***     LINKAGE EDITOR LINK MAP LIST      ***
+
+
+SECTION   NAME                       START      -      END         LENGTH
+                                                              UNIT NAME                          MODULE NAME
+
+
+ATTRIBUTE  :   CODE  NOSHR
+
+P                                 H'00001956    -    H'000019ED   H'00000098
+                                                              ref_flg                            ref_flg                         
+                                  H'000019EE    -    H'00001AE3   H'000000F6
+                                                              set_flg                            set_flg                         
+                                  H'00001AE4    -    H'00001B6B   H'00000088
+                                                              slp_tsk                            slp_tsk                         
+                                  H'00001B6C    -    H'00001BE3   H'00000078
+                                                              sta_cyc                            sta_cyc                         
+                                  H'00001BE4    -    H'00001C11   H'0000002E
+                                                              sta_hos                            sta_hos                         
+                                  H'00001C12    -    H'00001CD9   H'000000C8
+                                                              sta_tsk                            sta_tsk                         
+                                  H'00001CDA    -    H'00001D3F   H'00000066
+                                                              stp_cyc                            stp_cyc                         
+                                  H'00001D40    -    H'00001E43   H'00000104
+                                                              wup_tsk                            wup_tsk                         
+                                  H'00001E44    -    H'00001E95   H'00000052
+                                                              add_tml                            add_tml                         
+                                  H'00001E96    -    H'00001ED9   H'00000044
+                                                              chk_flg                            chk_flg                         
+                                  H'00001EDA    -    H'00001F49   H'00000070
+                                                              cre_hep                            cre_hep                         
+                                  H'00001F4A    -    H'00001FE1   H'00000098
+                                                              exe_int                            exe_int                         
+                                  H'00001FE2    -    H'00001FF3   H'00000012
+                                                              ini_tim                            ini_tim                         
+                                  H'00001FF4    -    H'00002087   H'00000094
+                                                              kcre_cyc                           kcre_cyc                        
+                                  H'00002088    -    H'000020EF   H'00000068
+                                                              kcre_flg                           kcre_flg                        
+                                  H'000020F0    -    H'00002207   H'00000118
+                                                              kcre_tsk                           kcre_tsk                        
+                                  H'00002208    -    H'0000223B   H'00000034
+                                                              kget_tid                           kget_tid                        
+                                  H'0000223C    -    H'000022B5   H'0000007A
+                                                              mexe_dsp                           mexe_dsp                        
+                                  H'000022B6    -    H'00002315   H'00000060
+                                                              mexe_sys                           mexe_sys                        
+                                  H'00002316    -    H'00002357   H'00000042
+                                                              mexe_tex                           mexe_tex                        
+                                  H'00002358    -    H'00002399   H'00000042
+                                                              mext_stu                           mext_stu                        
+                                  H'0000239A    -    H'000023D5   H'0000003C
+                                                              mini_sys                           mini_sys                        
+                                  H'000023D6    -    H'00002425   H'00000050
+                                                              mrmv_que                           mrmv_que                        
+
+
+
+                                  H SERIES LINKAGE EDITOR Ver. 5.3B                      PAGE :     3
+
+                                        ***     LINKAGE EDITOR LINK MAP LIST      ***
+
+
+SECTION   NAME                       START      -      END         LENGTH
+                                                              UNIT NAME                          MODULE NAME
+
+
+ATTRIBUTE  :   CODE  NOSHR
+
+P                                 H'00002426    -    H'000024B5   H'00000090
+                                                              mrmv_tmo                           mrmv_tmo                        
+                                  H'000024B6    -    H'000024C1   H'0000000C
+                                                              msta_stu                           msta_stu                        
+                                  H'000024C2    -    H'0000252F   H'0000006E
+                                                              msta_tsk                           msta_tsk                        
+                                  H'00002530    -    H'00002559   H'0000002A
+                                                              mter_tsk                           mter_tsk                        
+                                  H'0000255A    -    H'0000260F   H'000000B6
+                                                              mtic_tmo                           mtic_tmo                        
+                                  H'00002610    -    H'00002629   H'0000001A
+                                                              mwai_tsk                           mwai_tsk                        
+                                  H'0000262A    -    H'00002673   H'0000004A
+                                                              mwup_tsk                           mwup_tsk                        
+                                  H'00002674    -    H'000026EF   H'0000007C
+                                                              pacctx                             pacctx                          
+                                  H'000026F0    -    H'000026F1   H'00000002
+                                                              pacini                             pacini                          
+                                  H'000026F2    -    H'00002771   H'00000080
+                                                              rmv_tml                            rmv_tml                         
+                                  H'00002772    -    H'0000279D   H'0000002C
+                                                              memset                             memset                          
+                                  H'0000279E    -    H'000027B5   H'00000018
+                                                              alc_mem                            alc_mem                         
+                                  H'000027B6    -    H'00002821   H'0000006C
+                                                              cyc_hdr                            cyc_hdr                         
+                                  H'00002822    -    H'0000288B   H'0000006A
+                                                              ktex_ent                           ktex_ent                        
+                                  H'0000288C    -    H'000028D7   H'0000004C
+                                                              madf_que                           madf_que                        
+                                  H'000028D8    -    H'000028F5   H'0000001E
+                                                              mdly_dsp                           mdly_dsp                        
+                                  H'000028F6    -    H'00002905   H'00000010
+                                                              midl_lop                           midl_lop                        
+                                  H'00002906    -    H'0000293B   H'00000036
+                                                              msrh_top                           msrh_top                        
+                                  H'0000293C    -    H'000029ED   H'000000B2
+                                                              alc_hep                            alc_hep                         
+
+* TOTAL ADDRESS *                 H'00000100    -    H'000029ED   H'000028EE
+
+
+ATTRIBUTE  :   DATA  NOSHR
+
+C                                 H'000029EE    -    H'000029F1   H'00000004
+                                                              crt0                               crt0                            
+
+
+
+                                  H SERIES LINKAGE EDITOR Ver. 5.3B                      PAGE :     4
+
+                                        ***     LINKAGE EDITOR LINK MAP LIST      ***
+
+
+SECTION   NAME                       START      -      END         LENGTH
+                                                              UNIT NAME                          MODULE NAME
+
+
+ATTRIBUTE  :   DATA  NOSHR
+
+C                                 H'000029F2    -    H'00002B08   H'00000117
+                                                              sample                             sample                          
+                                  H'00002B0A    -    H'00002B3C   H'00000033
+                                                              MinSys3069                         MinSys3069                      
+                                  H'00002B3E    -    H'00002B85   H'00000048
+                                                              kernel_cfg                         kernel_cfg                      
+
+* TOTAL ADDRESS *                 H'000029EE    -    H'00002B85   H'00000198
+
+
+ATTRIBUTE  :   DATA  NOSHR ROM
+
+D                                 H'00002B86    -    H'00002B86   H'00000000
+                                                              crt0                               crt0                            
+                                  H'00002B86    -    H'00002BE5   H'00000060
+                                                              sample                             sample                          
+                                  H'00002BE6    -    H'00002C35   H'00000050
+                                                              kernel_cfg                         kernel_cfg                      
+                                  H'00002C36    -    H'00002C36   H'00000000
+                                                              pacint                             pacint                          
+                                  H'00002C36    -    H'00002C39   H'00000004
+                                                              ini_tim                            ini_tim                         
+                                  H'00002C3A    -    H'00002C3D   H'00000004
+                                                              mini_sys                           mini_sys                        
+                                  H'00002C3E    -    H'00002C3F   H'00000002
+                                                              pacini                             pacini                          
+                                  H'00002C40    -    H'00002C41   H'00000002
+                                                              ram_int                            ram_int                         
+
+* TOTAL ADDRESS *                 H'00002B86    -    H'00002C41   H'000000BC
+
+
+ATTRIBUTE  :   DATA  NOSHR RAM
+
+X                                 H'00400000    -    H'00400000   H'00000000
+                                                              crt0                               crt0                            
+                                  H'00400000    -    H'0040005F   H'00000060
+                                                              sample                             sample                          
+                                  H'00400060    -    H'004000AF   H'00000050
+                                                              kernel_cfg                         kernel_cfg                      
+                                  H'004000B0    -    H'004000B0   H'00000000
+                                                              pacint                             pacint                          
+                                  H'004000B0    -    H'004000B3   H'00000004
+                                                              ini_tim                            ini_tim                         
+                                  H'004000B4    -    H'004000B7   H'00000004
+                                                              mini_sys                           mini_sys                        
+
+
+
+                                  H SERIES LINKAGE EDITOR Ver. 5.3B                      PAGE :     5
+
+                                        ***     LINKAGE EDITOR LINK MAP LIST      ***
+
+
+SECTION   NAME                       START      -      END         LENGTH
+                                                              UNIT NAME                          MODULE NAME
+
+
+ATTRIBUTE  :   DATA  NOSHR RAM
+
+X                                 H'004000B8    -    H'004000B9   H'00000002
+                                                              pacini                             pacini                          
+                                  H'004000BA    -    H'004000BB   H'00000002
+                                                              ram_int                            ram_int                         
+
+* TOTAL ADDRESS *                 H'00400000    -    H'004000BB   H'000000BC
+
+
+ATTRIBUTE  :   DATA  NOSHR
+
+B                                 H'004000BC    -    H'004000BC   H'00000000
+                                                              crt0                               crt0                            
+                                  H'004000BC    -    H'004000C7   H'0000000C
+                                                              sample                             sample                          
+                                  H'004000C8    -    H'004000EB   H'00000024
+                                                              MinSys3069                         MinSys3069                      
+                                  H'004000EC    -    H'00408A4D   H'00008962
+                                                              kernel_cfg                         kernel_cfg                      
+                                  H'00408A4E    -    H'00408A55   H'00000008
+                                                              ini_mem                            ini_mem                         
+                                  H'00408A56    -    H'00408A5D   H'00000008
+                                                              isig_tim                           isig_tim                        
+                                  H'00408A5E    -    H'00408A63   H'00000006
+                                                              ini_tim                            ini_tim                         
+                                  H'00408A64    -    H'00408A67   H'00000004
+                                                              mexe_sys                           mexe_sys                        
+                                  H'00408A68    -    H'00408A6D   H'00000006
+                                                              mini_sys                           mini_sys                        
+                                  H'00408A6E    -    H'00408A71   H'00000004
+                                                              mtic_tmo                           mtic_tmo                        
+                                  H'00408A72    -    H'00408A75   H'00000004
+                                                              ram_int                            ram_int                         
+
+* TOTAL ADDRESS *                 H'004000BC    -    H'00408A75   H'000089BA
+
+
+
+                                  H SERIES LINKAGE EDITOR Ver. 5.3B                      PAGE :     1
+
+                                      ***  LINKAGE EDITOR EXTERNALLY DEFINED SYMBOLS LIST  ***
+
+                                 SYMBOL  NAME                         ADDR                 TYPE
+
+                                  $DIVUL$3                             H'00000FEC           DAT
+                                  $MULL$3                              H'00001028           DAT
+                                  $MVN$3                               H'00001048           DAT
+                                  $sp_regsv$3                          H'00001070           DAT
+                                  $spregld2$3                          H'00001098           DAT
+                                  _CYC_wupCBK                          H'0000038A           ENT
+                                  _CYC_wupCButton                      H'0000037E           ENT
+                                  _LCD_printf                          H'00000E02           ENT
+                                  _LCDclrscr                           H'00000900           ENT
+                                  _LCDgotoxy                           H'000008E4           ENT
+                                  _LCDputchar                          H'00000846           ENT
+                                  _LCDputs                             H'00000868           ENT
+                                  _OnHosStart                          H'000001CA           ENT
+                                  _SCI1_ERI_handler                    H'000005B8           ENT
+                                  _SCI1_RXI_handler                    H'0000057C           ENT
+                                  _SCI1_printf                         H'00000DB6           ENT
+                                  _SystemTimerHandler                  H'00000F52           ENT
+                                  _acre_cyc                            H'000010AE           ENT
+                                  _acre_flg                            H'00001120           ENT
+                                  _acre_tsk                            H'0000119A           ENT
+                                  _act_tsk                             H'0000120C           ENT
+                                  _buttonHandler                       H'00000424           ENT
+                                  _check4BitSW                         H'00000EE4           ENT
+                                  _checkButton                         H'00000396           ENT
+                                  _checkButtonKeep                     H'000004E6           ENT
+                                  _checkPushSW                         H'00000EB8           ENT
+                                  _chkgetCharSCI1                      H'00000624           ENT
+                                  _clr_flg                             H'0000131E           ENT
+                                  _cycID1                              H'004000BC           DAT
+                                  _cycID2                              H'004000BE           DAT
+                                  _ext_tsk                             H'0000138A           ENT
+                                  _flgID                               H'004000C6           DAT
+                                  _get4BitSW                           H'00000EDE           ENT
+                                  _getCharSCI1                         H'000005C6           ENT
+                                  _getIntSCI1                          H'000006C0           ENT
+                                  _getPushSW                           H'00000EAA           ENT
+                                  _getStringSCI1                       H'00000678           ENT
+                                  _hos_vector001                       H'000015BA           DAT
+                                  _hos_vector002                       H'000015C6           DAT
+                                  _hos_vector003                       H'000015D2           DAT
+                                  _hos_vector004                       H'000015DE           DAT
+                                  _hos_vector005                       H'000015EA           DAT
+                                  _hos_vector006                       H'000015F6           DAT
+                                  _hos_vector007                       H'00001602           DAT
+                                  _hos_vector008                       H'0000160E           DAT
+                                  _hos_vector009                       H'0000161A           DAT
+                                  _hos_vector010                       H'00001626           DAT
+                                  _hos_vector011                       H'00001632           DAT
+                                  _hos_vector012                       H'00001640           DAT
+                                  _hos_vector013                       H'0000164C           DAT
+                                  _hos_vector014                       H'00001658           DAT
+
+
+
+                                  H SERIES LINKAGE EDITOR Ver. 5.3B                      PAGE :     2
+
+                                      ***  LINKAGE EDITOR EXTERNALLY DEFINED SYMBOLS LIST  ***
+
+                                 SYMBOL  NAME                         ADDR                 TYPE
+
+                                  _hos_vector015                       H'00001664           DAT
+                                  _hos_vector016                       H'00001670           DAT
+                                  _hos_vector017                       H'0000167C           DAT
+                                  _hos_vector018                       H'00001688           DAT
+                                  _hos_vector019                       H'00001694           DAT
+                                  _hos_vector020                       H'000016A0           DAT
+                                  _hos_vector021                       H'000016AC           DAT
+                                  _hos_vector022                       H'000016B8           DAT
+                                  _hos_vector023                       H'000016C4           DAT
+                                  _hos_vector024                       H'000016D0           DAT
+                                  _hos_vector025                       H'000016DC           DAT
+                                  _hos_vector026                       H'000016E8           DAT
+                                  _hos_vector027                       H'000016F4           DAT
+                                  _hos_vector028                       H'00001700           DAT
+                                  _hos_vector029                       H'0000170C           DAT
+                                  _hos_vector030                       H'00001718           DAT
+                                  _hos_vector031                       H'00001724           DAT
+                                  _hos_vector032                       H'00001730           DAT
+                                  _hos_vector033                       H'0000173E           DAT
+                                  _hos_vector034                       H'0000174A           DAT
+                                  _hos_vector035                       H'00001756           DAT
+                                  _hos_vector036                       H'00001762           DAT
+                                  _hos_vector037                       H'0000176E           DAT
+                                  _hos_vector038                       H'0000177A           DAT
+                                  _hos_vector039                       H'00001786           DAT
+                                  _hos_vector040                       H'00001792           DAT
+                                  _hos_vector041                       H'0000179E           DAT
+                                  _hos_vector042                       H'000017AA           DAT
+                                  _hos_vector043                       H'000017B6           DAT
+                                  _hos_vector044                       H'000017C2           DAT
+                                  _hos_vector045                       H'000017CE           DAT
+                                  _hos_vector046                       H'000017DA           DAT
+                                  _hos_vector047                       H'000017E6           DAT
+                                  _hos_vector048                       H'000017F2           DAT
+                                  _hos_vector049                       H'000017FE           DAT
+                                  _hos_vector050                       H'0000180A           DAT
+                                  _hos_vector051                       H'00001816           DAT
+                                  _hos_vector052                       H'00001822           DAT
+                                  _hos_vector053                       H'00001830           DAT
+                                  _hos_vector054                       H'0000183C           DAT
+                                  _hos_vector055                       H'00001848           DAT
+                                  _hos_vector056                       H'00001854           DAT
+                                  _hos_vector057                       H'00001860           DAT
+                                  _hos_vector058                       H'0000186C           DAT
+                                  _hos_vector059                       H'00001878           DAT
+                                  _hos_vector060                       H'00001884           DAT
+                                  _hos_vector061                       H'00001890           DAT
+                                  _hos_vector062                       H'0000189C           DAT
+                                  _hos_vector063                       H'000018A8           DAT
+                                  _hospac_cre_ctx_asm                  H'00002686           DAT
+                                  _hospac_dis_int                      H'00002674           DAT
+
+
+
+                                  H SERIES LINKAGE EDITOR Ver. 5.3B                      PAGE :     3
+
+                                      ***  LINKAGE EDITOR EXTERNALLY DEFINED SYMBOLS LIST  ***
+
+                                 SYMBOL  NAME                         ADDR                 TYPE
+
+                                  _hospac_ena_int                      H'00002678           DAT
+                                  _hospac_ini_sys                      H'000026F0           ENT
+                                  _hospac_swi_ctx                      H'000026BA           DAT
+                                  _idletask                            H'00000F5C           ENT
+                                  _initLCD                             H'0000087E           ENT
+                                  _initSCI1                            H'0000054C           ENT
+                                  _initSystemTimer                     H'00000F46           ENT
+                                  _isig_tim                            H'000014DE           ENT
+                                  _kernel_add_tml                      H'00001E44           ENT
+                                  _kernel_alc_hep                      H'0000293C           ENT
+                                  _kernel_alc_mem                      H'0000279E           ENT
+                                  _kernel_almcb_cnt                    H'00002B7A           DAT
+                                  _kernel_cfg_init                     H'00000F5E           ENT
+                                  _kernel_cfg_start                    H'00000FC4           ENT
+                                  _kernel_chk_flg                      H'00001E96           ENT
+                                  _kernel_cre_cyc                      H'00001FF4           ENT
+                                  _kernel_cre_flg                      H'00002088           ENT
+                                  _kernel_cre_hep                      H'00001EDA           ENT
+                                  _kernel_cre_tsk                      H'000020F0           ENT
+                                  _kernel_cyc_hdr                      H'000027B6           ENT
+                                  _kernel_cyccb_cnt                    H'00002B78           DAT
+                                  _kernel_cyccb_ram_tbl                H'00400090           DAT
+                                  _kernel_dtqcb_cnt                    H'00002B6E           DAT
+                                  _kernel_end_int                      H'00001F5A           ENT
+                                  _kernel_exccb_cnt                    H'00002B82           DAT
+                                  _kernel_exccb_tbl                    H'00400914           DAT
+                                  _kernel_exe_int                      H'00001F6C           ENT
+                                  _kernel_flgcb_cnt                    H'00002B6C           DAT
+                                  _kernel_flgcb_ram_tbl                H'00400080           DAT
+                                  _kernel_get_tid                      H'00002208           ENT
+                                  _kernel_h83_ibmsk                    H'004000B9           DAT
+                                  _kernel_h83_imsk                     H'004000B8           DAT
+                                  _kernel_heap_mem                     H'00400998           DAT
+                                  _kernel_ini_mem                      H'00001432           ENT
+                                  _kernel_ini_tim                      H'00001FE2           ENT
+                                  _kernel_ini_tsk                      H'00001450           ENT
+                                  _kernel_int_cnt                      H'004000BA           DAT
+                                  _kernel_int_sp                       H'000029EE           DAT
+                                  _kernel_int_ssp                      H'00408A72           DAT
+                                  _kernel_intcb_cnt                    H'00002B7C           DAT
+                                  _kernel_intcb_tbl                    H'0040010C           DAT
+                                  _kernel_isrcb_cnt                    H'00002B80           DAT
+                                  _kernel_mbfcb_cnt                    H'00002B72           DAT
+                                  _kernel_mbxcb_cnt                    H'00002B70           DAT
+                                  _kernel_mem_hep                      H'00408A4E           DAT
+                                  _kernel_min_excno                    H'00002B84           DAT
+                                  _kernel_min_intno                    H'00002B7E           DAT
+                                  _kernel_mpfcb_cnt                    H'00002B74           DAT
+                                  _kernel_mplcb_cnt                    H'00002B76           DAT
+                                  _kernel_rmv_tml                      H'000026F2           ENT
+                                  _kernel_semcb_cnt                    H'00002B6A           DAT
+
+
+
+                                  H SERIES LINKAGE EDITOR Ver. 5.3B                      PAGE :     4
+
+                                      ***  LINKAGE EDITOR EXTERNALLY DEFINED SYMBOLS LIST  ***
+
+                                 SYMBOL  NAME                         ADDR                 TYPE
+
+                                  _kernel_sta_int                      H'00001F4A           ENT
+                                  _kernel_systim                       H'00408A5E           DAT
+                                  _kernel_task_entry                   H'00001498           ENT
+                                  _kernel_tcb_cnt                      H'00002B68           DAT
+                                  _kernel_tcb_ram                      H'00408A18           DAT
+                                  _kernel_tcb_ram_tbl                  H'00400060           DAT
+                                  _kernel_tcb_rom                      H'00002B54           DAT
+                                  _kernel_tex_entry                    H'00002822           ENT
+                                  _kernel_tic_cnt                      H'004000B0           DAT
+                                  _kernel_tic_deno                     H'00002B48           DAT
+                                  _kernel_tic_div                      H'00002B4C           DAT
+                                  _kernel_tic_mod                      H'00002B50           DAT
+                                  _kernel_tml_head                     H'00408A56           DAT
+                                  _kernel_tml_ptr                      H'00408A5A           DAT
+                                  _memset                              H'00002772           ENT
+                                  _mknl_adf_que                        H'0000288C           ENT
+                                  _mknl_ctx_stat                       H'00408A68           DAT
+                                  _mknl_dly_dsp                        H'000028D8           ENT
+                                  _mknl_exe_dsp                        H'0000223C           ENT
+                                  _mknl_exe_sys                        H'000022B6           ENT
+                                  _mknl_exe_tex                        H'00002316           ENT
+                                  _mknl_ext_startup                    H'00002358           ENT
+                                  _mknl_idl_loop                       H'000028F6           ENT
+                                  _mknl_idl_stk                        H'00002B3E           DAT
+                                  _mknl_idl_stkblk                     H'00400918           DAT
+                                  _mknl_idl_stksz                      H'00002B42           DAT
+                                  _mknl_idlctx                         H'00408A6A           DAT
+                                  _mknl_ini_sys                        H'0000239A           ENT
+                                  _mknl_rdq_cnt                        H'00002B46           DAT
+                                  _mknl_rdq_tbl                        H'004000EC           DAT
+                                  _mknl_rmv_que                        H'000023D6           ENT
+                                  _mknl_rmv_tmout                      H'00002426           ENT
+                                  _mknl_run_mtcb                       H'004000B4           DAT
+                                  _mknl_srh_top                        H'00002906           ENT
+                                  _mknl_sta_startup                    H'000024B6           ENT
+                                  _mknl_sta_tsk                        H'000024C2           ENT
+                                  _mknl_ter_tsk                        H'00002530           ENT
+                                  _mknl_tic_tmout                      H'0000255A           ENT
+                                  _mknl_timout_head                    H'00408A6E           DAT
+                                  _mknl_wai_tsk                        H'00002610           ENT
+                                  _mknl_wup_tsk                        H'0000262A           ENT
+                                  _preStartHos                         H'000001B4           ENT
+                                  _putBYTESCI1                         H'000007A2           ENT
+                                  _putCharSCI1                         H'000007B2           ENT
+                                  _putStringSCI1                       H'000007CE           ENT
+                                  _ref_flg                             H'00001956           ENT
+                                  _set_flg                             H'000019EE           ENT
+                                  _slp_tsk                             H'00001AE4           ENT
+                                  _sta_cyc                             H'00001B6C           ENT
+                                  _sta_hos                             H'00001BE4           ENT
+                                  _sta_tsk                             H'00001C12           ENT
+
+
+
+                                  H SERIES LINKAGE EDITOR Ver. 5.3B                      PAGE :     5
+
+                                      ***  LINKAGE EDITOR EXTERNALLY DEFINED SYMBOLS LIST  ***
+
+                                 SYMBOL  NAME                         ADDR                 TYPE
+
+                                  _startup                             H'00000100           DAT
+                                  _stp_cyc                             H'00001CDA           ENT
+                                  _tskID1                              H'004000C0           DAT
+                                  _tskID2                              H'004000C2           DAT
+                                  _tskID3                              H'004000C4           DAT
+                                  _turnOffLed                          H'00000E7C           ENT
+                                  _turnOnLed                           H'00000E4E           ENT
+                                  _wup_tsk                             H'00001D40           ENT
+
+
+
+                                  H SERIES LINKAGE EDITOR Ver. 5.3B                      PAGE :     1
+
+                                      ***  LINKAGE EDITOR DEFINE LIST  ***
+
+                                 UNDEFINE SYMBOL                    DEFINED SYMBOL                     DEFINED VALUE
+
+                                  STACK                                                                 H'00FFFF20

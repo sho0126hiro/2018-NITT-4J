@@ -1,0 +1,165 @@
+; --------------------------------------------------------------------------- 
+;  Hyper Operating System V4  サンプルプログラム                              
+;    割り込みベクターテーブル                                                 
+;                                                                             
+;                                   Copyright (C) 1998-2002 by Project HOS    
+;                                   http://sourceforge.jp/projects/hos/       
+; --------------------------------------------------------------------------- 
+
+
+
+				.CPU		300HA
+
+
+				.IMPORT		_startup
+				.IMPORT		_hos_vector001
+				.IMPORT		_hos_vector002
+				.IMPORT		_hos_vector003
+				.IMPORT		_hos_vector004
+				.IMPORT		_hos_vector005
+				.IMPORT		_hos_vector006
+				.IMPORT		_hos_vector007
+				.IMPORT		_hos_vector008
+				.IMPORT		_hos_vector009
+				.IMPORT		_hos_vector010
+				.IMPORT		_hos_vector011
+				.IMPORT		_hos_vector012
+				.IMPORT		_hos_vector013
+				.IMPORT		_hos_vector014
+				.IMPORT		_hos_vector015
+				.IMPORT		_hos_vector016
+				.IMPORT		_hos_vector017
+				.IMPORT		_hos_vector018
+				.IMPORT		_hos_vector019
+				.IMPORT		_hos_vector020
+				.IMPORT		_hos_vector021
+				.IMPORT		_hos_vector022
+				.IMPORT		_hos_vector023
+				.IMPORT		_hos_vector024
+				.IMPORT		_hos_vector025
+				.IMPORT		_hos_vector026
+				.IMPORT		_hos_vector027
+				.IMPORT		_hos_vector028
+				.IMPORT		_hos_vector029
+				.IMPORT		_hos_vector030
+				.IMPORT		_hos_vector031
+				.IMPORT		_hos_vector032
+				.IMPORT		_hos_vector033
+				.IMPORT		_hos_vector034
+				.IMPORT		_hos_vector035
+				.IMPORT		_hos_vector036
+				.IMPORT		_hos_vector037
+				.IMPORT		_hos_vector038
+				.IMPORT		_hos_vector039
+				.IMPORT		_hos_vector040
+				.IMPORT		_hos_vector041
+				.IMPORT		_hos_vector042
+				.IMPORT		_hos_vector043
+				.IMPORT		_hos_vector044
+				.IMPORT		_hos_vector045
+				.IMPORT		_hos_vector046
+				.IMPORT		_hos_vector047
+				.IMPORT		_hos_vector048
+				.IMPORT		_hos_vector049
+				.IMPORT		_hos_vector050
+				.IMPORT		_hos_vector051
+				.IMPORT		_hos_vector052
+				.IMPORT		_hos_vector053
+				.IMPORT		_hos_vector054
+				.IMPORT		_hos_vector055
+				.IMPORT		_hos_vector056
+				.IMPORT		_hos_vector057
+				.IMPORT		_hos_vector058
+				.IMPORT		_hos_vector059
+				.IMPORT		_hos_vector060
+				.IMPORT		_hos_vector061
+				.IMPORT		_hos_vector062
+				.IMPORT		_hos_vector063
+
+
+
+				.SECTION	VECT,DATA,ALIGN=2
+
+; -----------------------------------------------
+;          割り込みベクタテーブル
+; -----------------------------------------------
+				.DATA.L	_startup
+				.DATA.L	_hos_vector001
+				.DATA.L	_hos_vector002
+				.DATA.L	_hos_vector003
+				.DATA.L	_hos_vector004
+				.DATA.L	_hos_vector005
+				.DATA.L	_hos_vector006
+				.DATA.L	_hos_vector007
+				.DATA.L	_hos_vector008
+				.DATA.L	_hos_vector009
+				.DATA.L	_hos_vector010
+				.DATA.L	_hos_vector011
+				.DATA.L	_hos_vector012
+				.DATA.L	_hos_vector013
+				.DATA.L	_hos_vector014
+				.DATA.L	_hos_vector015
+				.DATA.L	_hos_vector016
+				.DATA.L	_hos_vector017
+				.DATA.L	_hos_vector018
+				.DATA.L	_hos_vector019
+				.DATA.L	_hos_vector020
+				.DATA.L	_hos_vector021
+				.DATA.L	_hos_vector022
+				.DATA.L	_hos_vector023
+				.DATA.L	_hos_vector024
+				.DATA.L	_hos_vector025
+				.DATA.L	_hos_vector026
+				.DATA.L	_hos_vector027
+				.DATA.L	_hos_vector028
+				.DATA.L	_hos_vector029
+				.DATA.L	_hos_vector030
+				.DATA.L	_hos_vector031
+				.DATA.L	_hos_vector032
+				.DATA.L	_hos_vector033
+				.DATA.L	_hos_vector034
+				.DATA.L	_hos_vector035
+				.DATA.L	_hos_vector036
+				.DATA.L	_hos_vector037
+				.DATA.L	_hos_vector038
+				.DATA.L	_hos_vector039
+				.DATA.L	_hos_vector040
+				.DATA.L	_hos_vector041
+				.DATA.L	_hos_vector042
+				.DATA.L	_hos_vector043
+				.DATA.L	_hos_vector044
+				.DATA.L	_hos_vector045
+				.DATA.L	_hos_vector046
+				.DATA.L	_hos_vector047
+				.DATA.L	_hos_vector048
+				.DATA.L	_hos_vector049
+				.DATA.L	_hos_vector050
+				.DATA.L	_hos_vector051
+				.DATA.L	_hos_vector052
+				.DATA.L	_hos_vector053
+				.DATA.L	_hos_vector054
+				.DATA.L	_hos_vector055
+				.DATA.L	_hos_vector056
+				.DATA.L	_hos_vector057
+				.DATA.L	_hos_vector058
+				.DATA.L	_hos_vector059
+				.DATA.L	_hos_vector060
+				.DATA.L	_hos_vector061
+				.DATA.L	_hos_vector062
+				.DATA.L	_hos_vector063
+
+
+
+				.END
+
+
+
+; --------------------------------------------------------------------------- 
+;  Copyright (C) 1998-2002 by Project HOS                                     
+; --------------------------------------------------------------------------- 
+
+
+
+
+
+

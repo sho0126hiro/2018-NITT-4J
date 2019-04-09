@@ -1,0 +1,111 @@
+H8S,H8/300 SERIES C COMPILER (Ver. 2.0D for Evaluation)21-Jan-2019  10:39:49  PAGE   1
+
+************ SOURCE LISTING ************
+
+FILE NAME: sample.c
+
+  Seq File        Line Pi 0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+
+    1 sample.c       1     #include "kernel.h"
+ 4917 sample.c       2     #include "kernel_id.h"
+ 4957 sample.c       3     #include "MinSys3069.h"
+ 5119 sample.c       4     #include "sample.h"
+ 5127 sample.c       5     
+ 5128 sample.c       6     
+ 5129 sample.c       7     /* スタートアップルーチンから最初に呼び出される初期化関数 */
+ 5130 sample.c       8     /* OS起動前にすること（SCIの初期化など）を行っておく      */
+ 5131 sample.c       9     /* この関数からスタートアップルーチンに戻った後に，       */
+ 5132 sample.c      10     /* スタートアップルーチンはHOSを呼び出す                  */
+ 5133 sample.c      11     void preStartHos()
+ 5134 sample.c      12     {
+ 5135 sample.c      13             initSCI1();              /* SCIの初期化 */
+ 5136 sample.c      14             SCI1_printf("\npreStartHos: start!\n");  /* 開始メッセージ */
+ 5137 sample.c      15     }
+ 5138 sample.c      16     
+ 5139 sample.c      17     /* HOS下で最初に起動するハンドラ*/
+ 5140 sample.c      18     /* system.cfg中で静的に起動される */
+ 5141 sample.c      19     void OnHosStart(VP_INT exinf)
+ 5142 sample.c      20     {
+ 5143 sample.c      21             putStringSCI1("OnHosStart: starting!\n");
+ 5144 sample.c      22             act_tsk(TSKID_0);       /* TASKID_0は静的生成 */
+ 5145 sample.c      23             act_tsk(TSKID_1);       /* TASKID_1は静的生成 */
+ 5146 sample.c      24             act_tsk(TSKID_2);       /* TASKID_2は静的生成 */
+ 5147 sample.c      25     }
+ 5148 sample.c      26     
+ 5149 sample.c      27     
+ 5150 sample.c      28     void taskA(VP_INT exinf)
+ 5151 sample.c      29     {
+ 5152 sample.c      30             char *msg;
+ 5153 sample.c      31             int i;
+ 5154 sample.c      32             while(1){
+ 5155 sample.c      33                     get_mpf(MPFID_0, (VP)&msg); /* 共有メモリの獲得 */
+ 5156 sample.c      34                     mymemcpy(msg, "National Institute of Technology, Tokyo College\0", 48);
+ 5157 sample.c      35                     for(i=0;i<48;i++)SCI1_printf("%c",msg[47-i]);
+ 5158 sample.c      36                     SCI1_printf("\n");
+ 5159 sample.c      37                     rel_mpf(MPFID_0, (VP)msg); /* 共有メモリの解放 */
+ 5160 sample.c      38                     dly_tsk(1000);
+ 5161 sample.c      39             }
+ 5162 sample.c      40     }
+ 5163 sample.c      41     
+ 5164 sample.c      42     void taskB(VP_INT exinf)
+ 5165 sample.c      43     {
+ 5166 sample.c      44             char *msg;
+ 5167 sample.c      45             int i;
+ 5168 sample.c      46             while(1){
+ 5169 sample.c      47                     get_mpf(MPFID_0, (VP)&msg); /* 共有メモリの獲得 */
+ 5170 sample.c      48                     mymemcpy(msg, "National Institute of Technology, Tokyo College\0", 48);
+ 5171 sample.c      49                     for(i=0;i<48;i++)if(i%2!=0)SCI1_printf("%c",msg[i]);
+ 5172 sample.c      50                     SCI1_printf("\n");
+ 5173 sample.c      51                     rel_mpf(MPFID_0, (VP)msg); /* 共有メモリの解放 */
+ 5174 sample.c      52                     dly_tsk(1000);
+ 5175 sample.c      53             }
+ 5176 sample.c      54     }
+ 5177 sample.c      55     
+ 5178 sample.c      56     void taskC(VP_INT exinf)
+ 5179 sample.c      57     {
+ 5180 sample.c      58             char *msg;
+ 5181 sample.c      59             int i;
+ 5182 sample.c      60             while(1){
+ 5183 sample.c      61                     get_mpf(MPFID_0, (VP)&msg); /* 共有メモリの獲得 */
+ 5184 sample.c      62                     mymemcpy(msg, "National Institute of Technology, Tokyo College\0", 48);
+ 5185 sample.c      63                     for(i=0;i<48;i++)if(i%2==0)SCI1_printf("%c",msg[i]);
+ 5186 sample.c      64                     SCI1_printf("\n");
+ 5187 sample.c      65                     rel_mpf(MPFID_0, (VP)msg); /* 共有メモリの解放 */
+ 5188 sample.c      66                     dly_tsk(1000);
+ 5189 sample.c      67             }
+ 5190 sample.c      68     }
+ 5191 sample.c      69     
+ 5192 sample.c      70     void mymemcpy(char *d, char *s, int size)
+ 5193 sample.c      71     {
+ 5194 sample.c      72         while(size-- > 0) *d++ = *s++;
+ 5195 sample.c      73     }
+ 5196 sample.c      74     
+ 5197 sample.c      75     
+H8S,H8/300 SERIES C COMPILER (Ver. 2.0D for Evaluation)21-Jan-2019  10:39:49  PAGE   1
+
+******* SECTION SIZE INFORMATION *******
+
+PROGRAM  SECTION(P):                                0x000001EA Byte(s)
+CONSTANT SECTION(C):                                0x00000063 Byte(s)
+DATA     SECTION(D):                                0x00000000 Byte(s)
+BSS      SECTION(B):                                0x00000000 Byte(s)
+
+TOTAL PROGRAM  SECTION: 0x000001EA Byte(s)
+TOTAL CONSTANT SECTION: 0x00000063 Byte(s)
+TOTAL DATA     SECTION: 0x00000000 Byte(s)
+TOTAL BSS      SECTION: 0x00000000 Byte(s)
+
+    TOTAL PROGRAM SIZE: 0x0000024D Byte(s)
+
+
+
+** ASSEMBLER/LINKAGE EDITOR LIMITS INFORMATION **
+
+NUMBER OF EXTERNAL REFERENCE  SYMBOLS:        9 
+NUMBER OF EXTERNAL DEFINITION SYMBOLS:        6 
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:         36 
+
+
+
+********* CPU MODE INFORMATION *********
+
+cpu=300ha

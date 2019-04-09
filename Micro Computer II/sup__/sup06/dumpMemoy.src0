@@ -1,0 +1,2136 @@
+          .CPU        300HA
+          .IMPORT     $MULL$3
+          .IMPORT     $DIVL$3
+          .IMPORT     $DIVUL$3
+          .IMPORT     $sp_regsv$3
+          .IMPORT     $spregld2$3
+          .IMPORT     _isprint
+          .EXPORT     _SCI0device
+          .EXPORT     _SCI1device
+          .EXPORT     _LCDdevice
+          .EXPORT     _STRdevice
+          .EXPORT     _initSCI1
+          .EXPORT     _SCI1_getChar
+          .EXPORT     _SCI1_chkgetChar
+          .EXPORT     _SCI1_putString
+          .EXPORT     _SCI1_getString
+          .EXPORT     _SCI1_putChar
+          .EXPORT     _initSCI0
+          .EXPORT     _SCI0_getChar
+          .EXPORT     _SCI0_chkgetChar
+          .EXPORT     _SCI0_putString
+          .EXPORT     _SCI0_getString
+          .EXPORT     _atoi
+          .EXPORT     _SCI1_getInt4
+          .EXPORT     _SCI0_getInt4
+          .EXPORT     _SCI0_putChar
+          .EXPORT     _LCD_putchar
+          .EXPORT     _LCD_puts
+          .EXPORT     _initLCD
+          .EXPORT     _LCD_gotoxy
+          .EXPORT     _LCD_clrscr
+          .EXPORT     _hexstring
+          .EXPORT     _Device_printf
+          .EXPORT     _SCI0_printf
+          .EXPORT     _SCI1_printf
+          .EXPORT     _LCD_printf
+          .EXPORT     _sprintf
+          .EXPORT     _initLed
+          .EXPORT     _turnOnLed
+          .EXPORT     _turnOffLed
+          .EXPORT     _initPushSW
+          .EXPORT     _checkPushSW
+          .EXPORT     _init8BitSW
+          .EXPORT     _check8BitSW
+          .EXPORT     _initTimer1Int
+          .EXPORT     _msecwait
+          .EXPORT     _dumpMemory
+          .EXPORT     _count1
+          .EXPORT     _count2
+          .EXPORT     _main
+          .SECTION    P,CODE,ALIGN=2
+;*** File h8_3048fon, Line 185   ; block
+_initSCI1:                       ; function: initSCI1
+;*** File h8_3048fon, Line 186   ; block
+;*** File h8_3048fon, Line 188   ; expression statement
+          SUB.B       R0L,R0L
+          MOV.B       R0L,@16777146:8
+;*** File h8_3048fon, Line 190   ; expression statement
+          MOV.B       R0L,@16777144:8
+;*** File h8_3048fon, Line 191   ; expression statement
+          MOV.B       #19:8,R0L
+          MOV.B       R0L,@16777145:8
+;*** File h8_3048fon, Line 192   ; expression statement
+          SUB.W       R0,R0
+;*** File h8_3048fon, Line 192   ; do
+L296:                             
+;*** File h8_3048fon, Line 192   ; expression statement
+          INC.W       #1,R0
+;*** File h8_3048fon, Line 192   ; expression statement
+          CMP.W       #1000:16,R0
+          BLT         L296:8
+;*** File h8_3048fon, Line 193   ; expression statement
+          MOV.B       #48:8,R0L
+          MOV.B       R0L,@16777146:8
+;*** File h8_3048fon, Line 194   ; return
+;*** File h8_3048fon, Line 195   ; block
+          RTS
+;*** File h8_3048fon, Line 200   ; block
+_SCI1_getChar:                   ; function: SCI1_getChar
+;*** File h8_3048fon, Line 203   ; block
+;*** File h8_3048fon, Line 205   ; do
+L298:                             
+;*** File h8_3048fon, Line 205   ; block
+;*** File h8_3048fon, Line 206   ; expression statement
+          MOV.B       @16777148:8,R1L
+          EXTU.W      R1
+;*** File h8_3048fon, Line 207   ; if
+          MOV.W       R1,R0
+          AND.W       #56:16,R0
+          BEQ         L299:8
+;*** File h8_3048fon, Line 207   ; block
+;*** File h8_3048fon, Line 208   ; expression statement
+          BCLR.B      #6,@16777148:8
+;*** File h8_3048fon, Line 209   ; expression statement
+          BCLR.B      #5,@16777148:8
+;*** File h8_3048fon, Line 210   ; expression statement
+          BCLR.B      #4,@16777148:8
+;*** File h8_3048fon, Line 211   ; expression statement
+          BCLR.B      #3,@16777148:8
+;*** File h8_3048fon, Line 212   ; return
+          MOV.W       #-2:16,R0
+          RTS
+L299:                             
+;*** File h8_3048fon, Line 214   ; if
+          BTST.B      #6,R1L
+          BEQ         L298:8
+;*** File h8_3048fon, Line 214   ; block
+;*** File h8_3048fon, Line 215   ; expression statement
+          BCLR.B      #6,@16777148:8
+;*** File h8_3048fon, Line 216   ; expression statement
+          MOV.B       @16777149:8,R1L
+          EXTU.W      R1
+;*** File h8_3048fon, Line 217   ; return
+          MOV.W       R1,R0
+;*** File h8_3048fon, Line 219   ; expression statement
+;*** File h8_3048fon, Line 220   ; block
+          RTS
+;*** File h8_3048fon, Line 225   ; block
+_SCI1_chkgetChar:                ; function: SCI1_chkgetChar
+;*** File h8_3048fon, Line 229   ; block
+;*** File h8_3048fon, Line 231   ; expression statement
+          MOV.B       @16777148:8,R1L
+          EXTU.W      R1
+;*** File h8_3048fon, Line 232   ; if
+          MOV.W       R1,R0
+          AND.W       #56:16,R0
+          BEQ         L302:8
+;*** File h8_3048fon, Line 232   ; block
+;*** File h8_3048fon, Line 233   ; expression statement
+          BCLR.B      #6,@16777148:8
+;*** File h8_3048fon, Line 234   ; expression statement
+          BCLR.B      #5,@16777148:8
+;*** File h8_3048fon, Line 235   ; expression statement
+          BCLR.B      #4,@16777148:8
+;*** File h8_3048fon, Line 236   ; expression statement
+          BCLR.B      #3,@16777148:8
+;*** File h8_3048fon, Line 237   ; return
+          MOV.W       #-2:16,R0
+          RTS
+L302:                             
+;*** File h8_3048fon, Line 239   ; if
+          BTST.B      #6,R1L
+          BEQ         L304:8
+;*** File h8_3048fon, Line 239   ; block
+;*** File h8_3048fon, Line 240   ; expression statement
+          MOV.B       @16777149:8,R1L
+          EXTU.W      R1
+;*** File h8_3048fon, Line 241   ; expression statement
+          BCLR.B      #6,@16777148:8
+;*** File h8_3048fon, Line 242   ; return
+          MOV.W       R1,R0
+          RTS
+L304:                             
+;*** File h8_3048fon, Line 243   ; block
+;*** File h8_3048fon, Line 244   ; return
+          MOV.W       #-1:16,R0
+;*** File h8_3048fon, Line 246   ; block
+          RTS
+;*** File h8_3048fon, Line 252   ; block
+_SCI1_getString:                 ; function: SCI1_getString
+          JSR         @$sp_regsv$3:24
+;*** File h8_3048fon, Line 253   ; block
+          MOV.L       ER0,ER6
+          MOV.W       R1,E5
+;*** File h8_3048fon, Line 255   ; expression statement
+          SUB.W       R5,R5
+          DEC.W       #1,E5
+          MOV.W       E5,R4
+;*** File h8_3048fon, Line 255   ; for
+          BRA         L307:8
+L306:                             
+;*** File h8_3048fon, Line 255   ; block
+;*** File h8_3048fon, Line 256   ; expression statement
+          BSR         _SCI1_getChar:8
+          MOV.W       R0,E5
+;*** File h8_3048fon, Line 257   ; expression statement
+          MOV.B       R0L,@ER6
+;*** File h8_3048fon, Line 258   ; if
+          CMP.B       #13:8,R0L
+          BEQ         L491:8
+          MOV.W       E5,E5
+          BLT         L491:8
+;*** File h8_3048fon, Line 258   ; block
+;*** File h8_3048fon, Line 259   ; expression statement
+;*** File h8_3048fon, Line 260   ; return
+;*** File h8_3048fon, Line 262   ; if
+          MOV.B       @ER6,R0L
+          CMP.B       #8:8,R0L
+          BNE         L311:8
+;*** File h8_3048fon, Line 262   ; block
+;*** File h8_3048fon, Line 263   ; expression statement
+          DEC.L       #2,ER6
+;*** File h8_3048fon, Line 264   ; expression statement
+          DEC.W       #2,R5
+L311:                             
+;*** File h8_3048fon, Line 266   ; if
+          MOV.B       @ER6,R0L
+          CMP.B       #10:8,R0L
+          BEQ         L312:8
+;*** File h8_3048fon, Line 266   ; expression statement
+          INC.L       #1,ER6
+          BRA         L313:8
+L312:                             
+;*** File h8_3048fon, Line 267   ; expression statement
+          DEC.W       #1,R5
+L313:                             
+;*** File h8_3048fon, Line 255   ; expression statement
+          INC.W       #1,R5
+L307:                             
+;*** File h8_3048fon, Line 255   ; expression statement
+          CMP.W       R4,R5
+          BLT         L306:8
+;*** File h8_3048fon, Line 269   ; expression statement
+;*** File h8_3048fon, Line 270   ; return
+;*** File h8_3048fon, Line 271   ; block
+L491:                             
+          SUB.B       R0L,R0L
+          MOV.B       R0L,@ER6
+          INC.W       #1,R5
+          MOV.W       R5,R0
+          JMP         @$spregld2$3:24
+;*** File h8_3048fon, Line 276   ; block
+_SCI1_putChar:                   ; function: SCI1_putChar
+          PUSH.W      R6
+;*** File h8_3048fon, Line 277   ; block
+          MOV.B       R0L,R6H
+;*** File h8_3048fon, Line 280   ; if
+          CMP.B       #10:8,R6H
+          BNE         L314:8
+;*** File h8_3048fon, Line 280   ; expression statement
+          MOV.B       #13:8,R0L
+          BSR         _SCI1_putChar:8
+L314:                             
+;*** File h8_3048fon, Line 282   ; do
+L315:                             
+;*** File h8_3048fon, Line 282   ; block
+;*** File h8_3048fon, Line 283   ; expression statement
+          MOV.B       @16777148:8,R0L
+          BTST.B      #7,R0L
+          BEQ         L315:8
+;*** File h8_3048fon, Line 285   ; expression statement
+          MOV.B       R6H,@16777147:8
+;*** File h8_3048fon, Line 286   ; expression statement
+          BCLR.B      #7,@16777148:8
+;*** File h8_3048fon, Line 287   ; return
+;*** File h8_3048fon, Line 288   ; block
+          POP.W       R6
+          RTS
+;*** File h8_3048fon, Line 290   ; block
+_SCI1_putString:                 ; function: SCI1_putString
+          PUSH.L      ER6
+;*** File h8_3048fon, Line 291   ; block
+          MOV.L       ER0,ER6
+;*** File h8_3048fon, Line 292   ; while
+          BRA         L318:8
+L317:                             
+;*** File h8_3048fon, Line 292   ; block
+;*** File h8_3048fon, Line 293   ; expression statement
+          MOV.B       @ER6,R0L
+          BSR         _SCI1_putChar:8
+;*** File h8_3048fon, Line 294   ; expression statement
+          INC.L       #1,ER6
+L318:                             
+;*** File h8_3048fon, Line 292   ; expression statement
+          MOV.B       @ER6,R0L
+          BNE         L317:8
+;*** File h8_3048fon, Line 296   ; block
+          POP.L       ER6
+          RTS
+;*** File h8_3048fon, Line 302   ; block
+_initSCI0:                       ; function: initSCI0
+;*** File h8_3048fon, Line 303   ; block
+;*** File h8_3048fon, Line 305   ; expression statement
+          SUB.B       R0L,R0L
+          MOV.B       R0L,@16777138:8
+;*** File h8_3048fon, Line 307   ; expression statement
+          MOV.B       R0L,@16777136:8
+;*** File h8_3048fon, Line 308   ; expression statement
+          MOV.B       #19:8,R0L
+          MOV.B       R0L,@16777137:8
+;*** File h8_3048fon, Line 309   ; expression statement
+          SUB.W       R0,R0
+;*** File h8_3048fon, Line 309   ; do
+L319:                             
+;*** File h8_3048fon, Line 309   ; expression statement
+          INC.W       #1,R0
+;*** File h8_3048fon, Line 309   ; expression statement
+          CMP.W       #1000:16,R0
+          BLT         L319:8
+;*** File h8_3048fon, Line 310   ; expression statement
+          MOV.B       #48:8,R0L
+          MOV.B       R0L,@16777138:8
+;*** File h8_3048fon, Line 311   ; return
+;*** File h8_3048fon, Line 312   ; block
+          RTS
+;*** File h8_3048fon, Line 317   ; block
+_SCI0_getChar:                   ; function: SCI0_getChar
+;*** File h8_3048fon, Line 320   ; block
+;*** File h8_3048fon, Line 322   ; do
+L321:                             
+;*** File h8_3048fon, Line 322   ; block
+;*** File h8_3048fon, Line 323   ; expression statement
+          MOV.B       @16777140:8,R1L
+          EXTU.W      R1
+;*** File h8_3048fon, Line 324   ; if
+          MOV.W       R1,R0
+          AND.W       #56:16,R0
+          BEQ         L322:8
+;*** File h8_3048fon, Line 324   ; block
+;*** File h8_3048fon, Line 325   ; expression statement
+          BCLR.B      #6,@16777140:8
+;*** File h8_3048fon, Line 326   ; expression statement
+          BCLR.B      #5,@16777140:8
+;*** File h8_3048fon, Line 327   ; expression statement
+          BCLR.B      #4,@16777140:8
+;*** File h8_3048fon, Line 328   ; expression statement
+          BCLR.B      #3,@16777140:8
+;*** File h8_3048fon, Line 329   ; return
+          MOV.W       #-2:16,R0
+          RTS
+L322:                             
+;*** File h8_3048fon, Line 331   ; if
+          BTST.B      #6,R1L
+          BEQ         L321:8
+;*** File h8_3048fon, Line 331   ; block
+;*** File h8_3048fon, Line 332   ; expression statement
+          BCLR.B      #6,@16777140:8
+;*** File h8_3048fon, Line 333   ; expression statement
+          MOV.B       @16777141:8,R1L
+          EXTU.W      R1
+;*** File h8_3048fon, Line 334   ; return
+          MOV.W       R1,R0
+;*** File h8_3048fon, Line 336   ; expression statement
+;*** File h8_3048fon, Line 337   ; block
+          RTS
+;*** File h8_3048fon, Line 342   ; block
+_SCI0_chkgetChar:                ; function: SCI0_chkgetChar
+;*** File h8_3048fon, Line 346   ; block
+;*** File h8_3048fon, Line 348   ; expression statement
+          MOV.B       @16777140:8,R1L
+          EXTU.W      R1
+;*** File h8_3048fon, Line 349   ; if
+          MOV.W       R1,R0
+          AND.W       #56:16,R0
+          BEQ         L325:8
+;*** File h8_3048fon, Line 349   ; block
+;*** File h8_3048fon, Line 350   ; expression statement
+          BCLR.B      #6,@16777140:8
+;*** File h8_3048fon, Line 351   ; expression statement
+          BCLR.B      #5,@16777140:8
+;*** File h8_3048fon, Line 352   ; expression statement
+          BCLR.B      #4,@16777140:8
+;*** File h8_3048fon, Line 353   ; expression statement
+          BCLR.B      #3,@16777140:8
+;*** File h8_3048fon, Line 354   ; return
+          MOV.W       #-2:16,R0
+          RTS
+L325:                             
+;*** File h8_3048fon, Line 356   ; if
+          BTST.B      #6,R1L
+          BEQ         L327:8
+;*** File h8_3048fon, Line 356   ; block
+;*** File h8_3048fon, Line 357   ; expression statement
+          MOV.B       @16777141:8,R1L
+          EXTU.W      R1
+;*** File h8_3048fon, Line 358   ; expression statement
+          BCLR.B      #6,@16777140:8
+;*** File h8_3048fon, Line 359   ; return
+          MOV.W       R1,R0
+          RTS
+L327:                             
+;*** File h8_3048fon, Line 360   ; block
+;*** File h8_3048fon, Line 361   ; return
+          MOV.W       #-1:16,R0
+;*** File h8_3048fon, Line 363   ; block
+          RTS
+;*** File h8_3048fon, Line 368   ; block
+_SCI0_getString:                 ; function: SCI0_getString
+          JSR         @$sp_regsv$3:24
+;*** File h8_3048fon, Line 369   ; block
+          MOV.L       ER0,ER6
+          MOV.W       R1,E5
+;*** File h8_3048fon, Line 371   ; expression statement
+          SUB.W       R5,R5
+          DEC.W       #1,E5
+          MOV.W       E5,R4
+;*** File h8_3048fon, Line 371   ; for
+          BRA         L330:8
+L329:                             
+;*** File h8_3048fon, Line 371   ; block
+;*** File h8_3048fon, Line 372   ; expression statement
+          BSR         _SCI0_getChar:8
+          MOV.W       R0,E5
+;*** File h8_3048fon, Line 373   ; expression statement
+          MOV.B       R0L,@ER6
+;*** File h8_3048fon, Line 374   ; if
+          CMP.B       #13:8,R0L
+          BEQ         L492:8
+          MOV.W       E5,E5
+          BLT         L492:8
+;*** File h8_3048fon, Line 374   ; block
+;*** File h8_3048fon, Line 375   ; expression statement
+;*** File h8_3048fon, Line 376   ; return
+;*** File h8_3048fon, Line 378   ; if
+          MOV.B       @ER6,R0L
+          CMP.B       #8:8,R0L
+          BNE         L334:8
+;*** File h8_3048fon, Line 378   ; block
+;*** File h8_3048fon, Line 379   ; expression statement
+          DEC.L       #2,ER6
+;*** File h8_3048fon, Line 380   ; expression statement
+          DEC.W       #2,R5
+L334:                             
+;*** File h8_3048fon, Line 382   ; if
+          MOV.B       @ER6,R0L
+          CMP.B       #10:8,R0L
+          BEQ         L335:8
+;*** File h8_3048fon, Line 382   ; expression statement
+          INC.L       #1,ER6
+          BRA         L336:8
+L335:                             
+;*** File h8_3048fon, Line 383   ; expression statement
+          DEC.W       #1,R5
+L336:                             
+;*** File h8_3048fon, Line 371   ; expression statement
+          INC.W       #1,R5
+L330:                             
+;*** File h8_3048fon, Line 371   ; expression statement
+          CMP.W       R4,R5
+          BLT         L329:8
+;*** File h8_3048fon, Line 385   ; expression statement
+;*** File h8_3048fon, Line 386   ; return
+;*** File h8_3048fon, Line 387   ; block
+L492:                             
+          SUB.B       R0L,R0L
+          MOV.B       R0L,@ER6
+          INC.W       #1,R5
+          MOV.W       R5,R0
+          JMP         @$spregld2$3:24
+;*** File h8_3048fon, Line 391   ; block
+_atoi:                           ; function: atoi
+          JSR         @$sp_regsv$3:24
+;*** File h8_3048fon, Line 392   ; block
+          MOV.L       ER0,ER3
+;*** File h8_3048fon, Line 393   ; expression statement
+          SUB.L       ER5,ER5
+;*** File h8_3048fon, Line 394   ; expression statement
+          SUB.W       R4,R4
+          MOV.W       R4,E4
+;*** File h8_3048fon, Line 394   ; expression statement
+          SUB.W       E6,E6
+          MOV.W       E6,R2
+;*** File h8_3048fon, Line 395   ; expression statement
+          MOV.B       @ER3,R0L
+;*** File h8_3048fon, Line 396   ; while
+          JMP         @L493:24
+L337:                             
+;*** File h8_3048fon, Line 396   ; block
+;*** File h8_3048fon, Line 397   ; if
+          CMP.W       #45:16,R6
+          BNE         L339:8
+;*** File h8_3048fon, Line 397   ; expression statement
+          MOV.W       #1:16,E4
+L339:                             
+;*** File h8_3048fon, Line 398   ; if
+          CMP.W       #97:16,R6
+          BLT         L340:8
+          CMP.W       #122:16,R6
+          BGT         L340:8
+;*** File h8_3048fon, Line 398   ; expression statement
+          ADD.W       #-32:16,R6
+L340:                             
+;*** File h8_3048fon, Line 399   ; if
+          CMP.W       #48:16,R6
+          BNE         L341:8
+;*** File h8_3048fon, Line 399   ; expression statement
+          MOV.W       #1:16,R4
+L341:                             
+;*** File h8_3048fon, Line 401   ; if
+          CMP.W       #1:16,E6
+          BNE         L342:8
+;*** File h8_3048fon, Line 401   ; block
+;*** File h8_3048fon, Line 402   ; if
+          CMP.W       #48:16,R6
+          BLT         L343:8
+          CMP.W       #57:16,R6
+          BGT         L343:8
+;*** File h8_3048fon, Line 402   ; block
+;*** File h8_3048fon, Line 403   ; expression statement
+          SUB.W       #48:16,R6
+          BRA         L344:8
+L343:                             
+;*** File h8_3048fon, Line 405   ; if
+          CMP.W       #65:16,R6
+          BLT         L345:8
+          CMP.W       #70:16,R6
+          BGT         L345:8
+;*** File h8_3048fon, Line 405   ; block
+;*** File h8_3048fon, Line 406   ; expression statement
+          ADD.W       #-55:16,R6
+L345:                             
+L344:                             
+;*** File h8_3048fon, Line 408   ; expression statement
+          MOV.L       ER5,ER0
+          SHLL.L      ER0
+          SHLL.L      ER0
+          SHLL.L      ER0
+          SHLL.L      ER0
+          MOV.W       R6,R1
+          EXTS.L      ER1
+          ADD.L       ER1,ER0
+          MOV.L       ER0,ER5
+L342:                             
+;*** File h8_3048fon, Line 411   ; if
+          CMP.W       #1:16,R4
+          BNE         L346:8
+          CMP.W       #88:16,R6
+          BNE         L346:8
+;*** File h8_3048fon, Line 411   ; block
+;*** File h8_3048fon, Line 412   ; expression statement
+          MOV.W       #1:16,E6
+L346:                             
+;*** File h8_3048fon, Line 415   ; if
+          MOV.W       E6,E6
+          BNE         L347:8
+          CMP.W       #48:16,R6
+          BLT         L347:8
+          CMP.W       #57:16,R6
+          BGT         L347:8
+;*** File h8_3048fon, Line 415   ; block
+;*** File h8_3048fon, Line 416   ; expression statement
+          SUB.W       #48:16,R6
+;*** File h8_3048fon, Line 417   ; expression statement
+          MOV.L       ER5,ER0
+          MOV.L       #10:32,ER1
+          JSR         @$MULL$3:24
+          MOV.W       R6,R1
+          EXTS.L      ER1
+          ADD.L       ER1,ER0
+          MOV.L       ER0,ER5
+L347:                             
+;*** File h8_3048fon, Line 420   ; expression statement
+          MOV.W       R2,R6
+          INC.W       #1,R6
+          MOV.W       R6,R2
+          MOV.W       R6,R0
+          EXTS.L      ER0
+          ADD.L       ER3,ER0
+          MOV.B       @ER0,R0L
+L493:                             
+          EXTS.W      R0
+          MOV.W       R0,R6
+;*** File h8_3048fon, Line 396   ; expression statement
+          BNE         L337:16
+;*** File h8_3048fon, Line 422   ; if
+          CMP.W       #1:16,E4
+          BNE         L348:8
+;*** File h8_3048fon, Line 422   ; expression statement
+          NEG.L       ER5
+L348:                             
+;*** File h8_3048fon, Line 423   ; return
+          MOV.L       ER5,ER0
+;*** File h8_3048fon, Line 424   ; block
+          JMP         @$spregld2$3:24
+;*** File h8_3048fon, Line 429   ; block
+_SCI1_getInt4:                   ; function: SCI1_getInt4
+          PUSH.L      ER6
+          SUB.L       #16:32,SP
+;*** File h8_3048fon, Line 435   ; block
+          MOV.L       ER0,ER6
+;*** File h8_3048fon, Line 437   ; expression statement
+          JSR         @_SCI1_putString:24
+;*** File h8_3048fon, Line 438   ; expression statement
+          MOV.W       #16:16,R1
+          MOV.L       SP,ER0
+          JSR         @_SCI1_getString:24
+;*** File h8_3048fon, Line 439   ; return
+          MOV.L       SP,ER0
+          JSR         @_atoi:24
+;*** File h8_3048fon, Line 440   ; block
+          ADD.L       #16:32,SP
+          POP.L       ER6
+          RTS
+;*** File h8_3048fon, Line 445   ; block
+_SCI0_getInt4:                   ; function: SCI0_getInt4
+          PUSH.L      ER6
+          SUB.L       #16:32,SP
+;*** File h8_3048fon, Line 451   ; block
+          MOV.L       ER0,ER6
+;*** File h8_3048fon, Line 453   ; expression statement
+          BSR         _SCI0_putString:8
+;*** File h8_3048fon, Line 454   ; expression statement
+          MOV.W       #16:16,R1
+          MOV.L       SP,ER0
+          JSR         @_SCI0_getString:24
+;*** File h8_3048fon, Line 455   ; return
+          MOV.L       SP,ER0
+          JSR         @_atoi:24
+;*** File h8_3048fon, Line 456   ; block
+          ADD.L       #16:32,SP
+          POP.L       ER6
+          RTS
+;*** File h8_3048fon, Line 462   ; block
+_SCI0_putChar:                   ; function: SCI0_putChar
+          PUSH.W      R6
+;*** File h8_3048fon, Line 463   ; block
+          MOV.B       R0L,R6H
+;*** File h8_3048fon, Line 466   ; if
+          CMP.B       #10:8,R6H
+          BNE         L352:8
+;*** File h8_3048fon, Line 466   ; expression statement
+          MOV.B       #13:8,R0L
+          BSR         _SCI0_putChar:8
+L352:                             
+;*** File h8_3048fon, Line 468   ; do
+L353:                             
+;*** File h8_3048fon, Line 468   ; block
+;*** File h8_3048fon, Line 469   ; expression statement
+          MOV.B       @16777140:8,R0L
+          BTST.B      #7,R0L
+          BEQ         L353:8
+;*** File h8_3048fon, Line 471   ; expression statement
+          MOV.B       R6H,@16777139:8
+;*** File h8_3048fon, Line 472   ; expression statement
+          BCLR.B      #7,@16777140:8
+;*** File h8_3048fon, Line 473   ; return
+;*** File h8_3048fon, Line 474   ; block
+          POP.W       R6
+          RTS
+;*** File h8_3048fon, Line 476   ; block
+_SCI0_putString:                 ; function: SCI0_putString
+          PUSH.L      ER6
+;*** File h8_3048fon, Line 477   ; block
+          MOV.L       ER0,ER6
+;*** File h8_3048fon, Line 478   ; while
+          BRA         L356:8
+L355:                             
+;*** File h8_3048fon, Line 478   ; block
+;*** File h8_3048fon, Line 479   ; expression statement
+          MOV.B       @ER6,R0L
+          BSR         _SCI0_putChar:8
+;*** File h8_3048fon, Line 480   ; expression statement
+          INC.L       #1,ER6
+L356:                             
+;*** File h8_3048fon, Line 478   ; expression statement
+          MOV.B       @ER6,R0L
+          BNE         L355:8
+;*** File h8_3048fon, Line 482   ; block
+          POP.L       ER6
+          RTS
+;*** File h8_3048fon, Line 496   ; block
+L102:                            ; function: LCD_waitmsec
+;*** File h8_3048fon, Line 498   ; block
+;*** File h8_3048fon, Line 500   ; expression statement
+          SUB.W       R1,R1
+;*** File h8_3048fon, Line 500   ; for
+          BRA         L358:8
+L357:                             
+;*** File h8_3048fon, Line 500   ; block
+;*** File h8_3048fon, Line 501   ; expression statement
+          MOV.W       #4200:16,E0
+;*** File h8_3048fon, Line 501   ; do
+L359:                             
+;*** File h8_3048fon, Line 501   ; expression statement
+          DEC.W       #1,E0
+          BNE         L359:8
+;*** File h8_3048fon, Line 500   ; expression statement
+          INC.W       #1,R1
+L358:                             
+;*** File h8_3048fon, Line 500   ; expression statement
+          CMP.W       R0,R1
+          BCS         L357:8
+;*** File h8_3048fon, Line 503   ; block
+          RTS
+;*** File h8_3048fon, Line 505   ; block
+L108:                            ; function: LCD_waitmicrosec
+;*** File h8_3048fon, Line 506   ; block
+;*** File h8_3048fon, Line 508   ; expression statement
+          SUB.W       R1,R1
+;*** File h8_3048fon, Line 508   ; for
+          BRA         L361:8
+L360:                             
+;*** File h8_3048fon, Line 508   ; block
+;*** File h8_3048fon, Line 509   ; expression statement
+          MOV.W       #4:16,E0
+;*** File h8_3048fon, Line 509   ; do
+L362:                             
+;*** File h8_3048fon, Line 509   ; expression statement
+          DEC.W       #1,E0
+          BNE         L362:8
+;*** File h8_3048fon, Line 508   ; expression statement
+          INC.W       #1,R1
+L361:                             
+;*** File h8_3048fon, Line 508   ; expression statement
+          CMP.W       R0,R1
+          BCS         L360:8
+;*** File h8_3048fon, Line 511   ; block
+          RTS
+;*** File h8_3048fon, Line 513   ; block
+L114:                            ; function: LCD_putCommand
+;*** File h8_3048fon, Line 514   ; block
+          MOV.B       R0L,R0H
+;*** File h8_3048fon, Line 515   ; expression statement
+          MOV.B       @16777158:8,R0L
+          AND.B       #-16:8,R0L
+          OR.B        R0H,R0L
+          MOV.B       R0L,@16777158:8
+;*** File h8_3048fon, Line 516   ; expression statement
+          BSET.B      #5,@16777158:8
+;*** File h8_3048fon, Line 517   ; expression statement
+          MOV.W       #5:16,R0
+          BSR         L108:8
+;*** File h8_3048fon, Line 518   ; expression statement
+          BCLR.B      #5,@16777158:8
+;*** File h8_3048fon, Line 519   ; expression statement
+          MOV.W       #40:16,R0
+          BRA         L108:8
+;*** File h8_3048fon, Line 520   ; block
+;*** File h8_3048fon, Line 522   ; block
+L117:                            ; function: LCD_putCommand2
+          PUSH.W      R6
+;*** File h8_3048fon, Line 523   ; block
+          MOV.B       R0L,R6L
+;*** File h8_3048fon, Line 524   ; expression statement
+          SHAR.B      R0L
+          SHAR.B      R0L
+          SHAR.B      R0L
+          SHAR.B      R0L
+          AND.B       #15:8,R0L
+          BSR         L114:8
+;*** File h8_3048fon, Line 525   ; expression statement
+          AND.B       #15:8,R6L
+          MOV.B       R6L,R0L
+          BSR         L114:8
+;*** File h8_3048fon, Line 526   ; block
+          POP.W       R6
+          RTS
+;*** File h8_3048fon, Line 531   ; block
+_LCD_putchar:                    ; function: LCD_putchar
+          PUSH.W      R6
+;*** File h8_3048fon, Line 532   ; block
+          MOV.B       R0L,R6L
+;*** File h8_3048fon, Line 533   ; expression statement
+          BSET.B      #4,@16777158:8
+;*** File h8_3048fon, Line 534   ; expression statement
+          SHAR.B      R0L
+          SHAR.B      R0L
+          SHAR.B      R0L
+          SHAR.B      R0L
+          AND.B       #15:8,R0L
+          BSR         L114:8
+;*** File h8_3048fon, Line 535   ; expression statement
+          AND.B       #15:8,R6L
+          MOV.B       R6L,R0L
+          BSR         L114:8
+;*** File h8_3048fon, Line 536   ; expression statement
+          BCLR.B      #4,@16777158:8
+;*** File h8_3048fon, Line 537   ; block
+          POP.W       R6
+          RTS
+;*** File h8_3048fon, Line 542   ; block
+_LCD_puts:                       ; function: LCD_puts
+          PUSH.L      ER6
+;*** File h8_3048fon, Line 543   ; block
+          MOV.L       ER0,ER6
+;*** File h8_3048fon, Line 544   ; while
+          BRA         L364:8
+L363:                             
+;*** File h8_3048fon, Line 544   ; expression statement
+          MOV.B       @ER6+,R0L
+          BSR         _LCD_putchar:8
+L364:                             
+;*** File h8_3048fon, Line 544   ; expression statement
+          MOV.B       @ER6,R0L
+          BNE         L363:8
+;*** File h8_3048fon, Line 545   ; block
+          POP.L       ER6
+          RTS
+;*** File h8_3048fon, Line 550   ; block
+_initLCD:                        ; function: initLCD
+          PUSH.W      R6
+;*** File h8_3048fon, Line 551   ; block
+;*** File h8_3048fon, Line 552   ; expression statement
+          MOV.B       #63:8,R0L
+          MOV.B       R0L,@16777156:8
+;*** File h8_3048fon, Line 553   ; expression statement
+          MOV.B       @16777158:8,R0L
+          AND.B       #-64:8,R0L
+          MOV.B       R0L,@16777158:8
+;*** File h8_3048fon, Line 554   ; expression statement
+          MOV.W       #30:16,R0
+          JSR         @L102:24
+;*** File h8_3048fon, Line 555   ; expression statement
+          MOV.B       #3:8,R6L
+          MOV.B       R6L,R0L
+          JSR         @L114:24
+;*** File h8_3048fon, Line 556   ; expression statement
+          MOV.W       #4100:16,R0
+          JSR         @L108:24
+;*** File h8_3048fon, Line 557   ; expression statement
+          MOV.B       R6L,R0L
+          JSR         @L114:24
+;*** File h8_3048fon, Line 558   ; expression statement
+          MOV.W       #100:16,R0
+          JSR         @L108:24
+;*** File h8_3048fon, Line 559   ; expression statement
+          MOV.B       R6L,R0L
+          JSR         @L114:24
+;*** File h8_3048fon, Line 560   ; expression statement
+          MOV.W       #100:16,R0
+          JSR         @L108:24
+;*** File h8_3048fon, Line 561   ; expression statement
+          MOV.B       #2:8,R0L
+          JSR         @L114:24
+;*** File h8_3048fon, Line 562   ; expression statement
+          MOV.B       #40:8,R0L
+          JSR         @L117:24
+;*** File h8_3048fon, Line 563   ; expression statement
+          MOV.B       #12:8,R0L
+          JSR         @L117:24
+;*** File h8_3048fon, Line 564   ; expression statement
+          MOV.B       #6:8,R0L
+          JSR         @L117:24
+;*** File h8_3048fon, Line 565   ; expression statement
+          MOV.B       #1:8,R0L
+          JSR         @L117:24
+;*** File h8_3048fon, Line 566   ; expression statement
+          MOV.W       #1640:16,R0
+          JSR         @L108:24
+;*** File h8_3048fon, Line 567   ; block
+          POP.W       R6
+          RTS
+;*** File h8_3048fon, Line 573   ; block
+_LCD_gotoxy:                     ; function: LCD_gotoxy
+          PUSH.L      ER6
+;*** File h8_3048fon, Line 574   ; block
+          MOV.W       R0,E6
+          MOV.W       E0,R6
+;*** File h8_3048fon, Line 576   ; expression statement
+          MOV.B       #64:8,R6H
+          MULXU.B     R6H,R6
+          ADD.B       R0L,R6L
+          ADD.B       #-128:8,R6L
+;*** File h8_3048fon, Line 577   ; expression statement
+          MOV.B       R6L,R0L
+          JSR         @L117:24
+;*** File h8_3048fon, Line 578   ; block
+          POP.L       ER6
+          RTS
+;*** File h8_3048fon, Line 583   ; block
+_LCD_clrscr:                     ; function: LCD_clrscr
+;*** File h8_3048fon, Line 584   ; block
+;*** File h8_3048fon, Line 585   ; expression statement
+          MOV.B       #1:8,R0L
+          JSR         @L117:24
+;*** File h8_3048fon, Line 586   ; expression statement
+          MOV.W       #1640:16,R0
+          JMP         @L108:24
+;*** File h8_3048fon, Line 587   ; block
+;*** File h8_3048fon, Line 590   ; block
+L136:                            ; function: STR_putChar
+          PUSH.W      R5
+;*** File h8_3048fon, Line 591   ; block
+          MOV.B       R0L,R5L
+;*** File h8_3048fon, Line 592   ; expression statement
+          MOV.L       #L134:32,ER1
+          MOV.L       @ER1,ER0
+          MOV.B       R5L,@ER0
+          MOV.L       @ER1,ER0
+          INC.L       #1,ER0
+          MOV.L       ER0,@ER1
+;*** File h8_3048fon, Line 593   ; expression statement
+          MOV.L       @ER1,ER1
+          SUB.B       R0L,R0L
+          MOV.B       R0L,@ER1
+;*** File h8_3048fon, Line 594   ; block
+          POP.W       R5
+          RTS
+;*** File h8_3048fon, Line 596   ; block
+L139:                            ; function: STR_putString
+          PUSH.L      ER6
+;*** File h8_3048fon, Line 597   ; block
+          MOV.L       ER0,ER6
+;*** File h8_3048fon, Line 598   ; while
+          BRA         L366:8
+L365:                             
+;*** File h8_3048fon, Line 598   ; expression statement
+          MOV.B       @ER6+,R0L
+          BSR         L136:8
+L366:                             
+;*** File h8_3048fon, Line 598   ; expression statement
+          MOV.B       @ER6,R0L
+          BNE         L365:8
+;*** File h8_3048fon, Line 599   ; block
+          POP.L       ER6
+          RTS
+;*** File h8_3048fon, Line 605   ; block
+_Device_printf:                  ; function: Device_printf
+          JSR         @$sp_regsv$3:24
+          SUB.L       #68:32,SP
+;*** File h8_3048fon, Line 606   ; block
+          MOV.W       R0,E5
+          MOV.L       ER1,@(46:16,SP)
+          MOV.L       @(92:16,SP),ER6
+;*** File h8_3048fon, Line 611   ; expression statement
+          SUB.B       R5H,R5H
+          MOV.B       R5H,R4H
+;*** File h8_3048fon, Line 612   ; expression statement
+          SUB.B       R0L,R0L
+          MOV.B       R0L,@(58:16,SP)
+;*** File h8_3048fon, Line 613   ; expression statement
+          MOV.B       #32:8,R0L
+          MOV.B       R0L,@(50:16,SP)
+;*** File h8_3048fon, Line 614   ; expression statement
+          MOV.B       #10:8,R0L
+          MOV.B       R0L,@(59:16,SP)
+;*** File h8_3048fon, Line 615   ; expression statement
+          MOV.B       #32:8,R0L
+          MOV.B       R0L,@(57:16,SP)
+;*** File h8_3048fon, Line 616   ; expression statement
+          MOV.L       SP,ER3
+          ADDS.L      #4,ER3
+;*** File h8_3048fon, Line 618   ; expression statement
+          SUB.B       R5L,R5L
+          MOV.B       R5L,@(51:16,SP)
+;*** File h8_3048fon, Line 620   ; expression statement
+          SUB.L       ER0,ER0
+          MOV.L       ER0,ER2
+;*** File h8_3048fon, Line 621   ; if
+          MOV.W       @_SCI0device:24,R0
+          CMP.W       R0,E5
+          BNE         L367:8
+;*** File h8_3048fon, Line 621   ; block
+;*** File h8_3048fon, Line 622   ; expression statement
+          MOV.L       #_SCI0_putChar:32,ER0
+          MOV.L       ER0,@(60:16,SP)
+;*** File h8_3048fon, Line 623   ; expression statement
+          MOV.L       #_SCI0_putString:32,ER0
+          MOV.L       ER0,@(52:16,SP)
+          BRA         L368:8
+L367:                             
+;*** File h8_3048fon, Line 624   ; if
+          MOV.W       @_SCI1device:24,R0
+          CMP.W       R0,E5
+          BNE         L369:8
+;*** File h8_3048fon, Line 624   ; block
+;*** File h8_3048fon, Line 625   ; expression statement
+          MOV.L       #_SCI1_putChar:32,ER0
+          MOV.L       ER0,@(60:16,SP)
+;*** File h8_3048fon, Line 626   ; expression statement
+          MOV.L       #_SCI1_putString:32,ER0
+          MOV.L       ER0,@(52:16,SP)
+          BRA         L370:8
+L369:                             
+;*** File h8_3048fon, Line 627   ; if
+          MOV.W       @_LCDdevice:24,R0
+          CMP.W       R0,E5
+          BNE         L371:8
+;*** File h8_3048fon, Line 627   ; block
+;*** File h8_3048fon, Line 628   ; expression statement
+          MOV.L       #_LCD_putchar:32,ER0
+          MOV.L       ER0,@(60:16,SP)
+;*** File h8_3048fon, Line 629   ; expression statement
+          MOV.L       #_LCD_puts:32,ER0
+          BRA         L494:8
+L371:                             
+;*** File h8_3048fon, Line 630   ; block
+;*** File h8_3048fon, Line 631   ; expression statement
+          MOV.L       #L136:32,ER0
+          MOV.L       ER0,@(60:16,SP)
+;*** File h8_3048fon, Line 632   ; expression statement
+          MOV.L       #L139:32,ER0
+L494:                             
+          MOV.L       ER0,@(52:16,SP)
+L370:                             
+L368:                             
+          MOV.L       #37:32,ER0
+          ADD.L       SP,ER0
+          MOV.L       ER0,@(42:16,SP)
+;*** File h8_3048fon, Line 635   ; while
+          JMP         @L374:24
+L373:                             
+;*** File h8_3048fon, Line 635   ; block
+;*** File h8_3048fon, Line 636   ; expression statement
+          MOV.L       @(46:16,SP),ER0
+          MOV.B       @ER0,R4L
+;*** File h8_3048fon, Line 637   ; if
+          MOV.B       R4H,R4H
+          BNE         L375:8
+;*** File h8_3048fon, Line 637   ; block
+;*** File h8_3048fon, Line 638   ; if
+          CMP.B       #37:8,R4L
+          BNE         L376:8
+;*** File h8_3048fon, Line 638   ; block
+;*** File h8_3048fon, Line 639   ; expression statement
+          MOV.B       #1:8,R4H
+;*** File h8_3048fon, Line 640   ; expression statement
+          SUB.B       R5H,R5H
+;*** File h8_3048fon, Line 641   ; expression statement
+          MOV.B       #32:8,R0L
+          MOV.B       R0L,@(50:16,SP)
+;*** File h8_3048fon, Line 643   ; expression statement
+          SUB.B       R0L,R0L
+          MOV.B       R0L,@(59:16,SP)
+          MOV.B       R0L,@(58:16,SP)
+;*** File h8_3048fon, Line 644   ; expression statement
+          MOV.L       @(42:16,SP),ER3
+;*** File h8_3048fon, Line 645   ; expression statement
+          MOV.L       ER3,ER0
+          DEC.L       #1,ER3
+          SUB.B       R1L,R1L
+          MOV.B       R1L,@ER0
+;*** File h8_3048fon, Line 647   ; expression statement
+          SUB.B       R5L,R5L
+          MOV.B       R5L,@(51:16,SP)
+;*** File h8_3048fon, Line 648   ; expression statement
+          MOV.B       #43:8,R0L
+          MOV.B       R0L,@(57:16,SP)
+          JMP         @L378:24
+L376:                             
+;*** File h8_3048fon, Line 649   ; block
+;*** File h8_3048fon, Line 650   ; expression statement
+          MOV.B       R4L,R0L
+          MOV.L       @(60:16,SP),ER1
+          JSR         @ER1
+          JMP         @L378:24
+L375:                             
+;*** File h8_3048fon, Line 652   ; block
+;*** File h8_3048fon, Line 653   ; if
+          CMP.B       #108:8,R4L
+          BNE         L379:8
+;*** File h8_3048fon, Line 653   ; block
+;*** File h8_3048fon, Line 654   ; expression statement
+          BSET.B      #1,R4H
+          JMP         @L380:24
+L379:                             
+;*** File h8_3048fon, Line 655   ; if
+          CMP.B       #48:8,R4L
+          BLT         L381:8
+          CMP.B       #57:8,R4L
+          BGT         L381:8
+;*** File h8_3048fon, Line 655   ; block
+;*** File h8_3048fon, Line 656   ; if
+          MOV.B       R5H,R5H
+          BNE         L382:8
+          CMP.B       #48:8,R4L
+          BNE         L382:8
+;*** File h8_3048fon, Line 656   ; block
+;*** File h8_3048fon, Line 657   ; expression statement
+          MOV.B       #48:8,R0L
+          MOV.B       R0L,@(50:16,SP)
+          JMP         @L385:24
+L382:                             
+;*** File h8_3048fon, Line 658   ; block
+;*** File h8_3048fon, Line 659   ; expression statement
+          MOV.B       #10:8,R0L
+          MULXU.B     R5H,R0
+          ADD.B       R4L,R0L
+          ADD.B       #-48:8,R0L
+          MOV.B       R0L,R5H
+;*** File h8_3048fon, Line 660   ; if
+          CMP.B       #32:8,R0L
+          BLS         L385:16
+;*** File h8_3048fon, Line 660   ; expression statement
+          MOV.B       #32:8,R5H
+          JMP         @L385:24
+L381:                             
+;*** File h8_3048fon, Line 662   ; if
+          CMP.B       #45:8,R4L
+          BNE         L386:8
+;*** File h8_3048fon, Line 662   ; block
+;*** File h8_3048fon, Line 663   ; expression statement
+          MOV.B       #1:8,R0L
+          MOV.B       R0L,@(58:16,SP)
+          JMP         @L387:24
+L386:                             
+;*** File h8_3048fon, Line 664   ; if
+          CMP.B       #100:8,R4L
+          BNE         L388:8
+;*** File h8_3048fon, Line 664   ; block
+;*** File h8_3048fon, Line 665   ; expression statement
+          BSET.B      #2,R4H
+;*** File h8_3048fon, Line 666   ; expression statement
+          MOV.B       #10:8,R0L
+          MOV.B       R0L,@(59:16,SP)
+          JMP         @L389:24
+L388:                             
+;*** File h8_3048fon, Line 667   ; if
+          CMP.B       #117:8,R4L
+          BNE         L390:8
+;*** File h8_3048fon, Line 667   ; block
+;*** File h8_3048fon, Line 668   ; expression statement
+          MOV.B       #10:8,R0L
+          MOV.B       R0L,@(59:16,SP)
+          JMP         @L391:24
+L390:                             
+;*** File h8_3048fon, Line 669   ; if
+          CMP.B       #120:8,R4L
+          BNE         L392:8
+;*** File h8_3048fon, Line 669   ; block
+;*** File h8_3048fon, Line 670   ; expression statement
+          MOV.B       #16:8,R0L
+          MOV.B       R0L,@(59:16,SP)
+          JMP         @L393:24
+L392:                             
+;*** File h8_3048fon, Line 671   ; if
+          CMP.B       #88:8,R4L
+          BNE         L394:8
+;*** File h8_3048fon, Line 671   ; block
+;*** File h8_3048fon, Line 672   ; expression statement
+          MOV.B       #16:8,R0L
+          MOV.B       R0L,@(51:16,SP)
+          MOV.B       R0L,@(59:16,SP)
+          JMP         @L395:24
+L394:                             
+;*** File h8_3048fon, Line 673   ; if
+          CMP.B       #111:8,R4L
+          BNE         L396:8
+;*** File h8_3048fon, Line 673   ; block
+;*** File h8_3048fon, Line 674   ; expression statement
+          MOV.B       #8:8,R0L
+          MOV.B       R0L,@(59:16,SP)
+          JMP         @L397:24
+L396:                             
+;*** File h8_3048fon, Line 675   ; if
+          CMP.B       #98:8,R4L
+          BNE         L398:8
+;*** File h8_3048fon, Line 675   ; block
+;*** File h8_3048fon, Line 676   ; expression statement
+          MOV.B       #2:8,R0L
+          MOV.B       R0L,@(59:16,SP)
+          JMP         @L399:24
+L398:                             
+;*** File h8_3048fon, Line 677   ; if
+          CMP.B       #112:8,R4L
+          BNE         L400:8
+;*** File h8_3048fon, Line 677   ; block
+;*** File h8_3048fon, Line 678   ; expression statement
+          MOV.B       #16:8,R0L
+          MOV.B       R0L,@(51:16,SP)
+          MOV.B       R0L,@(59:16,SP)
+;*** File h8_3048fon, Line 678   ; expression statement
+          MOV.B       #8:8,R5H
+;*** File h8_3048fon, Line 678   ; expression statement
+          MOV.B       #48:8,R0L
+          MOV.B       R0L,@(50:16,SP)
+;*** File h8_3048fon, Line 678   ; expression statement
+          BSET.B      #1,R4H
+          JMP         @L401:24
+L400:                             
+;*** File h8_3048fon, Line 679   ; if
+          CMP.B       #99:8,R4L
+          BNE         L402:8
+;*** File h8_3048fon, Line 679   ; block
+;*** File h8_3048fon, Line 680   ; expression statement
+          MOV.L       ER6,ER0
+          INC.L       #2,ER0
+          MOV.L       ER0,@(38:16,SP)
+          BTST.B      #0,R0L
+          BEQ         L403:8
+          INC.L       #1,ER0
+          BRA         L404:8
+L403:                             
+          MOV.L       @(38:16,SP),ER0
+L404:                             
+          MOV.L       ER0,ER6
+          DEC.L       #2,ER0
+          MOV.L       ER0,ER4
+          BTST.B      #0,R0L
+          BEQ         L405:8
+          MOV.L       ER4,ER1
+          DEC.L       #1,ER1
+          BRA         L406:8
+L405:                             
+          MOV.L       ER4,ER1
+L406:                             
+          MOV.B       @(1:16,ER1),R0L
+          MOV.L       @(60:16,SP),ER1
+          JSR         @ER1
+;*** File h8_3048fon, Line 681   ; expression statement
+          SUB.B       R4H,R4H
+          JMP         @L407:24
+L402:                             
+;*** File h8_3048fon, Line 682   ; if
+          CMP.B       #115:8,R4L
+          BNE         L408:16
+;*** File h8_3048fon, Line 682   ; block
+;*** File h8_3048fon, Line 683   ; if
+          MOV.B       R5H,R5H
+          BEQ         L409:16
+;*** File h8_3048fon, Line 683   ; block
+;*** File h8_3048fon, Line 684   ; expression statement
+          SUB.B       R5L,R5L
+;*** File h8_3048fon, Line 684   ; expression statement
+          MOV.L       ER6,ER0
+          ADDS.L      #4,ER0
+          MOV.L       ER0,@(38:16,SP)
+          BTST.B      #0,R0L
+          BEQ         L410:8
+          INC.L       #1,ER0
+          BRA         L411:8
+L410:                             
+          MOV.L       @(38:16,SP),ER0
+L411:                             
+          MOV.L       ER0,ER6
+          SUBS.L      #4,ER0
+          MOV.L       ER0,ER4
+          BTST.B      #0,R0L
+          BEQ         L412:8
+          DEC.L       #1,ER0
+          BRA         L413:8
+L412:                             
+          MOV.L       ER4,ER0
+L413:                             
+          MOV.L       @ER0,ER3
+;*** File h8_3048fon, Line 685   ; while
+          BRA         L415:8
+L414:                             
+;*** File h8_3048fon, Line 685   ; expression statement
+          INC.B       R5L
+L415:                             
+;*** File h8_3048fon, Line 685   ; expression statement
+          MOV.B       R5L,R0L
+          EXTU.W      R0
+          EXTU.L      ER0
+          ADD.L       ER3,ER0
+          MOV.B       @ER0,R1L
+          BNE         L414:8
+;*** File h8_3048fon, Line 686   ; if
+          MOV.B       @(58:16,SP),R0L
+          BNE         L416:8
+;*** File h8_3048fon, Line 686   ; expression statement
+          MOV.B       R5L,R4L
+;*** File h8_3048fon, Line 686   ; for
+          BRA         L418:8
+L417:                             
+;*** File h8_3048fon, Line 686   ; expression statement
+          MOV.B       #32:8,R0L
+          MOV.L       @(60:16,SP),ER1
+          JSR         @ER1
+;*** File h8_3048fon, Line 686   ; expression statement
+          INC.B       R4L
+L418:                             
+;*** File h8_3048fon, Line 686   ; expression statement
+          CMP.B       R5H,R4L
+          BCS         L417:8
+L416:                             
+;*** File h8_3048fon, Line 687   ; expression statement
+          MOV.L       ER3,ER0
+          MOV.L       @(52:16,SP),ER1
+          JSR         @ER1
+;*** File h8_3048fon, Line 688   ; if
+          MOV.B       @(58:16,SP),R0L
+          BEQ         L495:8
+;*** File h8_3048fon, Line 688   ; expression statement
+          MOV.B       R5L,R4L
+;*** File h8_3048fon, Line 688   ; for
+          BRA         L421:8
+L420:                             
+;*** File h8_3048fon, Line 688   ; expression statement
+          MOV.B       #32:8,R0L
+          MOV.L       @(60:16,SP),ER1
+          JSR         @ER1
+;*** File h8_3048fon, Line 688   ; expression statement
+          INC.B       R4L
+L421:                             
+;*** File h8_3048fon, Line 688   ; expression statement
+          CMP.B       R5H,R4L
+          BCS         L420:8
+          BRA         L495:8
+L409:                             
+;*** File h8_3048fon, Line 689   ; block
+;*** File h8_3048fon, Line 690   ; expression statement
+          MOV.L       ER6,ER0
+          ADDS.L      #4,ER0
+          MOV.L       ER0,@(38:16,SP)
+          BTST.B      #0,R0L
+          BEQ         L423:8
+          INC.L       #1,ER0
+          BRA         L424:8
+L423:                             
+          MOV.L       @(38:16,SP),ER0
+L424:                             
+          MOV.L       ER0,ER6
+          SUBS.L      #4,ER0
+          MOV.L       ER0,ER4
+          BTST.B      #0,R0L
+          BEQ         L425:8
+          MOV.L       ER4,ER1
+          DEC.L       #1,ER1
+          BRA         L426:8
+L425:                             
+          MOV.L       ER4,ER1
+L426:                             
+          MOV.L       @ER1,ER0
+          MOV.L       @(52:16,SP),ER1
+          JSR         @ER1
+;*** File h8_3048fon, Line 692   ; expression statement
+          BRA         L495:8
+L408:                             
+;*** File h8_3048fon, Line 693   ; block
+;*** File h8_3048fon, Line 694   ; expression statement
+          MOV.B       R4L,R0L
+          MOV.L       @(60:16,SP),ER1
+          JSR         @ER1
+;*** File h8_3048fon, Line 695   ; expression statement
+L495:                             
+          SUB.B       R4H,R4H
+L407:                             
+L401:                             
+L399:                             
+L397:                             
+L395:                             
+L393:                             
+L391:                             
+L389:                             
+L387:                             
+L385:                             
+L380:                             
+;*** File h8_3048fon, Line 697   ; if
+          MOV.B       @(59:16,SP),R0L
+          BEQ         L428:16
+;*** File h8_3048fon, Line 697   ; block
+;*** File h8_3048fon, Line 698   ; switch
+          AND.B       #6:8,R4H
+          MOV.B       R4H,R0L
+          BEQ         L279:8
+          CMP.B       #2:8,R0L
+          BEQ         L280:8
+          CMP.B       #4:8,R0L
+          BEQ         L281:8
+          CMP.B       #6:8,R0L
+          BEQ         L282:16
+          JMP         @L449:24
+;*** File h8_3048fon, Line 698   ; block
+;*** File h8_3048fon, Line 699   ; label
+L279:                            ; case label 
+;*** File h8_3048fon, Line 700   ; expression statement
+          MOV.L       ER6,ER4
+          INC.L       #2,ER4
+          BTST.B      #0,R4L
+          BEQ         L430:8
+          MOV.L       ER4,ER0
+          INC.L       #1,ER0
+          BRA         L431:8
+L430:                             
+          MOV.L       ER4,ER0
+L431:                             
+          MOV.L       ER0,ER6
+          DEC.L       #2,ER0
+          MOV.L       ER0,@(38:16,SP)
+          BTST.B      #0,R0L
+          BEQ         L432:8
+          DEC.L       #1,ER0
+          BRA         L433:8
+L432:                             
+          MOV.L       @(38:16,SP),ER0
+L433:                             
+          MOV.W       @ER0,R0
+          EXTU.L      ER0
+;*** File h8_3048fon, Line 701   ; break
+          JMP         @L496:24
+L280:                            ; case label 
+;*** File h8_3048fon, Line 703   ; expression statement
+          MOV.L       ER6,ER0
+          ADDS.L      #4,ER0
+          MOV.L       ER0,@(38:16,SP)
+          BTST.B      #0,R0L
+          BEQ         L434:8
+          INC.L       #1,ER0
+          BRA         L435:8
+L434:                             
+          MOV.L       @(38:16,SP),ER0
+L435:                             
+          MOV.L       ER0,ER6
+          SUBS.L      #4,ER0
+          MOV.L       ER0,ER4
+          BTST.B      #0,R0L
+          BEQ         L436:8
+          DEC.L       #1,ER0
+          BRA         L437:8
+L436:                             
+          MOV.L       ER4,ER0
+L437:                             
+          MOV.L       @ER0,ER2
+;*** File h8_3048fon, Line 704   ; break
+          JMP         @L449:24
+L281:                            ; case label 
+;*** File h8_3048fon, Line 706   ; expression statement
+          MOV.L       ER6,ER4
+          INC.L       #2,ER4
+          BTST.B      #0,R4L
+          BEQ         L438:8
+          MOV.L       ER4,ER0
+          INC.L       #1,ER0
+          BRA         L439:8
+L438:                             
+          MOV.L       ER4,ER0
+L439:                             
+          MOV.L       ER0,ER6
+          DEC.L       #2,ER0
+          MOV.L       ER0,ER2
+          BTST.B      #0,R0L
+          BEQ         L440:8
+          DEC.L       #1,ER0
+          BRA         L441:8
+L440:                             
+          MOV.L       ER2,ER0
+L441:                             
+          MOV.W       @ER0,R0
+          EXTS.L      ER0
+          MOV.L       ER0,ER2
+;*** File h8_3048fon, Line 707   ; if
+          BGE         L449:8
+;*** File h8_3048fon, Line 707   ; block
+;*** File h8_3048fon, Line 708   ; expression statement
+          NEG.L       ER0
+          MOV.L       ER0,ER2
+;*** File h8_3048fon, Line 709   ; expression statement
+          MOV.B       #45:8,R0L
+          MOV.B       R0L,@(57:16,SP)
+;*** File h8_3048fon, Line 711   ; break
+          BRA         L449:8
+L282:                            ; case label 
+;*** File h8_3048fon, Line 713   ; expression statement
+          MOV.L       ER6,ER4
+          ADDS.L      #4,ER4
+          BTST.B      #0,R4L
+          BEQ         L443:8
+          MOV.L       ER4,ER0
+          INC.L       #1,ER0
+          BRA         L444:8
+L443:                             
+          MOV.L       ER4,ER0
+L444:                             
+          MOV.L       ER0,ER6
+          SUBS.L      #4,ER0
+          MOV.L       ER0,ER2
+          BTST.B      #0,R0L
+          BEQ         L445:8
+          DEC.L       #1,ER0
+          BRA         L446:8
+L445:                             
+          MOV.L       ER2,ER0
+L446:                             
+          MOV.L       @ER0,ER0
+          MOV.L       ER0,ER2
+;*** File h8_3048fon, Line 714   ; if
+          BGE         L449:8
+;*** File h8_3048fon, Line 714   ; block
+;*** File h8_3048fon, Line 715   ; expression statement
+          NEG.L       ER0
+          MOV.L       ER0,ER2
+;*** File h8_3048fon, Line 716   ; expression statement
+          MOV.B       #45:8,R0L
+          MOV.B       R0L,@(57:16,SP)
+;*** File h8_3048fon, Line 718   ; break
+L283:                            ; default label 
+;*** File h8_3048fon, Line 720   ; break
+L429:                            ; default label 
+;*** File h8_3048fon, Line 722   ; while
+          BRA         L449:8
+L448:                             
+;*** File h8_3048fon, Line 722   ; block
+;*** File h8_3048fon, Line 723   ; expression statement
+          MOV.L       ER3,ER0
+          DEC.L       #1,ER3
+          SUB.L       ER4,ER4
+          MOV.B       @(59:16,SP),R4L
+          MOV.L       ER0,@SP
+          MOV.L       ER2,ER0
+          MOV.L       ER4,ER1
+          JSR         @$DIVUL$3:24
+          SUB.L       ER0,ER0
+          MOV.B       @(51:16,SP),R0L
+          ADD.L       ER0,ER1
+          MOV.B       @(_hexstring:24,ER1),R1L
+          MOV.L       @SP,ER0
+          MOV.B       R1L,@ER0
+;*** File h8_3048fon, Line 724   ; expression statement
+          INC.B       R5L
+;*** File h8_3048fon, Line 725   ; expression statement
+          MOV.L       ER2,ER0
+          MOV.L       ER4,ER1
+          JSR         @$DIVUL$3:24
+L496:                             
+          MOV.L       ER0,ER2
+L449:                             
+;*** File h8_3048fon, Line 722   ; expression statement
+          MOV.L       ER2,ER0
+          BNE         L448:8
+;*** File h8_3048fon, Line 727   ; if
+          MOV.B       R5L,R5L
+          BNE         L450:8
+;*** File h8_3048fon, Line 727   ; block
+;*** File h8_3048fon, Line 728   ; expression statement
+          MOV.L       ER3,ER0
+          DEC.L       #1,ER3
+          MOV.B       #48:8,R1L
+          MOV.B       R1L,@ER0
+;*** File h8_3048fon, Line 729   ; expression statement
+          INC.B       R5L
+L450:                             
+;*** File h8_3048fon, Line 731   ; if
+          MOV.B       @(50:16,SP),R0L
+          CMP.B       #32:8,R0L
+          BNE         L451:8
+;*** File h8_3048fon, Line 731   ; block
+;*** File h8_3048fon, Line 732   ; if
+          MOV.B       @(57:16,SP),R0L
+          CMP.B       #45:8,R0L
+          BNE         L452:8
+;*** File h8_3048fon, Line 732   ; block
+;*** File h8_3048fon, Line 733   ; expression statement
+          MOV.L       ER3,ER0
+          DEC.L       #1,ER3
+          MOV.B       #45:8,R1L
+          MOV.B       R1L,@ER0
+;*** File h8_3048fon, Line 734   ; expression statement
+          INC.B       R5L
+L452:                             
+;*** File h8_3048fon, Line 736   ; if
+          MOV.B       @(58:16,SP),R0L
+          BNE         L453:8
+;*** File h8_3048fon, Line 736   ; expression statement
+          MOV.B       R5L,R4L
+;*** File h8_3048fon, Line 736   ; for
+          BRA         L455:8
+L454:                             
+;*** File h8_3048fon, Line 736   ; expression statement
+          MOV.B       #32:8,R0L
+          MOV.L       @(60:16,SP),ER1
+          JSR         @ER1
+;*** File h8_3048fon, Line 736   ; expression statement
+          INC.B       R4L
+L455:                             
+;*** File h8_3048fon, Line 736   ; expression statement
+          CMP.B       R5H,R4L
+          BCS         L454:8
+L453:                             
+;*** File h8_3048fon, Line 737   ; expression statement
+          INC.L       #1,ER3
+          MOV.L       ER3,ER0
+          MOV.L       @(52:16,SP),ER1
+          JSR         @ER1
+;*** File h8_3048fon, Line 738   ; if
+          MOV.B       @(58:16,SP),R0L
+          BEQ         L459:8
+;*** File h8_3048fon, Line 738   ; expression statement
+          MOV.B       R5L,R4L
+;*** File h8_3048fon, Line 738   ; for
+          BRA         L458:8
+L457:                             
+;*** File h8_3048fon, Line 738   ; expression statement
+          MOV.B       #32:8,R0L
+          MOV.L       @(60:16,SP),ER1
+          JSR         @ER1
+;*** File h8_3048fon, Line 738   ; expression statement
+          INC.B       R4L
+L458:                             
+;*** File h8_3048fon, Line 738   ; expression statement
+          CMP.B       R5H,R4L
+          BCS         L457:8
+          BRA         L459:8
+L451:                             
+;*** File h8_3048fon, Line 739   ; block
+          MOV.B       R5H,R0L
+          EXTU.W      R0
+          DEC.W       #1,R0
+          MOV.W       R0,E5
+;*** File h8_3048fon, Line 740   ; for
+          MOV.B       #48:8,R1L
+          BRA         L461:8
+L460:                             
+;*** File h8_3048fon, Line 740   ; expression statement
+          MOV.L       ER3,ER0
+          DEC.L       #1,ER3
+          MOV.B       R1L,@ER0
+;*** File h8_3048fon, Line 740   ; expression statement
+          INC.B       R5L
+L461:                             
+;*** File h8_3048fon, Line 740   ; expression statement
+          MOV.B       R5L,R0L
+          EXTU.W      R0
+          CMP.W       E5,R0
+          BLT         L460:8
+;*** File h8_3048fon, Line 741   ; if
+          MOV.B       @(57:16,SP),R0L
+          CMP.B       #45:8,R0L
+          BEQ         L462:8
+          CMP.B       R5H,R5L
+          BCC         L462:8
+;*** File h8_3048fon, Line 741   ; expression statement
+          MOV.L       ER3,ER0
+          DEC.L       #1,ER3
+          MOV.B       #48:8,R1L
+          MOV.B       R1L,@ER0
+          BRA         L463:8
+L462:                             
+;*** File h8_3048fon, Line 742   ; if
+          MOV.B       @(57:16,SP),R0L
+          CMP.B       #45:8,R0L
+          BNE         L464:8
+;*** File h8_3048fon, Line 742   ; expression statement
+          MOV.L       ER3,ER0
+          DEC.L       #1,ER3
+          MOV.B       #45:8,R1L
+          MOV.B       R1L,@ER0
+L464:                             
+L463:                             
+;*** File h8_3048fon, Line 743   ; expression statement
+          INC.L       #1,ER3
+          MOV.L       ER3,ER0
+          MOV.L       @(52:16,SP),ER1
+          JSR         @ER1
+L459:                             
+;*** File h8_3048fon, Line 745   ; expression statement
+          SUB.B       R4H,R4H
+L428:                             
+L378:                             
+;*** File h8_3048fon, Line 748   ; expression statement
+          MOV.L       @(46:16,SP),ER0
+          INC.L       #1,ER0
+          MOV.L       ER0,@(46:16,SP)
+L374:                             
+;*** File h8_3048fon, Line 635   ; expression statement
+          MOV.L       @(46:16,SP),ER0
+          MOV.B       @ER0,R1L
+          BNE         L373:16
+;*** File h8_3048fon, Line 751   ; block
+          ADD.L       #68:32,SP
+          JMP         @$spregld2$3:24
+;*** File h8_3048fon, Line 753   ; block
+_SCI0_printf:                    ; function: SCI0_printf
+          PUSH.L      ER6
+;*** File h8_3048fon, Line 754   ; block
+;*** File h8_3048fon, Line 756   ; expression statement
+          MOV.L       #4:32,ER6
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+          BTST.B      #0,R0L
+          BEQ         L465:8
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+          INC.L       #1,ER0
+          BRA         L466:8
+L465:                             
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+L466:                             
+;*** File h8_3048fon, Line 757   ; expression statement
+          PUSH.L      ER0
+          MOV.L       @(12:16,SP),ER1
+          MOV.W       @_SCI0device:24,R0
+          JSR         @_Device_printf:24
+          ADDS.L      #4,SP
+;*** File h8_3048fon, Line 759   ; block
+          POP.L       ER6
+          RTS
+;*** File h8_3048fon, Line 761   ; block
+_SCI1_printf:                    ; function: SCI1_printf
+          PUSH.L      ER6
+;*** File h8_3048fon, Line 762   ; block
+;*** File h8_3048fon, Line 764   ; expression statement
+          MOV.L       #4:32,ER6
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+          BTST.B      #0,R0L
+          BEQ         L467:8
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+          INC.L       #1,ER0
+          BRA         L468:8
+L467:                             
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+L468:                             
+;*** File h8_3048fon, Line 765   ; expression statement
+          PUSH.L      ER0
+          MOV.L       @(12:16,SP),ER1
+          MOV.W       @_SCI1device:24,R0
+          JSR         @_Device_printf:24
+          ADDS.L      #4,SP
+;*** File h8_3048fon, Line 767   ; block
+          POP.L       ER6
+          RTS
+;*** File h8_3048fon, Line 769   ; block
+_LCD_printf:                     ; function: LCD_printf
+          PUSH.L      ER6
+;*** File h8_3048fon, Line 770   ; block
+;*** File h8_3048fon, Line 772   ; expression statement
+          MOV.L       #4:32,ER6
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+          BTST.B      #0,R0L
+          BEQ         L469:8
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+          INC.L       #1,ER0
+          BRA         L470:8
+L469:                             
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+L470:                             
+;*** File h8_3048fon, Line 773   ; expression statement
+          PUSH.L      ER0
+          MOV.L       @(12:16,SP),ER1
+          MOV.W       @_LCDdevice:24,R0
+          JSR         @_Device_printf:24
+          ADDS.L      #4,SP
+;*** File h8_3048fon, Line 775   ; block
+          POP.L       ER6
+          RTS
+;*** File h8_3048fon, Line 777   ; block
+_sprintf:                        ; function: sprintf
+          PUSH.L      ER6
+;*** File h8_3048fon, Line 778   ; block
+          MOV.L       ER0,ER1
+;*** File h8_3048fon, Line 780   ; expression statement
+          MOV.L       #4:32,ER6
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+          BTST.B      #0,R0L
+          BEQ         L471:8
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+          INC.L       #1,ER0
+          BRA         L472:8
+L471:                             
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+L472:                             
+;*** File h8_3048fon, Line 781   ; expression statement
+          MOV.L       ER1,@L134:24
+;*** File h8_3048fon, Line 782   ; expression statement
+          PUSH.L      ER0
+          MOV.L       @(12:16,SP),ER1
+          MOV.W       @_STRdevice:24,R0
+          JSR         @_Device_printf:24
+          ADDS.L      #4,SP
+;*** File h8_3048fon, Line 784   ; block
+          POP.L       ER6
+          RTS
+;*** File h8_3048fon, Line 796   ; block
+_initLed:                        ; function: initLed
+;*** File h8_3048fon, Line 797   ; block
+;*** File h8_3048fon, Line 798   ; expression statement
+          MOV.B       #15:8,R0L
+          MOV.B       R0L,@16777160:8
+;*** File h8_3048fon, Line 799   ; block
+          RTS
+;*** File h8_3048fon, Line 805   ; block
+_turnOnLed:                      ; function: turnOnLed
+          PUSH.L      ER6
+;*** File h8_3048fon, Line 806   ; block
+          MOV.W       R0,R6
+;*** File h8_3048fon, Line 808   ; expression statement
+          EXTS.L      ER6
+          MOV.B       @(L219:24,ER6),R6L
+          MOV.B       @16777162:8,R0L
+          OR.B        R6L,R0L
+          MOV.B       R0L,@16777162:8
+;*** File h8_3048fon, Line 809   ; block
+          POP.L       ER6
+          RTS
+;*** File h8_3048fon, Line 815   ; block
+_turnOffLed:                     ; function: turnOffLed
+          PUSH.L      ER6
+;*** File h8_3048fon, Line 816   ; block
+          MOV.W       R0,R6
+;*** File h8_3048fon, Line 818   ; expression statement
+          EXTS.L      ER6
+          MOV.B       @(L223:24,ER6),R6L
+          MOV.B       @16777162:8,R0L
+          AND.B       R6L,R0L
+          MOV.B       R0L,@16777162:8
+;*** File h8_3048fon, Line 819   ; block
+          POP.L       ER6
+          RTS
+;*** File h8_3048fon, Line 832   ; block
+_initPushSW:                     ; function: initPushSW
+;*** File h8_3048fon, Line 833   ; block
+;*** File h8_3048fon, Line 834   ; expression statement
+          SUB.B       R0L,R0L
+          MOV.B       R0L,@16777157:8
+;*** File h8_3048fon, Line 835   ; expression statement
+          MOV.B       #-16:8,R0L
+          MOV.B       R0L,@16777178:8
+;*** File h8_3048fon, Line 836   ; block
+          RTS
+;*** File h8_3048fon, Line 849   ; block
+_checkPushSW:                    ; function: checkPushSW
+          PUSH.L      ER6
+;*** File h8_3048fon, Line 852   ; block
+          MOV.W       R0,R6
+;*** File h8_3048fon, Line 855   ; if
+          EXTS.L      ER6
+          MOV.B       @16777159:8,R0L
+          MOV.B       @(L230:24,ER6),R6L
+          AND.B       R6L,R0L
+          BEQ         L473:8
+;*** File h8_3048fon, Line 855   ; expression statement
+          SUB.W       R6,R6
+          BRA         L474:8
+L473:                             
+;*** File h8_3048fon, Line 856   ; expression statement
+          MOV.W       #1:16,R6
+L474:                             
+;*** File h8_3048fon, Line 857   ; return
+          MOV.W       R6,R0
+;*** File h8_3048fon, Line 858   ; block
+          POP.L       ER6
+          RTS
+;*** File h8_3048fon, Line 875   ; block
+_init8BitSW:                     ; function: init8BitSW
+;*** File h8_3048fon, Line 876   ; block
+;*** File h8_3048fon, Line 877   ; expression statement
+          SUB.B       R0L,R0L
+          MOV.B       R0L,@16777153:8
+;*** File h8_3048fon, Line 878   ; expression statement
+          MOV.B       #-1:8,R0L
+          MOV.B       R0L,@16777176:8
+;*** File h8_3048fon, Line 879   ; block
+          RTS
+;*** File h8_3048fon, Line 889   ; block
+_check8BitSW:                    ; function: check8BitSW
+          PUSH.L      ER6
+;*** File h8_3048fon, Line 892   ; block
+          MOV.W       R0,R6
+;*** File h8_3048fon, Line 895   ; if
+          EXTS.L      ER6
+          MOV.B       @16777155:8,R0L
+          MOV.B       @(L237:24,ER6),R6L
+          AND.B       R6L,R0L
+          BEQ         L476:8
+;*** File h8_3048fon, Line 895   ; expression statement
+          SUB.W       R6,R6
+          BRA         L477:8
+L476:                             
+;*** File h8_3048fon, Line 896   ; expression statement
+          MOV.W       #1:16,R6
+L477:                             
+;*** File h8_3048fon, Line 897   ; return
+          MOV.W       R6,R0
+;*** File h8_3048fon, Line 898   ; block
+          POP.L       ER6
+          RTS
+;*** File h8_3048fon, Line 904   ; block
+_initTimer1Int:                  ; function: initTimer1Int
+          PUSH.L      ER6
+;*** File h8_3048fon, Line 910   ; block
+          MOV.W       R0,R6
+;*** File h8_3048fon, Line 911   ; expression statement
+          MOV.W       #25:16,E6
+          MULXU.W     E6,ER6
+          ADDS.L      #4,ER6
+          SHAR.L      ER6
+          SHAR.L      ER6
+          SHAR.L      ER6
+;*** File h8_3048fon, Line 912   ; expression statement
+          MOV.B       @16777070:8,R0L
+          AND.B       #-97:8,R0L
+          OR.B        #32:8,R0L
+          MOV.B       R0L,@16777070:8
+;*** File h8_3048fon, Line 913   ; expression statement
+          MOV.B       @16777070:8,R0L
+          AND.B       #-25:8,R0L
+          MOV.B       R0L,@16777070:8
+;*** File h8_3048fon, Line 914   ; expression statement
+          MOV.B       @16777070:8,R0L
+          AND.B       #-8:8,R0L
+          OR.B        #3:8,R0L
+          MOV.B       R0L,@16777070:8
+;*** File h8_3048fon, Line 915   ; expression statement
+          DEC.W       #1,R6
+          MOV.W       R6,@16777076:16
+;*** File h8_3048fon, Line 916   ; expression statement
+          BSET.B      #0,@16777072:8
+;*** File h8_3048fon, Line 917   ; expression statement
+          BCLR.B      #2,@16777072:8
+;*** File h8_3048fon, Line 918   ; expression statement
+          BCLR.B      #1,@16777072:8
+;*** File h8_3048fon, Line 919   ; block
+          POP.L       ER6
+          RTS
+;*** File dumpMemoy., Line 8     ; block
+_msecwait:                       ; function: msecwait
+;*** File dumpMemoy., Line 9     ; block
+;*** File dumpMemoy., Line 11    ; expression statement
+          SUB.W       R1,R1
+;*** File dumpMemoy., Line 11    ; for
+          BRA         L480:8
+L479:                             
+;*** File dumpMemoy., Line 11    ; block
+;*** File dumpMemoy., Line 12    ; expression statement
+          MOV.W       #3352:16,E0
+;*** File dumpMemoy., Line 12    ; do
+L481:                             
+;*** File dumpMemoy., Line 12    ; expression statement
+          DEC.W       #1,E0
+          BNE         L481:8
+;*** File dumpMemoy., Line 11    ; expression statement
+          INC.W       #1,R1
+L480:                             
+;*** File dumpMemoy., Line 11    ; expression statement
+          CMP.W       R0,R1
+          BLT         L479:8
+;*** File dumpMemoy., Line 14    ; block
+          RTS
+;*** File dumpMemoy., Line 16    ; block
+_dumpMemory:                     ; function: dumpMemory
+          JSR         @$sp_regsv$3:24
+;*** File dumpMemoy., Line 17    ; block
+          MOV.L       ER0,ER6
+          MOV.L       ER1,ER4
+;*** File dumpMemoy., Line 20    ; expression statement
+          AND.L       #-16:32,ER6
+;*** File dumpMemoy., Line 21    ; expression statement
+          MOV.L       ER4,ER0
+          AND.L       #-16:32,ER0
+          MOV.L       ER0,ER4
+;*** File dumpMemoy., Line 22    ; expression statement
+          MOV.L       #L254:32,ER0
+          PUSH.L      ER0
+          JSR         @_SCI1_printf:24
+          ADDS.L      #4,SP
+;*** File dumpMemoy., Line 23    ; for
+          JMP         @L483:24
+L482:                             
+;*** File dumpMemoy., Line 23    ; block
+;*** File dumpMemoy., Line 24    ; if
+          MOV.L       ER6,ER0
+          MOV.L       #16:32,ER1
+          JSR         @$DIVL$3:24
+          MOV.L       ER1,ER5
+          BNE         L484:8
+;*** File dumpMemoy., Line 24    ; expression statement
+          PUSH.L      ER6
+          MOV.L       #L256:32,ER0
+          PUSH.L      ER0
+          JSR         @_SCI1_printf:24
+          ADDS.L      #4,SP
+          ADDS.L      #4,SP
+L484:                             
+;*** File dumpMemoy., Line 25    ; expression statement
+          MOV.B       @ER6,R0L
+          EXTU.W      R0
+          PUSH.W      R0
+          MOV.L       #L257:32,ER0
+          PUSH.L      ER0
+          JSR         @_SCI1_printf:24
+          ADDS.L      #4,SP
+          ADDS.L      #2,SP
+;*** File dumpMemoy., Line 26    ; if
+          CMP.L       #15:32,ER5
+          BNE         L485:8
+;*** File dumpMemoy., Line 26    ; block
+;*** File dumpMemoy., Line 27    ; expression statement
+          MOV.L       #L259:32,ER0
+          PUSH.L      ER0
+          JSR         @_SCI1_printf:24
+          ADDS.L      #4,SP
+;*** File dumpMemoy., Line 28    ; expression statement
+          MOV.L       #-15:32,ER5
+;*** File dumpMemoy., Line 28    ; do
+L486:                             
+;*** File dumpMemoy., Line 28    ; block
+;*** File dumpMemoy., Line 29    ; expression statement
+          MOV.L       ER6,ER3
+          ADD.L       ER5,ER3
+          MOV.B       @ER3,R3L
+;*** File dumpMemoy., Line 30    ; expression statement
+          EXTU.W      R3
+          MOV.W       R3,R0
+          JSR         @_isprint:24
+          MOV.W       R0,R0
+          BEQ         L487:8
+          MOV.W       R3,R2
+          BRA         L488:8
+L487:                             
+          MOV.W       #46:16,R2
+L488:                             
+          PUSH.W      R2
+          MOV.L       #L261:32,ER0
+          PUSH.L      ER0
+          JSR         @_SCI1_printf:24
+          ADDS.L      #4,SP
+          ADDS.L      #2,SP
+;*** File dumpMemoy., Line 28    ; expression statement
+          INC.L       #1,ER5
+;*** File dumpMemoy., Line 28    ; expression statement
+          MOV.L       ER5,ER5
+          BLE         L486:8
+;*** File dumpMemoy., Line 32    ; expression statement
+          MOV.L       #L263:32,ER0
+          PUSH.L      ER0
+          JSR         @_SCI1_printf:24
+          ADDS.L      #4,SP
+L485:                             
+;*** File dumpMemoy., Line 23    ; expression statement
+          INC.L       #1,ER6
+L483:                             
+;*** File dumpMemoy., Line 23    ; expression statement
+          CMP.L       ER4,ER6
+          BLT         L482:16
+;*** File dumpMemoy., Line 35    ; expression statement
+          MOV.L       #L264:32,ER0
+          PUSH.L      ER0
+          JSR         @_SCI1_printf:24
+          ADDS.L      #4,SP
+;*** File dumpMemoy., Line 36    ; block
+          JMP         @$spregld2$3:24
+;*** File dumpMemoy., Line 41    ; block
+_main:                           ; function: main
+;*** File dumpMemoy., Line 42    ; block
+          SUB.W       R3,R3
+          MOV.W       #1:16,E4
+          MOV.W       #250:16,R4
+          MOV.L       #_count1:32,ER5
+          MOV.L       #_count2:32,ER6
+;*** File dumpMemoy., Line 43    ; expression statement
+          MOV.W       #13398:16,E3
+;*** File dumpMemoy., Line 44    ; expression statement
+          MOV.W       #9029:16,R0
+          MOV.W       R0,@ER6
+;*** File dumpMemoy., Line 45    ; expression statement
+          JSR         @_initSCI1:24
+;*** File dumpMemoy., Line 46    ; expression statement
+          JSR         @_initLed:24
+;*** File dumpMemoy., Line 47    ; expression statement
+          MOV.L       #4400:32,ER1
+          SUB.L       ER0,ER0
+          JSR         @_dumpMemory:24
+;*** File dumpMemoy., Line 48    ; expression statement
+          MOV.L       #1044272:32,ER1
+          MOV.L       #1044240:32,ER0
+          JSR         @_dumpMemory:24
+;*** File dumpMemoy., Line 49    ; while
+L489:                             
+;*** File dumpMemoy., Line 49    ; block
+;*** File dumpMemoy., Line 50    ; expression statement
+          MOV.W       E3,R0
+          INC.W       #1,E3
+          PUSH.W      R0
+          MOV.W       @ER6,R0
+          INC.W       #1,R0
+          MOV.W       R0,@ER6
+          DEC.W       #1,R0
+          PUSH.W      R0
+          MOV.W       @ER5,R0
+          INC.W       #1,R0
+          MOV.W       R0,@ER5
+          DEC.W       #1,R0
+          PUSH.W      R0
+          MOV.L       #L271:32,ER0
+          PUSH.L      ER0
+          JSR         @_SCI1_printf:24
+          ADD.L       #10:32,SP
+;*** File dumpMemoy., Line 51    ; expression statement
+          MOV.W       R3,R0
+          JSR         @_turnOnLed:24
+;*** File dumpMemoy., Line 52    ; expression statement
+          MOV.W       E4,R0
+          JSR         @_turnOffLed:24
+;*** File dumpMemoy., Line 53    ; expression statement
+          MOV.W       R4,R0
+          JSR         @_msecwait:24
+;*** File dumpMemoy., Line 54    ; expression statement
+          MOV.W       R3,R0
+          JSR         @_turnOffLed:24
+;*** File dumpMemoy., Line 55    ; expression statement
+          MOV.W       E4,R0
+          JSR         @_turnOnLed:24
+;*** File dumpMemoy., Line 56    ; expression statement
+          MOV.W       R4,R0
+          JSR         @_msecwait:24
+;*** File dumpMemoy., Line 49    ; expression statement
+          BRA         L489:8
+;*** File dumpMemoy., Line 58    ; block
+          .SECTION    C,DATA,ALIGN=2
+_SCI0device:                     ; static: SCI0device
+          .DATA.W     H'0000
+_SCI1device:                     ; static: SCI1device
+          .DATA.W     H'0001
+_LCDdevice:                      ; static: LCDdevice
+          .DATA.W     H'0002
+_STRdevice:                      ; static: STRdevice
+          .DATA.W     H'0003
+_hexstring:                      ; static: hexstring
+          .SDATAZ     "0123456789abcdef0123456789ABCDEF"
+L219:                            ; static: mask
+          .DATA.B     H'01,H'02,H'04,H'08
+L223:                            ; static: mask
+          .DATA.B     H'FE,H'FD,H'FB,H'F7
+L230:                            ; static: mask
+          .DATA.B     H'10,H'20,H'40,H'80
+L237:                            ; static: mask
+          .DATA.B     H'01,H'02,H'04,H'08,H'10,H'20,H'40,H'80
+          .SECTION    D,DATA,ALIGN=2
+_count1:                         ; static: count1
+          .DATA.W     H'1234
+          .SECTION    C,DATA,ALIGN=2
+L254:
+          .SDATA      "address +0 +1 +2 +3 +4 +5 +6 +7 +8 +9 +A +B +C +D +E +F   0123456789ABCDEF"
+          .SDATAZ     <H'0A>
+L256:
+          .SDATAZ     "%05lx : "
+L257:
+          .SDATAZ     "%02x "
+L259:
+          .SDATAZ     ": "
+L261:
+          .SDATAZ     "%c"
+L263:
+L264:
+          .SDATAZ     <H'0A>
+L271:
+          .SDATAZ     "%4x %4x %4x"<H'0A>
+          .SECTION    B,DATA,ALIGN=2
+L134:                            ; static: currentstrptr
+          .RES.L      1
+_count2:                         ; static: count2
+          .RES.W      1
+          .END

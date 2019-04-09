@@ -1,0 +1,40 @@
+H8S,H8/300 SERIES C COMPILER (Ver. 2.0D for Evaluation)28-Jun-2018  12:37:38  PAGE   1
+
+************ SOURCE LISTING ************
+
+FILE NAME: mon2ex1001.c
+
+  Seq File        Line Pi 0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+
+    1 mon2ex1001     1     short int x00=0x0002;
+    2 mon2ex1001     2     short int x10=0x0003;
+    3 mon2ex1001     3     short int y0; /* y0=x00*x10 */
+    4 mon2ex1001     4     
+    5 mon2ex1001     5     int Multiplication(short int x0,short int x1){
+    6 mon2ex1001     6             short int x2;
+    7 mon2ex1001     7             x2=0;
+    8 mon2ex1001     8             do {
+    9 mon2ex1001     9             if(x1&1) x2+=x0;
+   10 mon2ex1001    10             x0<<=1;
+   11 mon2ex1001    11             x1>>=1;
+   12 mon2ex1001    12         } while (x1);
+   13 mon2ex1001    13         return x2;
+   14 mon2ex1001    14     }
+   15 mon2ex1001    15     
+   16 mon2ex1001    16     int main()
+   17 mon2ex1001    17     {
+   18 mon2ex1001    18         unsigned short int x0,x1,x2;
+   19 mon2ex1001    19         y0=Multiplication(x00,x10);
+   20 mon2ex1001    20     }
+H8S,H8/300 SERIES C COMPILER (Ver. 2.0D for Evaluation)28-Jun-2018  12:37:38  PAGE   1
+
+** ASSEMBLER/LINKAGE EDITOR LIMITS INFORMATION **
+
+NUMBER OF EXTERNAL REFERENCE  SYMBOLS:        0 
+NUMBER OF EXTERNAL DEFINITION SYMBOLS:        5 
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:          7 
+
+
+
+********* CPU MODE INFORMATION *********
+
+cpu=300ha

@@ -1,0 +1,52 @@
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 06/04/18 10:48:28                                                              PAGE     1
+PROGRAM NAME =
+
+    1                             1         .CPU 300HA
+    2                             2     
+    3        000FFFC8             3     P5DDR  .EQU H'FFFC8
+    4        000FFFCA             4     P5DR   .EQU H'FFFCA
+    5        000FFFC1             5     P2DDR  .EQU H'FFFC1
+    6        000FFFC3             6     P2DR   .EQU H'FFFC3
+    7        000FFFD8             7     P2PCR  .EQU H'FFFD8
+    8                             8     
+    9 0FF030                      9         .SECTION A,DATA,LOCATE=H'0FF030
+   10 0FF030 000FF130            10         .DATA.L H'0FF130  ;リセットベクトル
+   11                            11     
+   12 0FF130                     12         .SECTION P,CODE,LOCATE=H'0FF130
+   13 0FF130 7A07000FFF00        13         MOV.L  #H'FFF00,ER7  ;スタックポインタ設定
+   14 0FF136 F901                14         MOV.B #H'1, R1L      ; 00000001(2進数表現) を 8bitレジスタR1Lへ
+   15 0FF138 6AA9000FFFC8        15         MOV.B R1L, @P5DDR    ; 8bitレジスタR1Lにある値をアドレスP5DDRへ
+   16 0FF13E F900                16         MOV.B #H'0, R1L      ; 00000000(2進数表現) を 8bitレジスタR1Lへ
+   17 0FF140 6AA9000FFFC1        17         MOV.B R1L, @P2DDR    ; 8bitレジスタR1Lにある値をアドレスP2DDRへ
+   18 0FF146 F901                18         MOV.B #H'1, R1L      ; 00000001(2進数表現) を 8bitレジスタR1Lへ
+   19 0FF148 6AA9000FFFD8        19         MOV.B R1L, @P2PCR    ; 8bitレジスタR1Lにある値をアドレスP2PCRへ
+   20 0FF14E                     20     EternalLoop:
+   21 0FF14E 6A28000FFFC3        21         MOV.B @P2DR, R0L     ; アドレスP2DR を 8bitレジスタR0Lへ
+   22 0FF154 6AA8000FFFCA        22         MOV.B R0L, @P5DR     ; 8bitレジスタR0Lにある値をアドレスP5DRへ
+   23 0FF15A 40F2                23         BRA EternalLoop      ;永久ループ
+   24                            24     
+   25                            25         .END
+  *****TOTAL ERRORS       0
+  *****TOTAL WARNINGS     0
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 06/04/18 10:48:28                                                              PAGE     2
+
+*** CROSS REFERENCE LIST
+
+NAME                             SECTION  ATTR VALUE             SEQUENCE
+
+A                                A        SCT  000FF030      9*
+EternalLoop                      P             000FF14E     20*   23 
+P                                P        SCT  000FF130     12*
+P2DDR                                     EQU  000FFFC1      5*   17 
+P2DR                                      EQU  000FFFC3      6*   21 
+P2PCR                                     EQU  000FFFD8      7*   19 
+P5DDR                                     EQU  000FFFC8      3*   15 
+P5DR                                      EQU  000FFFCA      4*   22 
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 06/04/18 10:48:28                                                              PAGE     3
+
+*** SECTION DATA LIST
+
+SECTION                          ATTRIBUTE    SIZE             START
+
+A                                ABS-DATA    0000004           0FF030          
+P                                ABS-CODE    000002C           0FF130          

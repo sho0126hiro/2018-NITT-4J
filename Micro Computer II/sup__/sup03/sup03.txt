@@ -1,0 +1,228 @@
+/***  sup03.txt  ***/
+
+1．課題
+	実際に動作させ，考察しなさい。また調べたことも書きなさい。
+	count1,count2,count3の様子やLEDの様子。
+
+	以下の内容を，考察に含むこと。
+	count1，count2，count3はどこに割り当てられたのか述べなさい。
+	根拠を示しながら説明しなさい。
+
+	count1の値が予想外な変化をした理由を述べなさい。
+
+2．使用したプログラム・実行結果
+	//ex2.c
+	/**********************************************************
+	msecwait関数で0.25秒ごとのLEDのON-OFFを行う
+	**********************************************************/
+	#include <3048fone.h>
+	#include "h8_3048fone.h"
+
+	void msecwait(int msec)
+	{
+		int i,j;
+		for (i=0;i<msec;i++) {
+			for (j=0;j<3352;j++);    /*3352は実測によって求めた値*/
+		}
+	}
+
+	int count1=1000;
+	int count2;
+
+	main()
+	{
+		int count3=3000;
+		count2=2000;
+		initSCI1(); /*シリアル通信ユニットSCI1の初期化*/
+		initLed();  /*LED初期化*/
+		while(1) {
+			SCI1_printf("%5d %5d %5d\n",count1++,count2++,count3++);
+			turnOnLed(0); /*LED0のON*/
+			turnOffLed(1); /*LED1のOFF*/
+			msecwait(250);
+			turnOffLed(0); /*LED0のOFF*/
+			turnOnLed(1); /*LED1のON*/
+			msecwait(250);
+		}
+	}
+	
+	//ex3.sub
+	START P,C,D(100),B(0FEF10)
+	EXIT
+	
+	//ex2.src(重要部分のみ）
+	          .EXPORT     _msecwait
+	          .EXPORT     _count1
+	          .EXPORT     _count2
+	          .EXPORT     _main
+	          .SECTION    P,CODE,ALIGN=2
+	_msecwait:                       ; function: msecwait
+	          SUB.W       R1,R1
+	          BRA         L456:8
+	L455:                             
+	          MOV.W       #3352:16,E0
+	L457:                             
+	          DEC.W       #1,E0
+	          BNE         L457:8
+	          INC.W       #1,R1
+	L456:                             
+	          CMP.W       R0,R1
+	          BLT         L455:8
+	          RTS
+	_main:                           ; function: main
+	          SUB.W       R3,R3
+	          MOV.W       #1:16,E4
+	          MOV.W       #250:16,R4
+	          MOV.L       #_count1:32,ER5
+	          MOV.L       #_count2:32,ER6
+	          MOV.W       #3000:16,E3
+	          MOV.W       #2000:16,R0
+	          MOV.W       R0,@ER6
+	          JSR         @_initSCI1:24
+	          JSR         @_initLed:24
+	L458:                             
+	          MOV.W       E3,R0
+	          INC.W       #1,E3
+	          PUSH.W      R0
+	          MOV.W       @ER6,R0
+	          INC.W       #1,R0
+	          MOV.W       R0,@ER6
+	          DEC.W       #1,R0
+	          PUSH.W      R0
+	          MOV.W       @ER5,R0
+	          INC.W       #1,R0
+	          MOV.W       R0,@ER5
+	          DEC.W       #1,R0
+	          PUSH.W      R0
+	          MOV.L       #L254:32,ER0
+	          PUSH.L      ER0
+	          JSR         @_SCI1_printf:24
+	          ADD.L       #10:32,SP
+	          MOV.W       R3,R0
+	          JSR         @_turnOnLed:24
+	          MOV.W       E4,R0
+	          JSR         @_turnOffLed:24
+	          MOV.W       R4,R0
+	          BSR         _msecwait:8
+	          MOV.W       R3,R0
+	          JSR         @_turnOffLed:24
+	          MOV.W       E4,R0
+	          JSR         @_turnOnLed:24
+	          MOV.W       R4,R0
+	          JSR         @_msecwait:24
+	          BRA         L458:8
+	          .SECTION    D,DATA,ALIGN=2
+	_count1:                         ; static: count1
+	          .DATA.W     H'03E8
+	          .SECTION    C,DATA,ALIGN=2
+	L254:
+	          .SDATAZ     "%5d %5d %5d"<H'0A>
+	          .SECTION    B,DATA,ALIGN=2
+	L134:                            ; static: currentstrptr
+	          .RES.L      1
+	_count2:                         ; static: count2
+	          .RES.W      1
+	          .END
+	
+	//ex2.MAP(重要部分のみ）
+	_count1                              H'000FEF10
+	_count2                              H'000FEF16
+	
+	//実行結果 LEDの様子
+	LEDは1秒間に2回交互に点滅をする．
+	（以下の動作を1秒で行い，これを繰り返す）
+			LED0  ON LED1 OFF
+			LED0 OFF LED1  ON
+			LED0  ON LED1 OFF
+			LED0 OFF LED1  ON
+			
+	ターミナルの出力：
+			32511  2000  3000
+			32512  2001  3001
+			32513  2002  3002
+			32514  2003  3003
+			32515  2004  3004
+			32516  2005  3005
+			32517  2006  3006
+			32518  2007  3007
+			32519  2008  3008
+			32520  2009  3009
+			32521  2010  3010
+			::::::::::::::::::
+3．考察
+	(1) 変数の割り当てについて
+		count1:初期化されているのでセクションD
+			ex2.src 1406-1408行目から読み取れる
+		
+			1406              .SECTION    D,DATA,ALIGN=2
+			1407    _count1:                         ; static: count1
+			1408              .DATA.W     H'03E8
+			
+			また，.DATA.W     H'03E8から，(03E8)16，
+			すなわち(1000)10に初期化されていることがわかる．
+			
+		count2:初期化されていないのでセクションB
+			ex2.src 1412-1416行目から読み取れる
+			
+			1412              .SECTION    B,DATA,ALIGN=2
+			1413    L134:                            ; static: currentstrptr
+			1414              .RES.L      1
+			1415    _count2:                         ; static: count2
+			1416              .RES.W      1
+			また，count2は.RES.Wより，2バイトの変数であることもわかる．
+			
+		count3:レジスタE3に割り当てられている．
+			ex2.src main関数内 1351行目から読み取れる
+			
+			1351              MOV.W       #3000:16,E3
+			
+			count3の初期値である3000をE3に代入し，初期化を行っている．
+			
+	(2) count1とcount2の変数の領域について
+		実際にプログラムを動作させ，MAPファイルを生成した．
+		MAPファイル内でcount1,count2についての記述内容は以下の通りである．
+			
+			_count1          H'000FEF10
+			_count2          H'000FEF16
+			
+			ROM領域は，0x00000-0x01FFFF (128kbyte)
+			RAM領域は，0xFEF10-0xFFF0F ( 4kbyte)であるため，
+			count1,count2，両方RAM領域におかれているのがわかる．
+			
+	(3) count1の値が予想外な変化をした理由
+		メモリの種類と，重要な特徴を以下にまとめる．
+		ROM:	
+				書き込みモードでのみ書き込むことができる．
+				電源が切れても内容は保たれる．
+				割り込みベクタテーブル，プログラム，定数，変数の初期値の格納場所
+				よって，プログラム中で値を変更することができない．
+		RAM:	
+				電源が切れると内容が消滅する．
+				変数，スタック（オート変数），戻りアドレス，レジスタ退避）の格納場所
+				プログラム中で値を変更できる．
+		
+		変数count1は，自動的にセクションDに割り当てられたが，
+		リンカによって，セクションDをRAMに割り当てた．
+		
+		変数count1,count2が割り当てられているセクションD,Bを
+		リンカスクリプトによって，RAMに割り当てる
+		
+			ex2.sub
+					START P,C(100),D,B(0FEF10)
+					EXIT
+		
+		ただし，count1が1000から始まらない．
+		リンカスクリプトでセクションDをRAMに割り当てた．これによって，マイコンに
+		プログラムを書き込んだ時には初期値として1000が書き込まれる．
+		しかし，書き込みモードから実行モードにする際に電源を切っている．
+		よって，せっかく1000が初期値として書き込まれたとしても，
+		電源が切れるとその内容が消滅し，不定値になるため，今回のような実行結果になる．
+
+4．まとめ
+	コンパイラが自動的にセクションを割り当てるため，メモリ領域の種類については，
+	リンカの内容を修正することによって，今回の課題プログラムの実行が
+	プログラマの意図通りに動作させることができる．
+	しかし，本課題のように，ただセクションDをRAMに割り当てたとしても，
+	プログラム書き込みモードから実行モードに変える際に電源を切ってしまうため，
+	せっかく初期化した変数の値が不定値になってしまう．
+	このような問題をこれからの課題で解決していく．

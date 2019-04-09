@@ -1,0 +1,85 @@
+
+ H8/3048 Series Advanced Mode Monitor Ver. 3.0A
+ Copyright (C) 2003 Renesas Technology Corp.
+
+: l
+  Top Address=FF030
+  End Address=FF23B           
+: da ff200 ff23a
+  <ADDR>  <CODE>                <MNEMONIC> <OPERAND>
+  FF200   6B28000FF802          MOV.W      @H'FF802:24,E0
+  FF206   6B20000FF800          MOV.W      @H'FF800:24,R0
+  FF20C   5508                  BSR        FF216:8
+  FF20E   6BA0000FF804          MOV.W      R0,@H'FF804:24
+  FF214   40FE                  BRA        FF214:8
+  FF216   1999                  SUB.W      E1,E1
+  FF218   79010001              MOV.W      #H'0001:16,R1
+  FF21C   4004                  BRA        FF222:8
+  FF21E   1018                  SHLL.W     E0
+  FF220   1011                  SHLL.W     R1
+  FF222   1D08                  CMP.W      R0,E0
+  FF224   45F8                  BCS        FF21E:8
+  FF226   400C                  BRA        FF234:8
+  FF228   1D08                  CMP.W      R0,E0
+  FF22A   4204                  BHI        FF230:8
+  FF22C   1980                  SUB.W      E0,R0
+  FF22E   0919                  ADD.W      R1,E1
+  FF230   1118                  SHLR.W     E0
+  FF232   1111                  SHLR.W     R1
+  FF234   0D11                  MOV.W      R1,R1
+  FF236   46F0                  BNE        FF228:8
+  FF238   0D90                  MOV.W      E1,R0
+  FF23A   5470                  RTS        
+: b ff214
+: m ff800
+  FF800   FF  ?  00
+  FF801   FF  ?  03
+  FF802   FF  ?  00
+  FF803   FF  ?  02
+  FF804   FF  ?  .
+: .pc
+  PC=0FF200  ? .
+: g
+  Break at PC=FF214
+  PC=0FF214  CCR=81:I......C  SP=000FFF00
+  ER0=00010001  ER1=00010000  ER2=00000000  ER3=00000000
+  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFF00
+: d ff200         
+: d ff800 ff80f
+  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+  FF800   00 03 00 02 00 01 FF 7F  7F FF FF EF FB FF F7 FF   "................"
+: .pc
+  PC=0FF214  ?  ff200
+  CCR=81  ?  .
+: m ff800
+  FF800   00  ?  10
+  FF801   03  ?  00
+  FF802   00  ?  00
+  FF803   02  ?  33
+  FF804   00  ?  .
+: g
+  Break at PC=FF214
+  PC=0FF214  CCR=81:I......C  SP=000FFF00
+  ER0=00190050  ER1=00500000  ER2=00000000  ER3=00000000
+  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFF00
+: d ff800 ff80f
+  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+  FF800   10 00 00 33 00 50 FF 7F  7F FF FF EF FB FF F7 FF   "...3.P.........."
+: .pc
+  PC=0FF214  ?  ff200
+  CCR=81  ?  .
+: m ff800
+  FF800   10  ?  aaaa    aa
+  FF801   00  ?  aa
+  FF802   00  ?  00
+  FF803   33  ?  bb
+  FF804   00  ?  .
+: g
+  Break at PC=FF214
+  PC=0FF214  CCR=81:I......C  SP=000FFF00
+  ER0=005D00E9  ER1=00E90000  ER2=00000000  ER3=00000000
+  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFF00
+: d ff800 ff80f
+  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+  FF800   AA AA 00 BB 00 E9 FF 7F  7F FF FF EF FB FF F7 FF   "................"
+: 

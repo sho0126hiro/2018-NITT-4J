@@ -1,0 +1,1417 @@
+
+---------- EX2.SRC0
+          .CPU        300HA
+          .IMPORT     $MULL$3
+          .IMPORT     $DIVUL$3
+          .IMPORT     $sp_regsv$3
+          .IMPORT     $spregld2$3
+          .EXPORT     _SCI0device
+          .EXPORT     _SCI1device
+          .EXPORT     _LCDdevice
+          .EXPORT     _STRdevice
+          .EXPORT     _initSCI1
+          .EXPORT     _SCI1_getChar
+          .EXPORT     _SCI1_chkgetChar
+          .EXPORT     _SCI1_putString
+          .EXPORT     _SCI1_getString
+          .EXPORT     _SCI1_putChar
+          .EXPORT     _initSCI0
+          .EXPORT     _SCI0_getChar
+          .EXPORT     _SCI0_chkgetChar
+          .EXPORT     _SCI0_putString
+          .EXPORT     _SCI0_getString
+          .EXPORT     _atoi
+          .EXPORT     _SCI1_getInt4
+          .EXPORT     _SCI0_getInt4
+          .EXPORT     _SCI0_putChar
+          .EXPORT     _LCD_putchar
+          .EXPORT     _LCD_puts
+          .EXPORT     _initLCD
+          .EXPORT     _LCD_gotoxy
+          .EXPORT     _LCD_clrscr
+          .EXPORT     _hexstring
+          .EXPORT     _Device_printf
+          .EXPORT     _SCI0_printf
+          .EXPORT     _SCI1_printf
+          .EXPORT     _LCD_printf
+          .EXPORT     _sprintf
+          .EXPORT     _initLed
+          .EXPORT     _turnOnLed
+          .EXPORT     _turnOffLed
+          .EXPORT     _initPushSW
+          .EXPORT     _checkPushSW
+          .EXPORT     _init8BitSW
+          .EXPORT     _check8BitSW
+          .EXPORT     _initTimer1Int
+          .EXPORT     _msecwait
+          .EXPORT     _count1
+          .EXPORT     _count2
+          .EXPORT     _main
+          .SECTION    P,CODE,ALIGN=2
+_initSCI1:                       ; function: initSCI1
+          SUB.B       R0L,R0L
+          MOV.B       R0L,@16777146:8
+          MOV.B       R0L,@16777144:8
+          MOV.B       #19:8,R0L
+          MOV.B       R0L,@16777145:8
+          SUB.W       R0,R0
+L272:                             
+          INC.W       #1,R0
+          CMP.W       #1000:16,R0
+          BLT         L272:8
+          MOV.B       #48:8,R0L
+          MOV.B       R0L,@16777146:8
+          RTS
+_SCI1_getChar:                   ; function: SCI1_getChar
+L274:                             
+          MOV.B       @16777148:8,R1L
+          EXTU.W      R1
+          MOV.W       R1,R0
+          AND.W       #56:16,R0
+          BEQ         L275:8
+          BCLR.B      #6,@16777148:8
+          BCLR.B      #5,@16777148:8
+          BCLR.B      #4,@16777148:8
+          BCLR.B      #3,@16777148:8
+          MOV.W       #-2:16,R0
+          RTS
+L275:                             
+          BTST.B      #6,R1L
+          BEQ         L274:8
+          BCLR.B      #6,@16777148:8
+          MOV.B       @16777149:8,R1L
+          EXTU.W      R1
+          MOV.W       R1,R0
+          RTS
+_SCI1_chkgetChar:                ; function: SCI1_chkgetChar
+          MOV.B       @16777148:8,R1L
+          EXTU.W      R1
+          MOV.W       R1,R0
+          AND.W       #56:16,R0
+          BEQ         L278:8
+          BCLR.B      #6,@16777148:8
+          BCLR.B      #5,@16777148:8
+          BCLR.B      #4,@16777148:8
+          BCLR.B      #3,@16777148:8
+          MOV.W       #-2:16,R0
+          RTS
+L278:                             
+          BTST.B      #6,R1L
+          BEQ         L280:8
+          MOV.B       @16777149:8,R1L
+          EXTU.W      R1
+          BCLR.B      #6,@16777148:8
+          MOV.W       R1,R0
+          RTS
+L280:                             
+          MOV.W       #-1:16,R0
+          RTS
+_SCI1_getString:                 ; function: SCI1_getString
+          JSR         @$sp_regsv$3:24
+          MOV.L       ER0,ER6
+          MOV.W       R1,E5
+          SUB.W       R5,R5
+          DEC.W       #1,E5
+          MOV.W       E5,R4
+          BRA         L283:8
+L282:                             
+          BSR         _SCI1_getChar:8
+          MOV.W       R0,E5
+          MOV.B       R0L,@ER6
+          CMP.B       #13:8,R0L
+          BEQ         L460:8
+          MOV.W       E5,E5
+          BLT         L460:8
+          MOV.B       @ER6,R0L
+          CMP.B       #8:8,R0L
+          BNE         L287:8
+          DEC.L       #2,ER6
+          DEC.W       #2,R5
+L287:                             
+          MOV.B       @ER6,R0L
+          CMP.B       #10:8,R0L
+          BEQ         L288:8
+          INC.L       #1,ER6
+          BRA         L289:8
+L288:                             
+          DEC.W       #1,R5
+L289:                             
+          INC.W       #1,R5
+L283:                             
+          CMP.W       R4,R5
+          BLT         L282:8
+L460:                             
+          SUB.B       R0L,R0L
+          MOV.B       R0L,@ER6
+          INC.W       #1,R5
+          MOV.W       R5,R0
+          JMP         @$spregld2$3:24
+_SCI1_putChar:                   ; function: SCI1_putChar
+          PUSH.W      R6
+          MOV.B       R0L,R6H
+          CMP.B       #10:8,R6H
+          BNE         L290:8
+          MOV.B       #13:8,R0L
+          BSR         _SCI1_putChar:8
+L290:                             
+L291:                             
+          MOV.B       @16777148:8,R0L
+          BTST.B      #7,R0L
+          BEQ         L291:8
+          MOV.B       R6H,@16777147:8
+          BCLR.B      #7,@16777148:8
+          POP.W       R6
+          RTS
+_SCI1_putString:                 ; function: SCI1_putString
+          PUSH.L      ER6
+          MOV.L       ER0,ER6
+          BRA         L294:8
+L293:                             
+          MOV.B       @ER6,R0L
+          BSR         _SCI1_putChar:8
+          INC.L       #1,ER6
+L294:                             
+          MOV.B       @ER6,R0L
+          BNE         L293:8
+          POP.L       ER6
+          RTS
+_initSCI0:                       ; function: initSCI0
+          SUB.B       R0L,R0L
+          MOV.B       R0L,@16777138:8
+          MOV.B       R0L,@16777136:8
+          MOV.B       #19:8,R0L
+          MOV.B       R0L,@16777137:8
+          SUB.W       R0,R0
+L295:                             
+          INC.W       #1,R0
+          CMP.W       #1000:16,R0
+          BLT         L295:8
+          MOV.B       #48:8,R0L
+          MOV.B       R0L,@16777138:8
+          RTS
+_SCI0_getChar:                   ; function: SCI0_getChar
+L297:                             
+          MOV.B       @16777140:8,R1L
+          EXTU.W      R1
+          MOV.W       R1,R0
+          AND.W       #56:16,R0
+          BEQ         L298:8
+          BCLR.B      #6,@16777140:8
+          BCLR.B      #5,@16777140:8
+          BCLR.B      #4,@16777140:8
+          BCLR.B      #3,@16777140:8
+          MOV.W       #-2:16,R0
+          RTS
+L298:                             
+          BTST.B      #6,R1L
+          BEQ         L297:8
+          BCLR.B      #6,@16777140:8
+          MOV.B       @16777141:8,R1L
+          EXTU.W      R1
+          MOV.W       R1,R0
+          RTS
+_SCI0_chkgetChar:                ; function: SCI0_chkgetChar
+          MOV.B       @16777140:8,R1L
+          EXTU.W      R1
+          MOV.W       R1,R0
+          AND.W       #56:16,R0
+          BEQ         L301:8
+          BCLR.B      #6,@16777140:8
+          BCLR.B      #5,@16777140:8
+          BCLR.B      #4,@16777140:8
+          BCLR.B      #3,@16777140:8
+          MOV.W       #-2:16,R0
+          RTS
+L301:                             
+          BTST.B      #6,R1L
+          BEQ         L303:8
+          MOV.B       @16777141:8,R1L
+          EXTU.W      R1
+          BCLR.B      #6,@16777140:8
+          MOV.W       R1,R0
+          RTS
+L303:                             
+          MOV.W       #-1:16,R0
+          RTS
+_SCI0_getString:                 ; function: SCI0_getString
+          JSR         @$sp_regsv$3:24
+          MOV.L       ER0,ER6
+          MOV.W       R1,E5
+          SUB.W       R5,R5
+          DEC.W       #1,E5
+          MOV.W       E5,R4
+          BRA         L306:8
+L305:                             
+          BSR         _SCI0_getChar:8
+          MOV.W       R0,E5
+          MOV.B       R0L,@ER6
+          CMP.B       #13:8,R0L
+          BEQ         L461:8
+          MOV.W       E5,E5
+          BLT         L461:8
+          MOV.B       @ER6,R0L
+          CMP.B       #8:8,R0L
+          BNE         L310:8
+          DEC.L       #2,ER6
+          DEC.W       #2,R5
+L310:                             
+          MOV.B       @ER6,R0L
+          CMP.B       #10:8,R0L
+          BEQ         L311:8
+          INC.L       #1,ER6
+          BRA         L312:8
+L311:                             
+          DEC.W       #1,R5
+L312:                             
+          INC.W       #1,R5
+L306:                             
+          CMP.W       R4,R5
+          BLT         L305:8
+L461:                             
+          SUB.B       R0L,R0L
+          MOV.B       R0L,@ER6
+          INC.W       #1,R5
+          MOV.W       R5,R0
+          JMP         @$spregld2$3:24
+_atoi:                           ; function: atoi
+          JSR         @$sp_regsv$3:24
+          MOV.L       ER0,ER3
+          SUB.L       ER5,ER5
+          SUB.W       R4,R4
+          MOV.W       R4,E4
+          SUB.W       E6,E6
+          MOV.W       E6,R2
+          MOV.B       @ER3,R0L
+          JMP         @L462:24
+L313:                             
+          CMP.W       #45:16,R6
+          BNE         L315:8
+          MOV.W       #1:16,E4
+L315:                             
+          CMP.W       #97:16,R6
+          BLT         L316:8
+          CMP.W       #122:16,R6
+          BGT         L316:8
+          ADD.W       #-32:16,R6
+L316:                             
+          CMP.W       #48:16,R6
+          BNE         L317:8
+          MOV.W       #1:16,R4
+L317:                             
+          CMP.W       #1:16,E6
+          BNE         L318:8
+          CMP.W       #48:16,R6
+          BLT         L319:8
+          CMP.W       #57:16,R6
+          BGT         L319:8
+          SUB.W       #48:16,R6
+          BRA         L320:8
+L319:                             
+          CMP.W       #65:16,R6
+          BLT         L321:8
+          CMP.W       #70:16,R6
+          BGT         L321:8
+          ADD.W       #-55:16,R6
+L321:                             
+L320:                             
+          MOV.L       ER5,ER0
+          SHLL.L      ER0
+          SHLL.L      ER0
+          SHLL.L      ER0
+          SHLL.L      ER0
+          MOV.W       R6,R1
+          EXTS.L      ER1
+          ADD.L       ER1,ER0
+          MOV.L       ER0,ER5
+L318:                             
+          CMP.W       #1:16,R4
+          BNE         L322:8
+          CMP.W       #88:16,R6
+          BNE         L322:8
+          MOV.W       #1:16,E6
+L322:                             
+          MOV.W       E6,E6
+          BNE         L323:8
+          CMP.W       #48:16,R6
+          BLT         L323:8
+          CMP.W       #57:16,R6
+          BGT         L323:8
+          SUB.W       #48:16,R6
+          MOV.L       ER5,ER0
+          MOV.L       #10:32,ER1
+          JSR         @$MULL$3:24
+          MOV.W       R6,R1
+          EXTS.L      ER1
+          ADD.L       ER1,ER0
+          MOV.L       ER0,ER5
+L323:                             
+          MOV.W       R2,R6
+          INC.W       #1,R6
+          MOV.W       R6,R2
+          MOV.W       R6,R0
+          EXTS.L      ER0
+          ADD.L       ER3,ER0
+          MOV.B       @ER0,R0L
+L462:                             
+          EXTS.W      R0
+          MOV.W       R0,R6
+          BNE         L313:16
+          CMP.W       #1:16,E4
+          BNE         L324:8
+          NEG.L       ER5
+L324:                             
+          MOV.L       ER5,ER0
+          JMP         @$spregld2$3:24
+_SCI1_getInt4:                   ; function: SCI1_getInt4
+          PUSH.L      ER6
+          SUB.L       #16:32,SP
+          MOV.L       ER0,ER6
+          JSR         @_SCI1_putString:24
+          MOV.W       #16:16,R1
+          MOV.L       SP,ER0
+          JSR         @_SCI1_getString:24
+          MOV.L       SP,ER0
+          JSR         @_atoi:24
+          ADD.L       #16:32,SP
+          POP.L       ER6
+          RTS
+_SCI0_getInt4:                   ; function: SCI0_getInt4
+          PUSH.L      ER6
+          SUB.L       #16:32,SP
+          MOV.L       ER0,ER6
+          BSR         _SCI0_putString:8
+          MOV.W       #16:16,R1
+          MOV.L       SP,ER0
+          JSR         @_SCI0_getString:24
+          MOV.L       SP,ER0
+          JSR         @_atoi:24
+          ADD.L       #16:32,SP
+          POP.L       ER6
+          RTS
+_SCI0_putChar:                   ; function: SCI0_putChar
+          PUSH.W      R6
+          MOV.B       R0L,R6H
+          CMP.B       #10:8,R6H
+          BNE         L328:8
+          MOV.B       #13:8,R0L
+          BSR         _SCI0_putChar:8
+L328:                             
+L329:                             
+          MOV.B       @16777140:8,R0L
+          BTST.B      #7,R0L
+          BEQ         L329:8
+          MOV.B       R6H,@16777139:8
+          BCLR.B      #7,@16777140:8
+          POP.W       R6
+          RTS
+_SCI0_putString:                 ; function: SCI0_putString
+          PUSH.L      ER6
+          MOV.L       ER0,ER6
+          BRA         L332:8
+L331:                             
+          MOV.B       @ER6,R0L
+          BSR         _SCI0_putChar:8
+          INC.L       #1,ER6
+L332:                             
+          MOV.B       @ER6,R0L
+          BNE         L331:8
+          POP.L       ER6
+          RTS
+L102:                            ; function: LCD_waitmsec
+          SUB.W       R1,R1
+          BRA         L334:8
+L333:                             
+          MOV.W       #4200:16,E0
+L335:                             
+          DEC.W       #1,E0
+          BNE         L335:8
+          INC.W       #1,R1
+L334:                             
+          CMP.W       R0,R1
+          BCS         L333:8
+          RTS
+L108:                            ; function: LCD_waitmicrosec
+          SUB.W       R1,R1
+          BRA         L337:8
+L336:                             
+          MOV.W       #4:16,E0
+L338:                             
+          DEC.W       #1,E0
+          BNE         L338:8
+          INC.W       #1,R1
+L337:                             
+          CMP.W       R0,R1
+          BCS         L336:8
+          RTS
+L114:                            ; function: LCD_putCommand
+          MOV.B       R0L,R0H
+          MOV.B       @16777158:8,R0L
+          AND.B       #-16:8,R0L
+          OR.B        R0H,R0L
+          MOV.B       R0L,@16777158:8
+          BSET.B      #5,@16777158:8
+          MOV.W       #5:16,R0
+          BSR         L108:8
+          BCLR.B      #5,@16777158:8
+          MOV.W       #40:16,R0
+          BRA         L108:8
+L117:                            ; function: LCD_putCommand2
+          PUSH.W      R6
+          MOV.B       R0L,R6L
+          SHAR.B      R0L
+          SHAR.B      R0L
+          SHAR.B      R0L
+          SHAR.B      R0L
+          AND.B       #15:8,R0L
+          BSR         L114:8
+          AND.B       #15:8,R6L
+          MOV.B       R6L,R0L
+          BSR         L114:8
+          POP.W       R6
+          RTS
+_LCD_putchar:                    ; function: LCD_putchar
+          PUSH.W      R6
+          MOV.B       R0L,R6L
+          BSET.B      #4,@16777158:8
+          SHAR.B      R0L
+          SHAR.B      R0L
+          SHAR.B      R0L
+          SHAR.B      R0L
+          AND.B       #15:8,R0L
+          BSR         L114:8
+          AND.B       #15:8,R6L
+          MOV.B       R6L,R0L
+          BSR         L114:8
+          BCLR.B      #4,@16777158:8
+          POP.W       R6
+          RTS
+_LCD_puts:                       ; function: LCD_puts
+          PUSH.L      ER6
+          MOV.L       ER0,ER6
+          BRA         L340:8
+L339:                             
+          MOV.B       @ER6+,R0L
+          BSR         _LCD_putchar:8
+L340:                             
+          MOV.B       @ER6,R0L
+          BNE         L339:8
+          POP.L       ER6
+          RTS
+_initLCD:                        ; function: initLCD
+          PUSH.W      R6
+          MOV.B       #63:8,R0L
+          MOV.B       R0L,@16777156:8
+          MOV.B       @16777158:8,R0L
+          AND.B       #-64:8,R0L
+          MOV.B       R0L,@16777158:8
+          MOV.W       #30:16,R0
+          JSR         @L102:24
+          MOV.B       #3:8,R6L
+          MOV.B       R6L,R0L
+          JSR         @L114:24
+          MOV.W       #4100:16,R0
+          JSR         @L108:24
+          MOV.B       R6L,R0L
+          JSR         @L114:24
+          MOV.W       #100:16,R0
+          JSR         @L108:24
+          MOV.B       R6L,R0L
+          JSR         @L114:24
+          MOV.W       #100:16,R0
+          JSR         @L108:24
+          MOV.B       #2:8,R0L
+          JSR         @L114:24
+          MOV.B       #40:8,R0L
+          JSR         @L117:24
+          MOV.B       #12:8,R0L
+          JSR         @L117:24
+          MOV.B       #6:8,R0L
+          JSR         @L117:24
+          MOV.B       #1:8,R0L
+          JSR         @L117:24
+          MOV.W       #1640:16,R0
+          JSR         @L108:24
+          POP.W       R6
+          RTS
+_LCD_gotoxy:                     ; function: LCD_gotoxy
+          PUSH.L      ER6
+          MOV.W       R0,E6
+          MOV.W       E0,R6
+          MOV.B       #64:8,R6H
+          MULXU.B     R6H,R6
+          ADD.B       R0L,R6L
+          ADD.B       #-128:8,R6L
+          MOV.B       R6L,R0L
+          JSR         @L117:24
+          POP.L       ER6
+          RTS
+_LCD_clrscr:                     ; function: LCD_clrscr
+          MOV.B       #1:8,R0L
+          JSR         @L117:24
+          MOV.W       #1640:16,R0
+          JMP         @L108:24
+L136:                            ; function: STR_putChar
+          PUSH.W      R5
+          MOV.B       R0L,R5L
+          MOV.L       #L134:32,ER1
+          MOV.L       @ER1,ER0
+          MOV.B       R5L,@ER0
+          MOV.L       @ER1,ER0
+          INC.L       #1,ER0
+          MOV.L       ER0,@ER1
+          MOV.L       @ER1,ER1
+          SUB.B       R0L,R0L
+          MOV.B       R0L,@ER1
+          POP.W       R5
+          RTS
+L139:                            ; function: STR_putString
+          PUSH.L      ER6
+          MOV.L       ER0,ER6
+          BRA         L342:8
+L341:                             
+          MOV.B       @ER6+,R0L
+          BSR         L136:8
+L342:                             
+          MOV.B       @ER6,R0L
+          BNE         L341:8
+          POP.L       ER6
+          RTS
+_Device_printf:                  ; function: Device_printf
+          JSR         @$sp_regsv$3:24
+          SUB.L       #68:32,SP
+          MOV.W       R0,E5
+          MOV.L       ER1,@(46:16,SP)
+          MOV.L       @(92:16,SP),ER6
+          SUB.B       R5H,R5H
+          MOV.B       R5H,R4H
+          SUB.B       R0L,R0L
+          MOV.B       R0L,@(58:16,SP)
+          MOV.B       #32:8,R0L
+          MOV.B       R0L,@(50:16,SP)
+          MOV.B       #10:8,R0L
+          MOV.B       R0L,@(59:16,SP)
+          MOV.B       #32:8,R0L
+          MOV.B       R0L,@(57:16,SP)
+          MOV.L       SP,ER3
+          ADDS.L      #4,ER3
+          SUB.B       R5L,R5L
+          MOV.B       R5L,@(51:16,SP)
+          SUB.L       ER0,ER0
+          MOV.L       ER0,ER2
+          MOV.W       @_SCI0device:24,R0
+          CMP.W       R0,E5
+          BNE         L343:8
+          MOV.L       #_SCI0_putChar:32,ER0
+          MOV.L       ER0,@(60:16,SP)
+          MOV.L       #_SCI0_putString:32,ER0
+          MOV.L       ER0,@(52:16,SP)
+          BRA         L344:8
+L343:                             
+          MOV.W       @_SCI1device:24,R0
+          CMP.W       R0,E5
+          BNE         L345:8
+          MOV.L       #_SCI1_putChar:32,ER0
+          MOV.L       ER0,@(60:16,SP)
+          MOV.L       #_SCI1_putString:32,ER0
+          MOV.L       ER0,@(52:16,SP)
+          BRA         L346:8
+L345:                             
+          MOV.W       @_LCDdevice:24,R0
+          CMP.W       R0,E5
+          BNE         L347:8
+          MOV.L       #_LCD_putchar:32,ER0
+          MOV.L       ER0,@(60:16,SP)
+          MOV.L       #_LCD_puts:32,ER0
+          BRA         L463:8
+L347:                             
+          MOV.L       #L136:32,ER0
+          MOV.L       ER0,@(60:16,SP)
+          MOV.L       #L139:32,ER0
+L463:                             
+          MOV.L       ER0,@(52:16,SP)
+L346:                             
+L344:                             
+          MOV.L       #37:32,ER0
+          ADD.L       SP,ER0
+          MOV.L       ER0,@(42:16,SP)
+          JMP         @L350:24
+L349:                             
+          MOV.L       @(46:16,SP),ER0
+          MOV.B       @ER0,R4L
+          MOV.B       R4H,R4H
+          BNE         L351:8
+          CMP.B       #37:8,R4L
+          BNE         L352:8
+          MOV.B       #1:8,R4H
+          SUB.B       R5H,R5H
+          MOV.B       #32:8,R0L
+          MOV.B       R0L,@(50:16,SP)
+          SUB.B       R0L,R0L
+          MOV.B       R0L,@(59:16,SP)
+          MOV.B       R0L,@(58:16,SP)
+          MOV.L       @(42:16,SP),ER3
+          MOV.L       ER3,ER0
+          DEC.L       #1,ER3
+          SUB.B       R1L,R1L
+          MOV.B       R1L,@ER0
+          SUB.B       R5L,R5L
+          MOV.B       R5L,@(51:16,SP)
+          MOV.B       #43:8,R0L
+          MOV.B       R0L,@(57:16,SP)
+          JMP         @L354:24
+L352:                             
+          MOV.B       R4L,R0L
+          MOV.L       @(60:16,SP),ER1
+          JSR         @ER1
+          JMP         @L354:24
+L351:                             
+          CMP.B       #108:8,R4L
+          BNE         L355:8
+          BSET.B      #1,R4H
+          JMP         @L356:24
+L355:                             
+          CMP.B       #48:8,R4L
+          BLT         L357:8
+          CMP.B       #57:8,R4L
+          BGT         L357:8
+          MOV.B       R5H,R5H
+          BNE         L358:8
+          CMP.B       #48:8,R4L
+          BNE         L358:8
+          MOV.B       #48:8,R0L
+          MOV.B       R0L,@(50:16,SP)
+          JMP         @L361:24
+L358:                             
+          MOV.B       #10:8,R0L
+          MULXU.B     R5H,R0
+          ADD.B       R4L,R0L
+          ADD.B       #-48:8,R0L
+          MOV.B       R0L,R5H
+          CMP.B       #32:8,R0L
+          BLS         L361:16
+          MOV.B       #32:8,R5H
+          JMP         @L361:24
+L357:                             
+          CMP.B       #45:8,R4L
+          BNE         L362:8
+          MOV.B       #1:8,R0L
+          MOV.B       R0L,@(58:16,SP)
+          JMP         @L363:24
+L362:                             
+          CMP.B       #100:8,R4L
+          BNE         L364:8
+          BSET.B      #2,R4H
+          MOV.B       #10:8,R0L
+          MOV.B       R0L,@(59:16,SP)
+          JMP         @L365:24
+L364:                             
+          CMP.B       #117:8,R4L
+          BNE         L366:8
+          MOV.B       #10:8,R0L
+          MOV.B       R0L,@(59:16,SP)
+          JMP         @L367:24
+L366:                             
+          CMP.B       #120:8,R4L
+          BNE         L368:8
+          MOV.B       #16:8,R0L
+          MOV.B       R0L,@(59:16,SP)
+          JMP         @L369:24
+L368:                             
+          CMP.B       #88:8,R4L
+          BNE         L370:8
+          MOV.B       #16:8,R0L
+          MOV.B       R0L,@(51:16,SP)
+          MOV.B       R0L,@(59:16,SP)
+          JMP         @L371:24
+L370:                             
+          CMP.B       #111:8,R4L
+          BNE         L372:8
+          MOV.B       #8:8,R0L
+          MOV.B       R0L,@(59:16,SP)
+          JMP         @L373:24
+L372:                             
+          CMP.B       #98:8,R4L
+          BNE         L374:8
+          MOV.B       #2:8,R0L
+          MOV.B       R0L,@(59:16,SP)
+          JMP         @L375:24
+L374:                             
+          CMP.B       #112:8,R4L
+          BNE         L376:8
+          MOV.B       #16:8,R0L
+          MOV.B       R0L,@(51:16,SP)
+          MOV.B       R0L,@(59:16,SP)
+          MOV.B       #8:8,R5H
+          MOV.B       #48:8,R0L
+          MOV.B       R0L,@(50:16,SP)
+          BSET.B      #1,R4H
+          JMP         @L377:24
+L376:                             
+          CMP.B       #99:8,R4L
+          BNE         L378:8
+          MOV.L       ER6,ER0
+          INC.L       #2,ER0
+          MOV.L       ER0,@(38:16,SP)
+          BTST.B      #0,R0L
+          BEQ         L379:8
+          INC.L       #1,ER0
+          BRA         L380:8
+L379:                             
+          MOV.L       @(38:16,SP),ER0
+L380:                             
+          MOV.L       ER0,ER6
+          DEC.L       #2,ER0
+          MOV.L       ER0,ER4
+          BTST.B      #0,R0L
+          BEQ         L381:8
+          MOV.L       ER4,ER1
+          DEC.L       #1,ER1
+          BRA         L382:8
+L381:                             
+          MOV.L       ER4,ER1
+L382:                             
+          MOV.B       @(1:16,ER1),R0L
+          MOV.L       @(60:16,SP),ER1
+          JSR         @ER1
+          SUB.B       R4H,R4H
+          JMP         @L383:24
+L378:                             
+          CMP.B       #115:8,R4L
+          BNE         L384:16
+          MOV.B       R5H,R5H
+          BEQ         L385:16
+          SUB.B       R5L,R5L
+          MOV.L       ER6,ER0
+          ADDS.L      #4,ER0
+          MOV.L       ER0,@(38:16,SP)
+          BTST.B      #0,R0L
+          BEQ         L386:8
+          INC.L       #1,ER0
+          BRA         L387:8
+L386:                             
+          MOV.L       @(38:16,SP),ER0
+L387:                             
+          MOV.L       ER0,ER6
+          SUBS.L      #4,ER0
+          MOV.L       ER0,ER4
+          BTST.B      #0,R0L
+          BEQ         L388:8
+          DEC.L       #1,ER0
+          BRA         L389:8
+L388:                             
+          MOV.L       ER4,ER0
+L389:                             
+          MOV.L       @ER0,ER3
+          BRA         L391:8
+L390:                             
+          INC.B       R5L
+L391:                             
+          MOV.B       R5L,R0L
+          EXTU.W      R0
+          EXTU.L      ER0
+          ADD.L       ER3,ER0
+          MOV.B       @ER0,R1L
+          BNE         L390:8
+          MOV.B       @(58:16,SP),R0L
+          BNE         L392:8
+          MOV.B       R5L,R4L
+          BRA         L394:8
+L393:                             
+          MOV.B       #32:8,R0L
+          MOV.L       @(60:16,SP),ER1
+          JSR         @ER1
+          INC.B       R4L
+L394:                             
+          CMP.B       R5H,R4L
+          BCS         L393:8
+L392:                             
+          MOV.L       ER3,ER0
+          MOV.L       @(52:16,SP),ER1
+          JSR         @ER1
+          MOV.B       @(58:16,SP),R0L
+          BEQ         L464:8
+          MOV.B       R5L,R4L
+          BRA         L397:8
+L396:                             
+          MOV.B       #32:8,R0L
+          MOV.L       @(60:16,SP),ER1
+          JSR         @ER1
+          INC.B       R4L
+L397:                             
+          CMP.B       R5H,R4L
+          BCS         L396:8
+          BRA         L464:8
+L385:                             
+          MOV.L       ER6,ER0
+          ADDS.L      #4,ER0
+          MOV.L       ER0,@(38:16,SP)
+          BTST.B      #0,R0L
+          BEQ         L399:8
+          INC.L       #1,ER0
+          BRA         L400:8
+L399:                             
+          MOV.L       @(38:16,SP),ER0
+L400:                             
+          MOV.L       ER0,ER6
+          SUBS.L      #4,ER0
+          MOV.L       ER0,ER4
+          BTST.B      #0,R0L
+          BEQ         L401:8
+          MOV.L       ER4,ER1
+          DEC.L       #1,ER1
+          BRA         L402:8
+L401:                             
+          MOV.L       ER4,ER1
+L402:                             
+          MOV.L       @ER1,ER0
+          MOV.L       @(52:16,SP),ER1
+          JSR         @ER1
+          BRA         L464:8
+L384:                             
+          MOV.B       R4L,R0L
+          MOV.L       @(60:16,SP),ER1
+          JSR         @ER1
+L464:                             
+          SUB.B       R4H,R4H
+L383:                             
+L377:                             
+L375:                             
+L373:                             
+L371:                             
+L369:                             
+L367:                             
+L365:                             
+L363:                             
+L361:                             
+L356:                             
+          MOV.B       @(59:16,SP),R0L
+          BEQ         L404:16
+          AND.B       #6:8,R4H
+          MOV.B       R4H,R0L
+          BEQ         L262:8
+          CMP.B       #2:8,R0L
+          BEQ         L263:8
+          CMP.B       #4:8,R0L
+          BEQ         L264:8
+          CMP.B       #6:8,R0L
+          BEQ         L265:16
+          JMP         @L425:24
+L262:                            ; case label 
+          MOV.L       ER6,ER4
+          INC.L       #2,ER4
+          BTST.B      #0,R4L
+          BEQ         L406:8
+          MOV.L       ER4,ER0
+          INC.L       #1,ER0
+          BRA         L407:8
+L406:                             
+          MOV.L       ER4,ER0
+L407:                             
+          MOV.L       ER0,ER6
+          DEC.L       #2,ER0
+          MOV.L       ER0,@(38:16,SP)
+          BTST.B      #0,R0L
+          BEQ         L408:8
+          DEC.L       #1,ER0
+          BRA         L409:8
+L408:                             
+          MOV.L       @(38:16,SP),ER0
+L409:                             
+          MOV.W       @ER0,R0
+          EXTU.L      ER0
+          JMP         @L465:24
+L263:                            ; case label 
+          MOV.L       ER6,ER0
+          ADDS.L      #4,ER0
+          MOV.L       ER0,@(38:16,SP)
+          BTST.B      #0,R0L
+          BEQ         L410:8
+          INC.L       #1,ER0
+          BRA         L411:8
+L410:                             
+          MOV.L       @(38:16,SP),ER0
+L411:                             
+          MOV.L       ER0,ER6
+          SUBS.L      #4,ER0
+          MOV.L       ER0,ER4
+          BTST.B      #0,R0L
+          BEQ         L412:8
+          DEC.L       #1,ER0
+          BRA         L413:8
+L412:                             
+          MOV.L       ER4,ER0
+L413:                             
+          MOV.L       @ER0,ER2
+          JMP         @L425:24
+L264:                            ; case label 
+          MOV.L       ER6,ER4
+          INC.L       #2,ER4
+          BTST.B      #0,R4L
+          BEQ         L414:8
+          MOV.L       ER4,ER0
+          INC.L       #1,ER0
+          BRA         L415:8
+L414:                             
+          MOV.L       ER4,ER0
+L415:                             
+          MOV.L       ER0,ER6
+          DEC.L       #2,ER0
+          MOV.L       ER0,ER2
+          BTST.B      #0,R0L
+          BEQ         L416:8
+          DEC.L       #1,ER0
+          BRA         L417:8
+L416:                             
+          MOV.L       ER2,ER0
+L417:                             
+          MOV.W       @ER0,R0
+          EXTS.L      ER0
+          MOV.L       ER0,ER2
+          BGE         L425:8
+          NEG.L       ER0
+          MOV.L       ER0,ER2
+          MOV.B       #45:8,R0L
+          MOV.B       R0L,@(57:16,SP)
+          BRA         L425:8
+L265:                            ; case label 
+          MOV.L       ER6,ER4
+          ADDS.L      #4,ER4
+          BTST.B      #0,R4L
+          BEQ         L419:8
+          MOV.L       ER4,ER0
+          INC.L       #1,ER0
+          BRA         L420:8
+L419:                             
+          MOV.L       ER4,ER0
+L420:                             
+          MOV.L       ER0,ER6
+          SUBS.L      #4,ER0
+          MOV.L       ER0,ER2
+          BTST.B      #0,R0L
+          BEQ         L421:8
+          DEC.L       #1,ER0
+          BRA         L422:8
+L421:                             
+          MOV.L       ER2,ER0
+L422:                             
+          MOV.L       @ER0,ER0
+          MOV.L       ER0,ER2
+          BGE         L425:8
+          NEG.L       ER0
+          MOV.L       ER0,ER2
+          MOV.B       #45:8,R0L
+          MOV.B       R0L,@(57:16,SP)
+L266:                            ; default label 
+L405:                            ; default label 
+          BRA         L425:8
+L424:                             
+          MOV.L       ER3,ER0
+          DEC.L       #1,ER3
+          SUB.L       ER4,ER4
+          MOV.B       @(59:16,SP),R4L
+          MOV.L       ER0,@SP
+          MOV.L       ER2,ER0
+          MOV.L       ER4,ER1
+          JSR         @$DIVUL$3:24
+          SUB.L       ER0,ER0
+          MOV.B       @(51:16,SP),R0L
+          ADD.L       ER0,ER1
+          MOV.B       @(_hexstring:24,ER1),R1L
+          MOV.L       @SP,ER0
+          MOV.B       R1L,@ER0
+          INC.B       R5L
+          MOV.L       ER2,ER0
+          MOV.L       ER4,ER1
+          JSR         @$DIVUL$3:24
+L465:                             
+          MOV.L       ER0,ER2
+L425:                             
+          MOV.L       ER2,ER0
+          BNE         L424:8
+          MOV.B       R5L,R5L
+          BNE         L426:8
+          MOV.L       ER3,ER0
+          DEC.L       #1,ER3
+          MOV.B       #48:8,R1L
+          MOV.B       R1L,@ER0
+          INC.B       R5L
+L426:                             
+          MOV.B       @(50:16,SP),R0L
+          CMP.B       #32:8,R0L
+          BNE         L427:8
+          MOV.B       @(57:16,SP),R0L
+          CMP.B       #45:8,R0L
+          BNE         L428:8
+          MOV.L       ER3,ER0
+          DEC.L       #1,ER3
+          MOV.B       #45:8,R1L
+          MOV.B       R1L,@ER0
+          INC.B       R5L
+L428:                             
+          MOV.B       @(58:16,SP),R0L
+          BNE         L429:8
+          MOV.B       R5L,R4L
+          BRA         L431:8
+L430:                             
+          MOV.B       #32:8,R0L
+          MOV.L       @(60:16,SP),ER1
+          JSR         @ER1
+          INC.B       R4L
+L431:                             
+          CMP.B       R5H,R4L
+          BCS         L430:8
+L429:                             
+          INC.L       #1,ER3
+          MOV.L       ER3,ER0
+          MOV.L       @(52:16,SP),ER1
+          JSR         @ER1
+          MOV.B       @(58:16,SP),R0L
+          BEQ         L435:8
+          MOV.B       R5L,R4L
+          BRA         L434:8
+L433:                             
+          MOV.B       #32:8,R0L
+          MOV.L       @(60:16,SP),ER1
+          JSR         @ER1
+          INC.B       R4L
+L434:                             
+          CMP.B       R5H,R4L
+          BCS         L433:8
+          BRA         L435:8
+L427:                             
+          MOV.B       R5H,R0L
+          EXTU.W      R0
+          DEC.W       #1,R0
+          MOV.W       R0,E5
+          MOV.B       #48:8,R1L
+          BRA         L437:8
+L436:                             
+          MOV.L       ER3,ER0
+          DEC.L       #1,ER3
+          MOV.B       R1L,@ER0
+          INC.B       R5L
+L437:                             
+          MOV.B       R5L,R0L
+          EXTU.W      R0
+          CMP.W       E5,R0
+          BLT         L436:8
+          MOV.B       @(57:16,SP),R0L
+          CMP.B       #45:8,R0L
+          BEQ         L438:8
+          CMP.B       R5H,R5L
+          BCC         L438:8
+          MOV.L       ER3,ER0
+          DEC.L       #1,ER3
+          MOV.B       #48:8,R1L
+          MOV.B       R1L,@ER0
+          BRA         L439:8
+L438:                             
+          MOV.B       @(57:16,SP),R0L
+          CMP.B       #45:8,R0L
+          BNE         L440:8
+          MOV.L       ER3,ER0
+          DEC.L       #1,ER3
+          MOV.B       #45:8,R1L
+          MOV.B       R1L,@ER0
+L440:                             
+L439:                             
+          INC.L       #1,ER3
+          MOV.L       ER3,ER0
+          MOV.L       @(52:16,SP),ER1
+          JSR         @ER1
+L435:                             
+          SUB.B       R4H,R4H
+L404:                             
+L354:                             
+          MOV.L       @(46:16,SP),ER0
+          INC.L       #1,ER0
+          MOV.L       ER0,@(46:16,SP)
+L350:                             
+          MOV.L       @(46:16,SP),ER0
+          MOV.B       @ER0,R1L
+          BNE         L349:16
+          ADD.L       #68:32,SP
+          JMP         @$spregld2$3:24
+_SCI0_printf:                    ; function: SCI0_printf
+          PUSH.L      ER6
+          MOV.L       #4:32,ER6
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+          BTST.B      #0,R0L
+          BEQ         L441:8
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+          INC.L       #1,ER0
+          BRA         L442:8
+L441:                             
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+L442:                             
+          PUSH.L      ER0
+          MOV.L       @(12:16,SP),ER1
+          MOV.W       @_SCI0device:24,R0
+          JSR         @_Device_printf:24
+          ADDS.L      #4,SP
+          POP.L       ER6
+          RTS
+_SCI1_printf:                    ; function: SCI1_printf
+          PUSH.L      ER6
+          MOV.L       #4:32,ER6
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+          BTST.B      #0,R0L
+          BEQ         L443:8
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+          INC.L       #1,ER0
+          BRA         L444:8
+L443:                             
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+L444:                             
+          PUSH.L      ER0
+          MOV.L       @(12:16,SP),ER1
+          MOV.W       @_SCI1device:24,R0
+          JSR         @_Device_printf:24
+          ADDS.L      #4,SP
+          POP.L       ER6
+          RTS
+_LCD_printf:                     ; function: LCD_printf
+          PUSH.L      ER6
+          MOV.L       #4:32,ER6
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+          BTST.B      #0,R0L
+          BEQ         L445:8
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+          INC.L       #1,ER0
+          BRA         L446:8
+L445:                             
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+L446:                             
+          PUSH.L      ER0
+          MOV.L       @(12:16,SP),ER1
+          MOV.W       @_LCDdevice:24,R0
+          JSR         @_Device_printf:24
+          ADDS.L      #4,SP
+          POP.L       ER6
+          RTS
+_sprintf:                        ; function: sprintf
+          PUSH.L      ER6
+          MOV.L       ER0,ER1
+          MOV.L       #4:32,ER6
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+          BTST.B      #0,R0L
+          BEQ         L447:8
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+          INC.L       #1,ER0
+          BRA         L448:8
+L447:                             
+          MOV.L       #8:32,ER0
+          ADD.L       SP,ER0
+          ADD.L       ER6,ER0
+L448:                             
+          MOV.L       ER1,@L134:24
+          PUSH.L      ER0
+          MOV.L       @(12:16,SP),ER1
+          MOV.W       @_STRdevice:24,R0
+          JSR         @_Device_printf:24
+          ADDS.L      #4,SP
+          POP.L       ER6
+          RTS
+_initLed:                        ; function: initLed
+          MOV.B       #15:8,R0L
+          MOV.B       R0L,@16777160:8
+          RTS
+_turnOnLed:                      ; function: turnOnLed
+          PUSH.L      ER6
+          MOV.W       R0,R6
+          EXTS.L      ER6
+          MOV.B       @(L219:24,ER6),R6L
+          MOV.B       @16777162:8,R0L
+          OR.B        R6L,R0L
+          MOV.B       R0L,@16777162:8
+          POP.L       ER6
+          RTS
+_turnOffLed:                     ; function: turnOffLed
+          PUSH.L      ER6
+          MOV.W       R0,R6
+          EXTS.L      ER6
+          MOV.B       @(L223:24,ER6),R6L
+          MOV.B       @16777162:8,R0L
+          AND.B       R6L,R0L
+          MOV.B       R0L,@16777162:8
+          POP.L       ER6
+          RTS
+_initPushSW:                     ; function: initPushSW
+          SUB.B       R0L,R0L
+          MOV.B       R0L,@16777157:8
+          MOV.B       #-16:8,R0L
+          MOV.B       R0L,@16777178:8
+          RTS
+_checkPushSW:                    ; function: checkPushSW
+          PUSH.L      ER6
+          MOV.W       R0,R6
+          EXTS.L      ER6
+          MOV.B       @16777159:8,R0L
+          MOV.B       @(L230:24,ER6),R6L
+          AND.B       R6L,R0L
+          BEQ         L449:8
+          SUB.W       R6,R6
+          BRA         L450:8
+L449:                             
+          MOV.W       #1:16,R6
+L450:                             
+          MOV.W       R6,R0
+          POP.L       ER6
+          RTS
+_init8BitSW:                     ; function: init8BitSW
+          SUB.B       R0L,R0L
+          MOV.B       R0L,@16777153:8
+          MOV.B       #-1:8,R0L
+          MOV.B       R0L,@16777176:8
+          RTS
+_check8BitSW:                    ; function: check8BitSW
+          PUSH.L      ER6
+          MOV.W       R0,R6
+          EXTS.L      ER6
+          MOV.B       @16777155:8,R0L
+          MOV.B       @(L237:24,ER6),R6L
+          AND.B       R6L,R0L
+          BEQ         L452:8
+          SUB.W       R6,R6
+          BRA         L453:8
+L452:                             
+          MOV.W       #1:16,R6
+L453:                             
+          MOV.W       R6,R0
+          POP.L       ER6
+          RTS
+_initTimer1Int:                  ; function: initTimer1Int
+          PUSH.L      ER6
+          MOV.W       R0,R6
+          MOV.W       #25:16,E6
+          MULXU.W     E6,ER6
+          ADDS.L      #4,ER6
+          SHAR.L      ER6
+          SHAR.L      ER6
+          SHAR.L      ER6
+          MOV.B       @16777070:8,R0L
+          AND.B       #-97:8,R0L
+          OR.B        #32:8,R0L
+          MOV.B       R0L,@16777070:8
+          MOV.B       @16777070:8,R0L
+          AND.B       #-25:8,R0L
+          MOV.B       R0L,@16777070:8
+          MOV.B       @16777070:8,R0L
+          AND.B       #-8:8,R0L
+          OR.B        #3:8,R0L
+          MOV.B       R0L,@16777070:8
+          DEC.W       #1,R6
+          MOV.W       R6,@16777076:16
+          BSET.B      #0,@16777072:8
+          BCLR.B      #2,@16777072:8
+          BCLR.B      #1,@16777072:8
+          POP.L       ER6
+          RTS
+_msecwait:                       ; function: msecwait
+          SUB.W       R1,R1
+          BRA         L456:8
+L455:                             
+          MOV.W       #3352:16,E0
+L457:                             
+          DEC.W       #1,E0
+          BNE         L457:8
+          INC.W       #1,R1
+L456:                             
+          CMP.W       R0,R1
+          BLT         L455:8
+          RTS
+_main:                           ; function: main
+          SUB.W       R3,R3
+          MOV.W       #1:16,E4
+          MOV.W       #250:16,R4
+          MOV.L       #_count1:32,ER5
+          MOV.L       #_count2:32,ER6
+          MOV.W       #3000:16,E3
+          MOV.W       #2000:16,R0
+          MOV.W       R0,@ER6
+          JSR         @_initSCI1:24
+          JSR         @_initLed:24
+L458:                             
+          MOV.W       E3,R0
+          INC.W       #1,E3
+          PUSH.W      R0
+          MOV.W       @ER6,R0
+          INC.W       #1,R0
+          MOV.W       R0,@ER6
+          DEC.W       #1,R0
+          PUSH.W      R0
+          MOV.W       @ER5,R0
+          INC.W       #1,R0
+          MOV.W       R0,@ER5
+          DEC.W       #1,R0
+          PUSH.W      R0
+          MOV.L       #L254:32,ER0
+          PUSH.L      ER0
+          JSR         @_SCI1_printf:24
+          ADD.L       #10:32,SP
+          MOV.W       R3,R0
+          JSR         @_turnOnLed:24
+          MOV.W       E4,R0
+          JSR         @_turnOffLed:24
+          MOV.W       R4,R0
+          BSR         _msecwait:8
+          MOV.W       R3,R0
+          JSR         @_turnOffLed:24
+          MOV.W       E4,R0
+          JSR         @_turnOnLed:24
+          MOV.W       R4,R0
+          JSR         @_msecwait:24
+          BRA         L458:8
+          .SECTION    C,DATA,ALIGN=2
+_SCI0device:                     ; static: SCI0device
+          .DATA.W     H'0000
+_SCI1device:                     ; static: SCI1device
+          .DATA.W     H'0001
+_LCDdevice:                      ; static: LCDdevice
+          .DATA.W     H'0002
+_STRdevice:                      ; static: STRdevice
+          .DATA.W     H'0003
+_hexstring:                      ; static: hexstring
+          .SDATAZ     "0123456789abcdef0123456789ABCDEF"
+L219:                            ; static: mask
+          .DATA.B     H'01,H'02,H'04,H'08
+L223:                            ; static: mask
+          .DATA.B     H'FE,H'FD,H'FB,H'F7
+L230:                            ; static: mask
+          .DATA.B     H'10,H'20,H'40,H'80
+L237:                            ; static: mask
+          .DATA.B     H'01,H'02,H'04,H'08,H'10,H'20,H'40,H'80
+          .SECTION    D,DATA,ALIGN=2
+_count1:                         ; static: count1
+          .DATA.W     H'03E8
+          .SECTION    C,DATA,ALIGN=2
+L254:
+          .SDATAZ     "%5d %5d %5d"<H'0A>
+          .SECTION    B,DATA,ALIGN=2
+L134:                            ; static: currentstrptr
+          .RES.L      1
+_count2:                         ; static: count2
+          .RES.W      1
+          .END

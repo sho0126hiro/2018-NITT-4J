@@ -1,0 +1,183 @@
+/***  C2asm02.txt  ***/
+
+1．課題
+	次のＣプログラムを，アセンブリプログラムに変換して，主要部分を説明しなさい。
+	また4つの関数がどのようにアセンブリ言語に変換されているか違いを調べ，気づいた事柄・考察した事柄を述べなさい。
+	
+2．使用したプログラム・実行結果
+	==Cのプログラム==
+	int globalsum=0;
+
+	void test1(void)
+	{
+	    int localsum=0;
+	    int i;
+	    for (i=1;i<=10;i++) {
+	        localsum+=i;
+	    }
+	}
+
+	int test2(void)
+	{
+	    int localsum=0;
+	    int i;
+	    for (i=1;i<=10;i++) {
+	        localsum+=i;
+	    }
+	    return localsum;
+	}
+
+	void test3(void)
+	{
+	    static int staticsum;
+	    int i;
+	    for (i=1;i<=10;i++) {
+	        staticsum+=i;
+	    }
+	}
+
+	void test4(void)
+	{
+	    int i;
+	    for (i=1;i<=10;i++) {
+	        globalsum+=i;
+	    }
+	}
+	
+	===アセンブリ言語への変換，主要部分===
+	          .CPU        300HA
+	          .EXPORT     _globalsum
+	          .EXPORT     _test1
+	          .EXPORT     _test2
+	          .EXPORT     _test3
+	          .EXPORT     _test4
+	          .SECTION    P,CODE,ALIGN=2
+	_test1:                          ; function: test1
+	          MOV.W       #1:16,R0
+	L22:                              
+	          INC.W       #1,R0
+	          CMP.W       #10:16,R0
+	          BLE         L22:8
+	          RTS
+	_test2:                          ; function: test2
+	          SUB.W       E0,E0
+	          MOV.W       #1:16,R0
+	L23:                              
+	          ADD.W       R0,E0
+	          INC.W       #1,R0
+	          CMP.W       #10:16,R0
+	          BLE         L23:8
+	          MOV.W       E0,R0
+	          RTS
+	_test3:                          ; function: test3
+	          MOV.L       #L14:32,ER1
+	          MOV.W       #1:16,E0
+	L25:                              
+	          MOV.W       @ER1,R0
+	          ADD.W       E0,R0
+	          MOV.W       R0,@ER1
+	          INC.W       #1,E0
+	          CMP.W       #10:16,E0
+	          BLE         L25:8
+	          RTS
+	_test4:                          ; function: test4
+	          MOV.L       #_globalsum:32,ER1
+	          MOV.W       #1:16,E0
+	L26:                              
+	          MOV.W       @ER1,R0
+	          ADD.W       E0,R0
+	          MOV.W       R0,@ER1
+	          INC.W       #1,E0
+	          CMP.W       #10:16,E0
+	          BLE         L26:8
+	          RTS
+	          .SECTION    D,DATA,ALIGN=2
+	_globalsum:                      ; static: globalsum
+	          .DATA.W     H'0000
+	          .SECTION    B,DATA,ALIGN=2
+	L14:                             ; static: staticsum
+	          .RES.W      1
+	          .END
+
+3．考察
+	主要部分の説明  /  C言語プログラムとの比較
+		_test1:                                  ; function: test1                  | void test1(void){
+		          MOV.W       #1:16,R0           ; 1(16bit)->R0                     |     int i=1;
+		L22:                                                                        |     for:
+		          INC.W       #1,R0              ; R0++ (INCrement)                 |         i++;
+		          CMP.W       #10:16,R0          ; 10(16bit)とR0を比較              |         i<=10 : ?
+		          BLE         L22:8              ; R0<=10のときL22へ                |         i<=10         //for終了
+		          RTS                            ; 終了                             |                                    //関数終了
+		--------------------------------------------------------------------------------------------------------------------------------
+		_test2:                                  ; function: test2                  | int test2(void){
+		          SUB.W       E0,E0              ; E0からE0を引く(E0=0)             |     int localsum=0;
+		          MOV.W       #1:16,R0           ; 1(16bit)->R0                     |     int i=1;
+		L23:                                                                        |     for:
+		          ADD.W       R0,E0              ; R0+E0->E0                        |         localsumL+=i;
+		          INC.W       #1,R0              ; R0++ (INCrement)                 |         i++;
+		          CMP.W       #10:16,R0          ; 10(16bit)とR0を比較              |         i<=10 : ?
+		          BLE         L23:8              ;  R0<=10のときL23へ               |         i<=10         //for終了
+		          MOV.W       E0,R0              ; E0->R0                           |     (レジスタの移動）
+		          RTS                            ; R0を返す                         |     return localsum;               //関数終了
+		--------------------------------------------------------------------------------------------------------------------------------
+		_test3:                                  ; function: test3                  | void test3(void){
+		          MOV.L       #L14:32,ER1        ; staticsumの値(32bit)->ER1        |     static int staticsum;
+		          MOV.W       #1:16,E0           ;  1(16bit)->E0                    |     int i=1;
+		L25:                                                                        |     for:
+		          MOV.W       @ER1,R0            ; ER1の値をアドレスとみなし，      |         （レジスタの移動）
+		                                         ; そこに保存されている値をR0に保存 | 
+		          ADD.W       E0,R0              ; R0+E0->R0                        |         staticsum+=i;
+		          MOV.W       R0,@ER1            ; ER1の値をアドレスとみなし,       |         （レジスタの値から，アドレスに格納）
+		                                         ; そこにR0を保存                   |  
+		          INC.W       #1,E0              ; E0++ (INCrement)                 |         i++;
+		          CMP.W       #10:16,E0          ; 10(16bit)とE0を比較              |         i<=10 : ?
+		          BLE         L25:8              ; R0<=10のときL25へ                |         i<=10         //for終了
+		          RTS                            ; 終了                             |                                    //関数終了
+		--------------------------------------------------------------------------------------------------------------------------------
+		_test4:                                  ; function: test4                  | void test4(void){
+		          MOV.L       #_globalsum:32,ER1 ; globalsumの値(32bit)->ER1        |     globalsumを使えるようにする
+		          MOV.W       #1:16,E0           ; 1(16bit)->E0                     |     int i=i;
+		L26:                                                                        |     for:
+		          MOV.W       @ER1,R0            ; ER1の値をアドレスとみなし，      |         （レジスタの移動）
+		                                         ; そこに保存されている値をR0に保存 |         
+		          ADD.W       E0,R0              ; E0+R0->R0                        |         globalsum+=i;
+		          MOV.W       R0,@ER1            ; ER1の値をアドレスとみなし,       |         （レジスタの値から、アドレスに格納）
+		                                         ; そこにR0を保存                   |     
+		          INC.W       #1,E0              ; E0++ (INCrement)                 |         i++;
+		          CMP.W       #10:16,E0          ; 10(16bit)とE0を比較              |         i<=10 : ?
+		          BLE         L26:8              ; R0<=10のときL26へ                |         i<=10         //for終了
+		          RTS                            ; 終了                             |                                    //関数終了
+		--------------------------------------------------------------------------------------------------------------------------------	
+		_globalsum:                              ; static: globalsum
+		          .DATA.W     H'0000             ; 変数 globalsumをワードサイズで確保+0x00を代入
+		          .SECTION    B,DATA,ALIGN=2     ; Section B : 変数の割り当て
+		L14:                                     ; static: staticsum
+		          .RES.W      1                  ; 変数 staticsumをワードサイズで確保
+		          .END
+	
+	各関数について
+		test1:
+			void型であるが、関数内でlocalsumを宣言しているので計算後のlocalsumは返さない。
+			 >> 冗長な（いらない）プログラムであるため、アセンブリプログラムにおいて、
+			 	localsumに対応するうレジスタの割り当て・計算(localsum+=i)が行われていない。
+		test2:
+			test1とは、int型であり、変数(localsum)を返すという点で異なっている。
+			localsumを返すので、localsumに対応するレジスタ割り当て・計算(localsum+=i)を行っている。
+		test3:
+			test1/test2とは、変数がstatic int型という点で異なっている。
+			static int型は、関数呼び出しが再びされても前回の変数の値を更新するため、関数呼び出しごとの初期化がない。
+			アセンブリプログラムでは、アドレスのデータを参照しているため、毎回データを初期化しないようになっている。
+			また、L14:から、変数の確保もしているため、アドレスが被らないようになっている。
+		test4:
+			test1/2/3とは,global変数になっている点で異なっている。
+			global変数も、static変数と同様に、前回呼び出された（参照された）後に操作された場合、その値を更新する。
+			よって、初期化をはじめのみ行うため、アドレスのデータを参照して、変数の初期化をしないようになっている。
+			staticと同様、_globalsum:内で変数の確保が行われている。
+
+4．まとめ
+	C言語から、アセンブリプログラムに変換する際、冗長な情報を省いて、無駄な動作を減らすことができる。
+	例えば、一度も使わない変数が宣言され、値が変更されていた場合、冗長であるため、宣言・値の操作の部分が
+	アセンブリプログラムから省かれる。
+	また、変数の型によって、レジスタ確保の方法が違う。
+	普通のint型の場合、レジスタをMOV.W #[値]:16,R0 等で変数を確保するが、static及びglobal変数は、値が更新されるため、
+	常に最初に宣言したアドレスの値を参照している。

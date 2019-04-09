@@ -1,0 +1,56 @@
+          .CPU        300HA
+          .EXPORT     _msecwait
+          .EXPORT     _main
+          .SECTION    P,CODE,ALIGN=2
+;*** File ex1.c     , Line 4     ; block
+_msecwait:                       ; function: msecwait
+;*** File ex1.c     , Line 6     ; block
+;*** File ex1.c     , Line 8     ; expression statement
+          SUB.W       R1,R1
+;*** File ex1.c     , Line 8     ; for
+          BRA         L11:8
+L10:                              
+;*** File ex1.c     , Line 8     ; block
+;*** File ex1.c     , Line 9     ; expression statement
+          MOV.W       #2646:16,E0
+;*** File ex1.c     , Line 9     ; do
+L12:                              
+;*** File ex1.c     , Line 9     ; expression statement
+          DEC.W       #1,E0
+          BNE         L12:8
+;*** File ex1.c     , Line 8     ; expression statement
+          INC.W       #1,R1
+L11:                              
+;*** File ex1.c     , Line 8     ; expression statement
+          CMP.W       R0,R1
+          BLT         L10:8
+;*** File ex1.c     , Line 11    ; block
+          RTS
+;*** File ex1.c     , Line 13    ; block
+_main:                           ; function: main
+;*** File ex1.c     , Line 14    ; block
+          MOV.W       #1000:16,R6
+;*** File ex1.c     , Line 18    ; expression statement
+          MOV.B       #3:8,R0L
+          MOV.B       R0L,@16777160:8
+;*** File ex1.c     , Line 19    ; while
+L13:                              
+;*** File ex1.c     , Line 19    ; block
+;*** File ex1.c     , Line 22    ; expression statement
+          BSET.B      #0,@16777162:8
+;*** File ex1.c     , Line 24    ; expression statement
+          BCLR.B      #1,@16777162:8
+;*** File ex1.c     , Line 25    ; expression statement
+          MOV.W       R6,R0
+          BSR         _msecwait:8
+;*** File ex1.c     , Line 27    ; expression statement
+          BCLR.B      #0,@16777162:8
+;*** File ex1.c     , Line 29    ; expression statement
+          BSET.B      #1,@16777162:8
+;*** File ex1.c     , Line 30    ; expression statement
+          MOV.W       R6,R0
+          BSR         _msecwait:8
+;*** File ex1.c     , Line 19    ; expression statement
+          BRA         L13:8
+;*** File ex1.c     , Line 32    ; block
+          .END

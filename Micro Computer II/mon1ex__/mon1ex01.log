@@ -1,0 +1,95 @@
+
+ H8/3048 Series Advanced Mode Monitor Ver. 3.0A
+ Copyright (C) 2003 Renesas Technology Corp.
+
+: a ff 200    200
+  FF200   >  
+mov.W l ##fff    fff00er  ,r er7
+  FF206   >  
+mov.wff       move .w ` @ff700:24,r0
+  FF20C   >  
+mov/ .w @ff702  :24: . ,r1
+  FF212   >  
+sub.w r1,r0
+  FF214   >  
+mov.w r0,@ff704:24
+  FF21A   >  
+bra ff21a:8
+  FF21C   >  
+.
+: 
+da ff200 ff21a
+  ********  Buffer Overflow  ********  
+: da ff200 vv  c ff21a
+  <ADDR>  <CODE>                <MNEMONIC> <OPERAND>
+  FF200   7A07000FFF00          MOV.L      #H'000FFF00:32,ER7
+  FF206   6B20000FF700          MOV.W      @H'FF700:24,R0
+  FF20C   6B21000FF702          MOV.W      @H'FF702:24,R1
+  FF212   1910                  SUB.W      R1,R0
+  FF214   6BA0000FF704          MOV.W      R0,@H'FF704:24
+  FF21A   40FE                  BRA        FF21A:8
+: d ff700 ff70f
+  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+  FF700   FF F7 F7 FF 7F EF FF FB  FF FC FF DF BF FF FF FF   "................"
+: mf  ff800   700
+  FF700   FF  ?  
+ab
+  FF701   F7  ?  
+78
+  FF702   F7  ?  
+76
+  FF703   FF  ?  
+43
+  FF704   7F  ?  
+00
+  FF705   EF  ?  
+00
+  FF706   FF  ?  
+.
+: 
+d ff700 ff70f
+  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+  FF700   AB 78 76 43 00 00 FF FB  FF FC FF DF BF FF FF FF   ".xvC............"
+: r
+  PC=000000  CCR=80:I.......  SP=000FFF00
+  ER0=00000000  ER1=00000000  ER2=00000000  ER3=00000000
+  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFF00
+: .pc
+  PC=000000  ?  
+ff2000 
+  CCR=80  ?  
+.
+: 
+r
+  PC=0FF200  CCR=80:I.......  SP=000FFF00
+  ER0=00000000  ER1=00000000  ER2=00000000  ER3=00000000
+  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFF00
+: s
+  PC=0FF206  CCR=80:I.......  SP=000FFF00
+  ER0=00000000  ER1=00000000  ER2=00000000  ER3=00000000
+  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFF00
+  FF200   7A07000FFF00          MOV.L      #H'000FFF00:32,ER7
+: s
+  PC=0FF20C  CCR=88:I...N...  SP=000FFF00
+  ER0=0000AB78  ER1=00000000  ER2=00000000  ER3=00000000
+  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFF00
+  FF206   6B20000FF700          MOV.W      @H'FF700:24,R0
+: s
+  PC=0FF212  CCR=80:I.......  SP=000FFF00
+  ER0=0000AB78  ER1=00007643  ER2=00000000  ER3=00000000
+  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFF00
+  FF20C   6B21000FF702          MOV.W      @H'FF702:24,R1
+: s
+  PC=0FF214  CCR=82:I.....V.  SP=000FFF00
+  ER0=00003535  ER1=00007643  ER2=00000000  ER3=00000000
+  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFF00
+  FF212   1910                  SUB.W      R1,R0
+: s
+  PC=0FF21A  CCR=80:I.......  SP=000FFF00
+  ER0=00003535  ER1=00007643  ER2=00000000  ER3=00000000
+  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFF00
+  FF214   6BA0000FF704          MOV.W      R0,@H'FF704:24
+: d ff70-0  9 0 ff70f
+  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+  FF700   AB 78 76 43 35 35 FF FB  FF FC FF DF BF FF FF FF   ".xvC55.........."
+: 

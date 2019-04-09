@@ -1,0 +1,662 @@
+H8S,H8/300 SERIES C COMPILER (Ver. 2.0D for Evaluation)21-Jan-2019  10:39:48  PAGE   1
+
+************ SOURCE LISTING ************
+
+FILE NAME: MinSys3069.c
+
+  Seq File        Line Pi 0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+
+    1 MinSys3069     1     /******************************************************************
+    2 MinSys3069     2     HOS向け基本関数　小坂のまとめ
+    3 MinSys3069     3     ******************************************************************/
+    4 MinSys3069     4     
+    5 MinSys3069     5     #include "kernel.h"
+ 4921 MinSys3069     6     #include "kernel_id.h"
+ 4961 MinSys3069     7     #include <stdarg.h>
+ 4997 MinSys3069     8     #include "3069s.h"
+ 6163 MinSys3069     9     #include "MinSys3069.h"
+ 6325 MinSys3069    10     
+ 6326 MinSys3069    11     #define RECEIVERINGBUFFSIZE 32
+ 6327 MinSys3069    12     
+ 6328 MinSys3069    13     static volatile int receiveptr_in;  /*input pointer for receive*/
+ 6329 MinSys3069    14     static volatile int receiveptr_out; /*output pointer for receive*/
+ 6330 MinSys3069    15     static unsigned char receiveringbuff[RECEIVERINGBUFFSIZE];
+ 6331 MinSys3069    16     
+ 6332 MinSys3069    17     /* SCI初期化 */
+ 6333 MinSys3069    18     void initSCI1(void)
+ 6334 MinSys3069    19     {
+ 6335 MinSys3069    20             unsigned short int i;
+ 6336 MinSys3069    21             /*unsigned char dummy;*/
+ 6337 MinSys3069    22             SCI1.SCR.BYTE = 0;       /* clear all flags */
+ 6338 MinSys3069    23                               /* 2400-38400baud are available at n=0(cks1=0,cks2=0) */
+ 6339 MinSys3069    24             SCI1.SMR.BYTE = 0;       /* Ascnc, 8bit , NoParity, stop1, 1/1 */
+ 6340 MinSys3069    25             SCI1.BRR = 15;           /* 38400baud (CPU=20MHz) */
+ 6341 MinSys3069    26             for(i=0;i<60000;i++);      /* wait more than 1bit time */
+ 6342 MinSys3069    27             receiveptr_in=receiveptr_out=0;
+ 6343 MinSys3069    28             SCI1.SCR.BYTE |= 0x50;    /* scr = 0101 0000 (TIE=0,RIE=1,TE=0,RE=1) */
+ 6344 MinSys3069    29             SCI1.SCR.BYTE |= 0x70;    /* scr = 0111 0000 (TIE=0,RIE=1,TE=1,RE=1) */
+ 6345 MinSys3069    30             return;
+ 6346 MinSys3069    31     }
+ 6347 MinSys3069    32     
+ 6348 MinSys3069    33     /* SCI受信割り込み */
+ 6349 MinSys3069    34     /*割り込みで直接起動ではないので通常の関数になっている*/
+ 6350 MinSys3069    35     void SCI1_RXI_handler(VP_INT exinf)
+ 6351 MinSys3069    36     {
+ 6352 MinSys3069    37             receiveringbuff[receiveptr_in]=SCI1.RDR;
+ 6353 MinSys3069    38             SCI1.SSR.BIT.RDRF = 0;
+ 6354 MinSys3069    39             receiveptr_in++;
+ 6355 MinSys3069    40             if (receiveptr_in==RECEIVERINGBUFFSIZE) receiveptr_in=0;
+ 6356 MinSys3069    41     }
+ 6357 MinSys3069    42     
+ 6358 MinSys3069    43     /*SCIエラー処理関数*/
+ 6359 MinSys3069    44     /*割り込みで直接起動ではないので通常の関数になっている*/
+ 6360 MinSys3069    45     void SCI1_ERI_handler(VP_INT exinf)
+ 6361 MinSys3069    46     {
+ 6362 MinSys3069    47             SCI1.SSR.BIT.ORER = 0; /* Overrun Error Flag Clear */
+ 6363 MinSys3069    48             SCI1.SSR.BIT.FER = 0;  /* Framing Error Flag Clear */
+ 6364 MinSys3069    49             SCI1.SSR.BIT.PER = 0;  /* Parity  Error Flag Clear */
+ 6365 MinSys3069    50     }
+ 6366 MinSys3069    51     
+ 6367 MinSys3069    52     /* ------------------------------------------------- */
+ 6368 MinSys3069    53     /* GET BYTE FROM SCI1 */
+ 6369 MinSys3069    54     /* ------------------------------------------------- */
+ 6370 MinSys3069    55     short int getCharSCI1(void)
+ 6371 MinSys3069    56     /* return value 0x00-0xFF:received data */
+ 6372 MinSys3069    57     /*              -3(0xFFFE):error */
+ 6373 MinSys3069    58     {
+ 6374 MinSys3069    59             int ch;
+ 6375 MinSys3069    60             unsigned int loop;
+ 6376 MinSys3069    61             loop=60000;
+ 6377 MinSys3069    62             while (receiveptr_out==receiveptr_in) {
+ 6378 MinSys3069    63                     loop--;
+ 6379 MinSys3069    64                     if (!loop) return -3;
+ 6380 MinSys3069    65             }
+ 6381 MinSys3069    66             ch=receiveringbuff[receiveptr_out];
+ 6382 MinSys3069    67             receiveptr_out++;
+ 6383 MinSys3069    68             if (receiveptr_out==RECEIVERINGBUFFSIZE) receiveptr_out=0;
+ 6384 MinSys3069    69             return ch;
+ 6385 MinSys3069    70     }
+ 6386 MinSys3069    71     
+ 6387 MinSys3069    72     /* ------------------------------------------------- */
+ 6388 MinSys3069    73     /* CHECK SCI BUFFER AND GET DATA */
+ 6389 MinSys3069    74     /* ------------------------------------------------- */
+ 6390 MinSys3069    75     short int chkgetCharSCI1(void)
+ 6391 MinSys3069    76     /* return value -1(0xFFFF):no received data  */
+ 6392 MinSys3069    77     /*              0x00-0xFF:received data */
+ 6393 MinSys3069    78     {
+ 6394 MinSys3069    79             int ch;
+ 6395 MinSys3069    80             unsigned int loop;
+ 6396 MinSys3069    81             loop=60000;
+ 6397 MinSys3069    82             if (receiveptr_out==receiveptr_in) {
+ 6398 MinSys3069    83                     return -1;
+ 6399 MinSys3069    84             }
+ 6400 MinSys3069    85             ch=receiveringbuff[receiveptr_out];
+ 6401 MinSys3069    86             receiveptr_out++;
+ 6402 MinSys3069    87             if (receiveptr_out==RECEIVERINGBUFFSIZE) receiveptr_out=0;
+ 6403 MinSys3069    88             return ch;
+ 6404 MinSys3069    89     }
+ 6405 MinSys3069    90     
+ 6406 MinSys3069    91     void putStringSCI1(char *str);
+ 6407 MinSys3069    92     
+ 6408 MinSys3069    93     /*SCI1より文字列入力[return]が終端だが，'\n'は取得されない*/
+ 6409 MinSys3069    94     /*^Hでバックスペイス*/
+ 6410 MinSys3069    95     int getStringSCI1(char *buff,int max)
+ 6411 MinSys3069    96     {
+ 6412 MinSys3069    97             int i,ch;
+ 6413 MinSys3069    98             for (i=0;i<max-1;i++) {
+ 6414 MinSys3069    99                     ch=getCharSCI1(); /*1文字取得*/
+ 6415 MinSys3069   100                     *buff=(char)ch; /*1文字取得*/
+ 6416 MinSys3069   101                     if (*buff=='\r'||ch<0) {
+ 6417 MinSys3069   102                             *buff=0;
+ 6418 MinSys3069   103                             return i+1;
+ 6419 MinSys3069   104                     }
+ 6420 MinSys3069   105                     if (*buff==0x8) {
+ 6421 MinSys3069   106                             buff-=2;
+ 6422 MinSys3069   107                             i-=2;
+ 6423 MinSys3069   108                     }
+ 6424 MinSys3069   109                     if (*buff!='\n') buff++;
+ 6425 MinSys3069   110                     else i--;
+ 6426 MinSys3069   111             }
+ 6427 MinSys3069   112             *buff=0;
+ 6428 MinSys3069   113             return i+1;
+ 6429 MinSys3069   114     }
+ 6430 MinSys3069   115     
+ 6431 MinSys3069   116     /*SCI1へプロンプトを表示して，SCI1より整数値を入力*/
+ 6432 MinSys3069   117     short int getIntSCI1(char prompt[])
+ 6433 MinSys3069   118     /*getting integer from serial port*/
+ 6434 MinSys3069   119     /* format 123[ret] */
+ 6435 MinSys3069   120     /*        -123[ret] */
+ 6436 MinSys3069   121     /*        0x1a[ret] */
+ 6437 MinSys3069   122     /*        -0x100[ret] */
+ 6438 MinSys3069   123     {
+ 6439 MinSys3069   124             short int x=0,y,m=0,n=0,v=0,i=0;
+ 6440 MinSys3069   125             char buff[16];
+ 6441 MinSys3069   126             putStringSCI1(prompt);
+ 6442 MinSys3069   127             getStringSCI1(buff,16);
+ 6443 MinSys3069   128             y=buff[i];
+ 6444 MinSys3069   129             while(y!=0){
+ 6445 MinSys3069   130                     if(y=='-') m=1;
+ 6446 MinSys3069   131                     if('a'<=y&&y<='z') y=y-'a'+'A';
+ 6447 MinSys3069   132                     if(y=='0') n=1;
+ 6448 MinSys3069   133     
+ 6449 MinSys3069   134                     if(v==1){
+ 6450 MinSys3069   135                             if('0'<=y&&y<='9'){
+ 6451 MinSys3069   136                                     y=y-'0';
+ 6452 MinSys3069   137                             }
+ 6453 MinSys3069   138                             else if('A'<=y&&y<='F'){
+ 6454 MinSys3069   139                                     y=y-'A'+10;
+ 6455 MinSys3069   140                             }
+ 6456 MinSys3069   141                             x=16*x+y;
+ 6457 MinSys3069   142                     }
+ 6458 MinSys3069   143     
+ 6459 MinSys3069   144                     if(n==1&&y=='X'){
+ 6460 MinSys3069   145                             v=1;
+ 6461 MinSys3069   146                     }
+ 6462 MinSys3069   147                                     
+ 6463 MinSys3069   148                     if(v==0&&'0'<=y&&y<='9'){
+ 6464 MinSys3069   149                             y=y-'0';
+ 6465 MinSys3069   150                             x=10*x+y;
+ 6466 MinSys3069   151                     }
+ 6467 MinSys3069   152     
+ 6468 MinSys3069   153                     y=buff[++i];
+ 6469 MinSys3069   154             }
+ 6470 MinSys3069   155             if(m==1) x=-x;
+ 6471 MinSys3069   156             return x;
+ 6472 MinSys3069   157     }
+ 6473 MinSys3069   158     
+ 6474 MinSys3069   159     
+ 6475 MinSys3069   160     /* ------------------------------------------------- */
+ 6476 MinSys3069   161     /* PUT BYTE TO SCI1 */
+ 6477 MinSys3069   162     /* ------------------------------------------------- */
+ 6478 MinSys3069   163     void putBYTESCI1(char c)
+ 6479 MinSys3069   164     {
+ 6480 MinSys3069   165             unsigned char tmp;
+ 6481 MinSys3069   166             do{
+ 6482 MinSys3069   167                     tmp = SCI1.SSR.BYTE;
+ 6483 MinSys3069   168             } while((tmp & 0x80)==0);
+ 6484 MinSys3069   169             SCI1.TDR = c;
+ 6485 MinSys3069   170             SCI1.SSR.BIT.TDRE = 0;
+ 6486 MinSys3069   171             return;
+ 6487 MinSys3069   172     }
+ 6488 MinSys3069   173     
+ 6489 MinSys3069   174     /* ------------------------------------------------- */
+ 6490 MinSys3069   175     /* PUT VHAR TO SCI1 */
+ 6491 MinSys3069   176     /* ------------------------------------------------- */
+ 6492 MinSys3069   177     void putCharSCI1(char c)
+ 6493 MinSys3069   178     {
+ 6494 MinSys3069   179             unsigned char tmp;
+ 6495 MinSys3069   180             if (c=='\n') putCharSCI1('\r');
+ 6496 MinSys3069   181             do{
+ 6497 MinSys3069   182                     tmp = SCI1.SSR.BYTE;
+ 6498 MinSys3069   183             } while((tmp & 0x80)==0);
+ 6499 MinSys3069   184             SCI1.TDR = c;
+ 6500 MinSys3069   185             SCI1.SSR.BIT.TDRE = 0;
+ 6501 MinSys3069   186             return;
+ 6502 MinSys3069   187     }
+ 6503 MinSys3069   188     
+ 6504 MinSys3069   189     void putStringSCI1(char *str)
+ 6505 MinSys3069   190     {
+ 6506 MinSys3069   191             while(*str){
+ 6507 MinSys3069   192                     putCharSCI1(*str);
+ 6508 MinSys3069   193                     str++;
+ 6509 MinSys3069   194             }
+ 6510 MinSys3069   195     }
+ 6511 MinSys3069   196     
+ 6512 MinSys3069   197     /* Port4 -> LCD */
+ 6513 MinSys3069   198     /* 7    6    5    4    3    2    1    0  */
+ 6514 MinSys3069   199     /*          ES   RS  DB7  DB6  DB5  DB4  */
+ 6515 MinSys3069   200     
+ 6516 MinSys3069   201     /* i/o */
+ 6517 MinSys3069   202     #define LCD_Port            P4DR.BYTE
+ 6518 MinSys3069   203     #define LCD_RegisterSelect  P4DR.BIT.B4
+ 6519 MinSys3069   204     #define LCD_EnableSignal    P4DR.BIT.B5
+ 6520 MinSys3069   205     
+ 6521 MinSys3069   206     static void LCDmsecwait(unsigned int msec)
+ 6522 MinSys3069   207     /*mesc間なにもしない時間稼ぎ関数*/
+ 6523 MinSys3069   208     {
+ 6524 MinSys3069   209             int i,j;
+ 6525 MinSys3069   210             for (i=0;i<msec;i++) {
+ 6526 MinSys3069   211                     for (j=0;j<3352;j++);    /*3352は実測によって求めた値 20MHz駆動*/
+ 6527 MinSys3069   212             }
+ 6528 MinSys3069   213     }
+ 6529 MinSys3069   214     
+ 6530 MinSys3069   215     static void LCDmicrosecwait(unsigned int microsec)
+ 6531 MinSys3069   216     {/*だいたいmicrosec間なにもしない時間稼ぎ関数*/
+ 6532 MinSys3069   217             int i,j;
+ 6533 MinSys3069   218             for (i=0;i<microsec;i++) {
+ 6534 MinSys3069   219                     for (j=0;j<4;j++);
+ 6535 MinSys3069   220             }
+ 6536 MinSys3069   221     }
+ 6537 MinSys3069   222     
+ 6538 MinSys3069   223     static void LCDputCommand(char command) /*command width must be 4bits*/
+ 6539 MinSys3069   224     {
+ 6540 MinSys3069   225             LCD_Port=(LCD_Port&0xf0)|command;
+ 6541 MinSys3069   226             LCD_EnableSignal=1;
+ 6542 MinSys3069   227             LCDmicrosecwait(5);
+ 6543 MinSys3069   228             LCD_EnableSignal=0;
+ 6544 MinSys3069   229             LCDmicrosecwait(40);
+ 6545 MinSys3069   230     }
+ 6546 MinSys3069   231     
+ 6547 MinSys3069   232     static void LCDputCommand2(char command2)
+ 6548 MinSys3069   233     {
+ 6549 MinSys3069   234             LCDputCommand((command2>>4)&0xf);
+ 6550 MinSys3069   235             LCDputCommand(command2&0xf);
+ 6551 MinSys3069   236     }
+ 6552 MinSys3069   237     
+ 6553 MinSys3069   238     /************************************************************
+ 6554 MinSys3069   239     LCDに向けた putchar()
+ 6555 MinSys3069   240     ************************************************************/
+ 6556 MinSys3069   241     void LCDputchar(char data)
+ 6557 MinSys3069   242     {
+ 6558 MinSys3069   243             LCD_RegisterSelect=1;
+ 6559 MinSys3069   244             LCDputCommand((data>>4)&0xf);
+ 6560 MinSys3069   245             LCDputCommand(data&0xf);
+ 6561 MinSys3069   246             LCD_RegisterSelect=0;
+ 6562 MinSys3069   247     }
+ 6563 MinSys3069   248     
+ 6564 MinSys3069   249     /************************************************************
+ 6565 MinSys3069   250     LCDに向けた puts()
+ 6566 MinSys3069   251     ************************************************************/
+ 6567 MinSys3069   252     void LCDputs(char *str)
+ 6568 MinSys3069   253     {
+ 6569 MinSys3069   254             while(*str) LCDputchar(*str++);
+ 6570 MinSys3069   255     }
+ 6571 MinSys3069   256     
+ 6572 MinSys3069   257     /************************************************************
+ 6573 MinSys3069   258     LCDの初期化
+ 6574 MinSys3069   259     ************************************************************/
+ 6575 MinSys3069   260     void initLCD( void )
+ 6576 MinSys3069   261     {
+ 6577 MinSys3069   262             LCD_Port&=0xc0;
+ 6578 MinSys3069   263             LCDmsecwait(30);           /* wait 30ms */
+ 6579 MinSys3069   264             LCDputCommand(0x3);     /* function set */
+ 6580 MinSys3069   265             LCDmicrosecwait(4100);
+ 6581 MinSys3069   266             LCDputCommand(0x3);     /* function set */
+ 6582 MinSys3069   267             LCDmicrosecwait(100);
+ 6583 MinSys3069   268             LCDputCommand(0x3);     /* function set */
+ 6584 MinSys3069   269             LCDmicrosecwait(100);
+ 6585 MinSys3069   270             LCDputCommand(0x2);     /* function set data width=4bit*/
+ 6586 MinSys3069   271             LCDputCommand2(0x28);   /* function set 4bit duty:1/16,size:5*7 */
+ 6587 MinSys3069   272             LCDputCommand2(0x0c);   /* display on,cursor off,blink off */
+ 6588 MinSys3069   273             LCDputCommand2(0x06);   /* address:auto increment,cursor shift:right */
+ 6589 MinSys3069   274             LCDputCommand2(0x01);   /* clear display */
+ 6590 MinSys3069   275             LCDmicrosecwait(1640);
+ 6591 MinSys3069   276     }
+ 6592 MinSys3069   277     
+ 6593 MinSys3069   278     /************************************************************
+ 6594 MinSys3069   279     LCDに向けた gotoxy()
+ 6595 MinSys3069   280     ************************************************************/
+ 6596 MinSys3069   281     
+ 6597 MinSys3069   282     void LCDgotoxy(unsigned x,unsigned y)
+ 6598 MinSys3069   283     {
+ 6599 MinSys3069   284             unsigned char point;
+ 6600 MinSys3069   285             point=0x80+x+0x40*y;
+ 6601 MinSys3069   286             LCDputCommand2(point);
+ 6602 MinSys3069   287     }
+ 6603 MinSys3069   288     
+ 6604 MinSys3069   289     /************************************************************
+ 6605 MinSys3069   290     LCDに向けた clrscr()   clear screen
+ 6606 MinSys3069   291     ************************************************************/
+ 6607 MinSys3069   292     void LCDclrscr(void)
+ 6608 MinSys3069   293     {
+ 6609 MinSys3069   294             LCDputCommand2(0x01);    /* clear display */
+ 6610 MinSys3069   295             LCDmicrosecwait(1640);
+ 6611 MinSys3069   296     }
+ 6612 MinSys3069   297     
+ 6613 MinSys3069   298     const static char hexstring[]="0123456789abcdef0123456789ABCDEF";
+ 6614 MinSys3069   299     #define MAXDIGIT 32
+ 6615 MinSys3069   300     const static int SCI1device=1;
+ 6616 MinSys3069   301     const static int LCDdevice=2;
+ 6617 MinSys3069   302     
+ 6618 MinSys3069   303     static void Device_printf(int device, char *format, va_list arg_ptr)
+ 6619 MinSys3069   304     {
+ 6620 MinSys3069   305             void (*device_putchar)(char ch);
+ 6621 MinSys3069   306             void (*device_puts)(char *ptr);
+ 6622 MinSys3069   307             char buf[MAXDIGIT];
+ 6623 MinSys3069   308             unsigned char flag=0;  /*%d:bit2 l:bit1 %:bit0 */
+ 6624 MinSys3069   309             unsigned char digit=0; /* 桁数 */
+ 6625 MinSys3069   310             unsigned char minus=0;
+ 6626 MinSys3069   311             char fill=' ',format1=' ';
+ 6627 MinSys3069   312             unsigned char radix=10; /*N進基数*/
+ 6628 MinSys3069   313             char sign=' ';
+ 6629 MinSys3069   314             char *ptr=buf; /*出力文字ポインタ*/
+ 6630 MinSys3069   315             unsigned char cntr=0; /*出力文字数カウンタ*/
+ 6631 MinSys3069   316             unsigned char shift=0; /*16進シフト 0 or 6*/
+ 6632 MinSys3069   317             unsigned char i;
+ 6633 MinSys3069   318             unsigned long int value=0;
+ 6634 MinSys3069   319             if (device==SCI1device) {
+ 6635 MinSys3069   320                     device_putchar=putCharSCI1;
+ 6636 MinSys3069   321                     device_puts=putStringSCI1;
+ 6637 MinSys3069   322             } else { /*device==LCDdevice*/
+ 6638 MinSys3069   323                     device_putchar=LCDputchar;
+ 6639 MinSys3069   324                     device_puts=LCDputs;
+ 6640 MinSys3069   325             }
+ 6641 MinSys3069   326             /*va_start(arg_ptr,format);*/
+ 6642 MinSys3069   327             while (*format) {
+ 6643 MinSys3069   328                     format1=*format;
+ 6644 MinSys3069   329                     if (flag==0) {
+ 6645 MinSys3069   330                             if (format1=='%') {
+ 6646 MinSys3069   331                                     flag=1;
+ 6647 MinSys3069   332                                     digit=0;
+ 6648 MinSys3069   333                                     fill=' ';
+ 6649 MinSys3069   334                                     minus=0;
+ 6650 MinSys3069   335                                     radix=0;
+ 6651 MinSys3069   336                                     ptr=&buf[MAXDIGIT-1];
+ 6652 MinSys3069   337                                     *ptr--='\0';
+ 6653 MinSys3069   338                                     cntr=0;
+ 6654 MinSys3069   339                                     shift=0;
+ 6655 MinSys3069   340                                     sign='+';
+ 6656 MinSys3069   341                             } else {
+ 6657 MinSys3069   342                                     device_putchar(format1);
+ 6658 MinSys3069   343                             }
+ 6659 MinSys3069   344                     } else {
+ 6660 MinSys3069   345                             if (format1=='l') {
+ 6661 MinSys3069   346                                     flag|=2;
+ 6662 MinSys3069   347                             } else if ('0'<=(format1)&&(format1)<='9') {
+ 6663 MinSys3069   348                                     if (digit==0 && format1=='0') {
+ 6664 MinSys3069   349                                             fill='0';
+ 6665 MinSys3069   350                                     } else {
+ 6666 MinSys3069   351                                             digit=digit*10+((format1)-'0');
+ 6667 MinSys3069   352                                             if (MAXDIGIT-2<digit) digit=MAXDIGIT-2;
+ 6668 MinSys3069   353                                     }
+ 6669 MinSys3069   354                             } else if (format1=='-') {
+ 6670 MinSys3069   355                                     minus=1;
+ 6671 MinSys3069   356                             } else if (format1=='d') {
+ 6672 MinSys3069   357                                     flag|=4;
+ 6673 MinSys3069   358                                     radix=10;
+ 6674 MinSys3069   359                             } else if (format1=='u') {
+ 6675 MinSys3069   360                                     radix=10;
+ 6676 MinSys3069   361                             } else if (format1=='x') {
+ 6677 MinSys3069   362                                     radix=16;
+ 6678 MinSys3069   363                             } else if (format1=='X') {
+ 6679 MinSys3069   364                                     radix=16;shift=16;
+ 6680 MinSys3069   365                             } else if (format1=='o') {
+ 6681 MinSys3069   366                                     radix=8;
+ 6682 MinSys3069   367                             } else if (format1=='b') {
+ 6683 MinSys3069   368                                     radix=2;
+ 6684 MinSys3069   369                             } else if (format1=='p') {
+ 6685 MinSys3069   370                                     radix=16;shift=16;digit=8;fill='0';flag|=2;
+ 6686 MinSys3069   371                             } else if (format1=='c') {
+ 6687 MinSys3069   372                                     device_putchar((unsigned char)(va_arg(arg_ptr,int)));
+ 6688 MinSys3069   373                                     flag=0;
+ 6689 MinSys3069   374                             } else if (format1=='s') {
+ 6690 MinSys3069   375                                     if (digit) {
+ 6691 MinSys3069   376                                             cntr=0;ptr=va_arg(arg_ptr,char *);
+ 6692 MinSys3069   377                                             while (ptr[cntr]) cntr++; /*cntrは文字数*/
+ 6693 MinSys3069   378                                             if (!minus) for (i=cntr;i<digit;i++) device_putchar(' ');
+ 6694 MinSys3069   379                                             device_puts(ptr);
+ 6695 MinSys3069   380                                             if (minus) for (i=cntr;i<digit;i++) device_putchar(' ');
+ 6696 MinSys3069   381                                     } else {
+ 6697 MinSys3069   382                                             device_puts(va_arg(arg_ptr,char *));
+ 6698 MinSys3069   383                                     }
+ 6699 MinSys3069   384                                     flag=0;
+ 6700 MinSys3069   385                             } else {
+ 6701 MinSys3069   386                                     device_putchar(format1);
+ 6702 MinSys3069   387                                     flag=0;
+ 6703 MinSys3069   388                             }
+ 6704 MinSys3069   389                             if (radix) {
+ 6705 MinSys3069   390                                     switch (flag&6) {
+ 6706 MinSys3069   391                                     case 0: /* unsig int */
+ 6707 MinSys3069   392                                             value=(unsigned int)va_arg(arg_ptr,int);
+ 6708 MinSys3069   393                                             break;
+ 6709 MinSys3069   394                                     case 2: /* unsig long int */
+ 6710 MinSys3069   395                                             value=va_arg(arg_ptr,long int);
+ 6711 MinSys3069   396                                             break;
+ 6712 MinSys3069   397                                     case 4: /* sig int */
+ 6713 MinSys3069   398                                             value=(long int)va_arg(arg_ptr,int);
+ 6714 MinSys3069   399                                             if ((long int)value<0) {
+ 6715 MinSys3069   400                                                     value=-(long int)value;
+ 6716 MinSys3069   401                                                     sign='-';
+ 6717 MinSys3069   402                                             }
+ 6718 MinSys3069   403                                             break;
+ 6719 MinSys3069   404                                     case 6: /* sig long int */
+ 6720 MinSys3069   405                                             value=va_arg(arg_ptr,long int);
+ 6721 MinSys3069   406                                             if ((long int)value<0) {
+ 6722 MinSys3069   407                                                     value=-(long int)value;
+ 6723 MinSys3069   408                                                     sign='-';
+ 6724 MinSys3069   409                                             }
+ 6725 MinSys3069   410                                             break;
+ 6726 MinSys3069   411                                     default:
+ 6727 MinSys3069   412                                             break;
+ 6728 MinSys3069   413                                     }
+ 6729 MinSys3069   414                                     while (value) {
+ 6730 MinSys3069   415                                             *ptr--=hexstring[value%radix+shift];
+ 6731 MinSys3069   416                                             cntr++;
+ 6732 MinSys3069   417                                             value/=radix;
+ 6733 MinSys3069   418                                     }
+ 6734 MinSys3069   419                                     if (cntr==0) {
+ 6735 MinSys3069   420                                             *ptr--='0';
+ 6736 MinSys3069   421                                             cntr++;
+ 6737 MinSys3069   422                                     }
+ 6738 MinSys3069   423                                     if (fill==' ') {
+ 6739 MinSys3069   424                                             if (sign=='-') {
+ 6740 MinSys3069   425                                                     *ptr--='-';
+ 6741 MinSys3069   426                                                     cntr++;
+ 6742 MinSys3069   427                                             }
+ 6743 MinSys3069   428                                             if (!minus) for (i=cntr;i<digit;i++) device_putchar(' ');
+ 6744 MinSys3069   429                                             device_puts(++ptr);
+ 6745 MinSys3069   430                                             if (minus) for (i=cntr;i<digit;i++) device_putchar(' ');
+ 6746 MinSys3069   431                                     } else {
+ 6747 MinSys3069   432                                             for (;cntr<digit-1;cntr++) *ptr--='0';
+ 6748 MinSys3069   433                                             if (sign!='-'&&cntr<digit) *ptr--='0';
+ 6749 MinSys3069   434                                             else if (sign=='-') *ptr--='-';
+ 6750 MinSys3069   435                                             device_puts(++ptr);
+ 6751 MinSys3069   436                                     }
+ 6752 MinSys3069   437                                     flag=0;
+ 6753 MinSys3069   438                             }
+ 6754 MinSys3069   439                     }
+ 6755 MinSys3069   440                     format++;
+ 6756 MinSys3069   441             }
+ 6757 MinSys3069   442             /*va_end(arg_ptr);*/
+ 6758 MinSys3069   443     }
+ 6759 MinSys3069   444     
+ 6760 MinSys3069   445     void SCI1_printf(char *format,...)
+ 6761 MinSys3069   446     {
+ 6762 MinSys3069   447             va_list arg;
+ 6763 MinSys3069   448             va_start(arg, format);
+ 6764 MinSys3069   449             Device_printf(SCI1device, format, arg);
+ 6765 MinSys3069   450             va_end(arg);
+ 6766 MinSys3069   451     }
+ 6767 MinSys3069   452     
+ 6768 MinSys3069   453     void LCD_printf(char *format,...)
+ 6769 MinSys3069   454     {
+ 6770 MinSys3069   455             va_list arg;
+ 6771 MinSys3069   456             va_start(arg, format);
+ 6772 MinSys3069   457             Device_printf(LCDdevice, format, arg);
+ 6773 MinSys3069   458             va_end(arg);
+ 6774 MinSys3069   459     }
+ 6775 MinSys3069   460     
+ 6776 MinSys3069   461     
+ 6777 MinSys3069   462     /**********************************************************
+ 6778 MinSys3069   463     LED 0: Port4-bit6
+ 6779 MinSys3069   464     LED 1: Port4-bit7
+ 6780 MinSys3069   465     **********************************************************/
+ 6781 MinSys3069   466     /* ------------------------------------------------- */
+ 6782 MinSys3069   467     /* LET LED ON */
+ 6783 MinSys3069   468     /* ------------------------------------------------- */
+ 6784 MinSys3069   469     /*numberは0または1*/
+ 6785 MinSys3069   470     void turnOnLed(short int number)
+ 6786 MinSys3069   471     {
+ 6787 MinSys3069   472             const unsigned char mask[]={0x40,0x80};
+ 6788 MinSys3069   473             P4DR.BYTE |=mask[number];
+ 6789 MinSys3069   474             /*const(定数)が指定してあると，その変数はROMに配置される*/
+ 6790 MinSys3069   475     }
+ 6791 MinSys3069   476     /*******　追加説明　*******
+ 6792 MinSys3069   477     この関数は次のように書いても同じ機能となる
+ 6793 MinSys3069   478     void turnOnLed(short int number)
+ 6794 MinSys3069   479     {
+ 6795 MinSys3069   480             if (number==0) P4DR.BYTE = P4DR.BYTE | 0x40
+ 6796 MinSys3069   481             if (number==2) P4DR.BYTE = P4DR.BYTE | 0x80
+ 6797 MinSys3069   482     }
+ 6798 MinSys3069   483     ここで
+ 6799 MinSys3069   484     「P4DR.BYTE | 0x40」はP4DR.BYTEにおいて第6ビットを1にし，
+ 6800 MinSys3069   485     他のビットに影響を与えないという「or演算」である
+ 6801 MinSys3069   486     
+ 6802 MinSys3069   487     0x40 : 0100 0000
+ 6803 MinSys3069   488     0x80 : 1000 0000
+ 6804 MinSys3069   489     ***************************/
+ 6805 MinSys3069   490     
+ 6806 MinSys3069   491     
+ 6807 MinSys3069   492     /* ------------------------------------------------- */
+ 6808 MinSys3069   493     /* LET LED OFF */
+ 6809 MinSys3069   494     /* ------------------------------------------------- */
+ 6810 MinSys3069   495     /*numberは0または1*/
+ 6811 MinSys3069   496     void turnOffLed(short int number)
+ 6812 MinSys3069   497     {
+ 6813 MinSys3069   498             const unsigned char mask[]={0xbf,0x7f};
+ 6814 MinSys3069   499             P4DR.BYTE &=mask[number];
+ 6815 MinSys3069   500             /*const(定数)が指定してあると，その変数はROMに配置される*/
+ 6816 MinSys3069   501     }
+ 6817 MinSys3069   502     /*******　追加説明　*******
+ 6818 MinSys3069   503     この関数は次のように書いても同じ機能となる
+ 6819 MinSys3069   504     void turnOffLed(short int number)
+ 6820 MinSys3069   505     {
+ 6821 MinSys3069   506             if (number==0) P4DR.BYTE = P4DR.BYTE & 0xbf
+ 6822 MinSys3069   507             if (number==2) P4DR.BYTE = P4DR.BYTE & 0x7f
+ 6823 MinSys3069   508     }
+ 6824 MinSys3069   509     ここで
+ 6825 MinSys3069   510     「P4DR.BYTE & 0xbf」はP4DR.BYTEにおいて第6ビットを0にし，
+ 6826 MinSys3069   511     他のビットに影響を与えないという「and演算」である
+ 6827 MinSys3069   512     
+ 6828 MinSys3069   513     0xbf : 1011 1111
+ 6829 MinSys3069   514     0x7f : 0111 1111
+ 6830 MinSys3069   515     ***************************/
+ 6831 MinSys3069   516     
+ 6832 MinSys3069   517     
+ 6833 MinSys3069   518     
+ 6834 MinSys3069   519     /* ------------------------------------------------- */
+ 6835 MinSys3069   520     /* PUSH SW INITIALIZATION */
+ 6836 MinSys3069   521     /* ------------------------------------------------- */
+ 6837 MinSys3069   522     /**********************************************************
+ 6838 MinSys3069   523     押しボタンスイッチS0： Port2-bit3
+ 6839 MinSys3069   524     押しボタンスイッチS1： Port2-bit4
+ 6840 MinSys3069   525     押しボタンスイッチS2： Port2-bit5
+ 6841 MinSys3069   526     押しボタンスイッチS3： Port2-bit6
+ 6842 MinSys3069   527     押しボタンスイッチS4： Port2-bit7
+ 6843 MinSys3069   528     **********************************************************/
+ 6844 MinSys3069   529     
+ 6845 MinSys3069   530     /* ------------------------------------------------- */
+ 6846 MinSys3069   531     /* GET PUSH SW  */
+ 6847 MinSys3069   532     /* ------------------------------------------------- */
+ 6848 MinSys3069   533     /*押しボタンスイッチに対応する各ビットの状態を返す。ただしON=1，OFF=0。*/
+ 6849 MinSys3069   534     /*押しボタンスイッチ0,1,2,3,4を第0,1,2,3,4ビットに対応させている*/
+ 6850 MinSys3069   535     unsigned char getPushSW(void)
+ 6851 MinSys3069   536     {
+ 6852 MinSys3069   537             return (((unsigned char)(~(P2DR.BYTE>>3)))&0x1f);
+ 6853 MinSys3069   538     }
+ 6854 MinSys3069   539     
+ 6855 MinSys3069   540     /*******　追加説明　*******
+ 6856 MinSys3069   541       ポートを読み込み，ビット反転し，スイッチが押され
+ 6857 MinSys3069   542       ているビットに１が見えるようになっている。
+ 6858 MinSys3069   543       演算記号「~」はすべてのビットを反転するという演算子である
+ 6859 MinSys3069   544     ***************************/
+ 6860 MinSys3069   545     
+ 6861 MinSys3069   546     short int checkPushSW(short int number)
+ 6862 MinSys3069   547     /*push sw 0,1,2,3,4の状態を調べる　number:0,1,2,3, or 4*/
+ 6863 MinSys3069   548     /*押されていたら1、そうでなかったら0を返す*/
+ 6864 MinSys3069   549     {
+ 6865 MinSys3069   550             short int ret;
+ 6866 MinSys3069   551             static const unsigned char mask[]={0x8,0x10,0x20,0x40,0x80};
+ 6867 MinSys3069   552             if (P2DR.BYTE&mask[number]) ret=0;
+ 6868 MinSys3069   553             else ret=1;
+ 6869 MinSys3069   554             return ret;
+ 6870 MinSys3069   555     }
+ 6871 MinSys3069   556     
+ 6872 MinSys3069   557     /* -------------------------------------------------
+ 6873 MinSys3069   558       4 BIT SW INITIALIZATION 
+ 6874 MinSys3069   559             P5-0 CN2-37 4bitSW-1
+ 6875 MinSys3069   560             P5-1 CN2-38 4bitSW-2
+ 6876 MinSys3069   561             P5-2 CN2-39 4bitSW-3
+ 6877 MinSys3069   562             P5-3 CN2-40 4bitSW-4
+ 6878 MinSys3069   563     ------------------------------------------------- */
+ 6879 MinSys3069   564     
+ 6880 MinSys3069   565     /*4bitswの状態をそのまま返す*/
+ 6881 MinSys3069   566     unsigned char get4BitSW(void)
+ 6882 MinSys3069   567     {
+ 6883 MinSys3069   568             return (unsigned char)(~P5DR.BYTE);
+ 6884 MinSys3069   569     }
+ 6885 MinSys3069   570     
+ 6886 MinSys3069   571     short int check4BitSW(short int number)
+ 6887 MinSys3069   572     /*4bitsw 0,1,2,3の状態を調べる　number:0,1,2 or 3*/
+ 6888 MinSys3069   573     /*ONなら1、そうでなかったら0を返す*/
+ 6889 MinSys3069   574     {
+ 6890 MinSys3069   575             short int ret;
+ 6891 MinSys3069   576             static const unsigned char mask[]={1,2,4,8};
+ 6892 MinSys3069   577             if (P5DR.BYTE&mask[number]) ret=0;
+ 6893 MinSys3069   578             else ret=1;
+ 6894 MinSys3069   579             return ret;
+ 6895 MinSys3069   580     }
+ 6896 MinSys3069   581     
+ 6897 MinSys3069   582     static void initTimer0Int(unsigned short int period)
+ 6898 MinSys3069   583     /*ITU0による割り込みタイマーの設定(越智君2001による)*/
+ 6899 MinSys3069   584     /*割り込み間隔は引数peiodで単位はμsecである*/
+ 6900 MinSys3069   585     /*値は26214以下でなければならない*/
+ 6901 MinSys3069   586     /*26.214msecまで*/
+ 6902 MinSys3069   587     {
+ 6903 MinSys3069   588             unsigned long int lperiod=period;
+ 6904 MinSys3069   589             unsigned short int speriod;
+ 6905 MinSys3069   590             lperiod=lperiod*10/4;
+ 6906 MinSys3069   591             speriod=lperiod-1;
+ 6907 MinSys3069   592             ITU0.TCR.BIT.CCLR=1;  /*GRAのコンペアマッチでTCNTをクリア*/
+ 6908 MinSys3069   593             ITU0.TCR.BIT.CKEG=0;  /*立ち上がりエッジでカウント*/
+ 6909 MinSys3069   594             ITU0.TCR.BIT.TPSC=3;  /*内部クロックφ/8でカウント*/
+ 6910 MinSys3069   595             ITU0.GRA=speriod;  /*割り込みの周期をperiod[μs]に指定*/
+ 6911 MinSys3069   596             ITU.TISRA.BIT.IMIEA0=1; /*TCNT=GRAとなったときの割り込み要求を許可*/
+ 6912 MinSys3069   597             /* IMIA1 vector address=0x60 */
+ 6913 MinSys3069   598     }
+ 6914 MinSys3069   599     
+ 6915 MinSys3069   600     #define startTimer0() (ITU.TSTR.BYTE |= 0x01) /* Timer CH0 スタート */
+ 6916 MinSys3069   601     
+ 6917 MinSys3069   602     /* OSタイマの初期化 */
+ 6918 MinSys3069   603     void initSystemTimer(VP_INT exinf)
+ 6919 MinSys3069   604     {
+ 6920 MinSys3069   605             initTimer0Int(1000); /*システムタイマは1msec*/
+ 6921 MinSys3069   606             startTimer0();
+ 6922 MinSys3069   607     }
+ 6923 MinSys3069   608     
+ 6924 MinSys3069   609     #define clearTimer0Flag() (ITU.TISRA.BIT.IMFA0=0)
+ 6925 MinSys3069   610     /*ITU0 割り込みルーチン*/
+ 6926 MinSys3069   611     /*割り込みで直接起動ではないので通常の関数になっている*/
+ 6927 MinSys3069   612     void SystemTimerHandler(VP_INT exinf)
+ 6928 MinSys3069   613     {
+ 6929 MinSys3069   614             /* 割り込み要因クリア */
+ 6930 MinSys3069   615             clearTimer0Flag();
+ 6931 MinSys3069   616             
+ 6932 MinSys3069   617             /* タイムティック供給 */
+ 6933 MinSys3069   618             isig_tim();
+ 6934 MinSys3069   619     }
+ 6935 MinSys3069   620     
+ 6936 MinSys3069   621     
+ 6937 MinSys3069   622     void idletask(VP_INT exinf)
+ 6938 MinSys3069   623     {
+ 6939 MinSys3069   624             while(1);
+ 6940 MinSys3069   625     }
+ 6941 MinSys3069   626     
+H8S,H8/300 SERIES C COMPILER (Ver. 2.0D for Evaluation)21-Jan-2019  10:39:49  PAGE   1
+
+******* SECTION SIZE INFORMATION *******
+
+PROGRAM  SECTION(P):                                0x00000A12 Byte(s)
+CONSTANT SECTION(C):                                0x00000033 Byte(s)
+DATA     SECTION(D):                                0x00000000 Byte(s)
+BSS      SECTION(B):                                0x00000024 Byte(s)
+
+TOTAL PROGRAM  SECTION: 0x00000A12 Byte(s)
+TOTAL CONSTANT SECTION: 0x00000033 Byte(s)
+TOTAL DATA     SECTION: 0x00000000 Byte(s)
+TOTAL BSS      SECTION: 0x00000024 Byte(s)
+
+    TOTAL PROGRAM SIZE: 0x00000A69 Byte(s)
+
+
+
+** ASSEMBLER/LINKAGE EDITOR LIMITS INFORMATION **
+
+NUMBER OF EXTERNAL REFERENCE  SYMBOLS:        6 
+NUMBER OF EXTERNAL DEFINITION SYMBOLS:       26 
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:        190 
+
+
+
+********* CPU MODE INFORMATION *********
+
+cpu=300ha

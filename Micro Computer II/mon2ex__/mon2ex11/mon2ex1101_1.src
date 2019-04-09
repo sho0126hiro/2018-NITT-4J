@@ -1,0 +1,49 @@
+          .CPU        300HA
+          .EXPORT     _x00
+          .EXPORT     _x10
+          .EXPORT     _y0
+          .EXPORT     _y1
+          .EXPORT     _Division
+          .EXPORT     _main
+          .SECTION    P,CODE,ALIGN=2
+_Division:                       ; function: Division
+          SUB.W       E1,E1
+          MOV.W       #1:16,R1
+          BRA         L21:8
+L20:                              
+          SHLL.W      E0
+          SHLL.W      R1
+L21:                              
+          CMP.W       R0,E0
+          BCS         L20:8
+          BRA         L23:8
+L22:                              
+          CMP.W       R0,E0
+          BHI         L24:8
+          SUB.W       E0,R0
+          ADD.W       R1,E1
+L24:                              
+          SHLR.W      E0
+          SHLR.W      R1
+L23:                              
+          MOV.W       R1,R1
+          BNE         L22:8
+          MOV.W       E1,R0
+          RTS
+_main:                           ; function: main
+          MOV.W       @_x10:24,E0
+          MOV.W       @_x00:24,R0
+          BSR         _Division:8
+          MOV.W       R0,@_y1:24
+          RTS
+          .SECTION    D,DATA,ALIGN=2
+_x00:                            ; static: x00
+          .DATA.W     H'0003
+_x10:                            ; static: x10
+          .DATA.W     H'0002
+          .SECTION    B,DATA,ALIGN=2
+_y0:                             ; static: y0
+          .RES.W      1
+_y1:                             ; static: y1
+          .RES.W      1
+          .END

@@ -1,0 +1,42 @@
+    .CPU 300HA        ;CPUは300Hシリーズアドバンストモード
+
+    .IMPORT _main     ;mainはこのファイル以外に定義されているのでそれをつかえという意味
+    
+    .SECTION A,DATA,LOCATE=H'000000
+RSTVEC:
+    .DATA.L START       ;アドレス0にスタートアップルーチンのアドレスを書いておく
+
+    .SECTION    P,CODE,ALIGN=2    ;ここがスタートアップルーチンの先頭
+START:
+    MOV.L #H'FFF10,ER7 ;スタックポインタ設定
+
+       ; セクションD(ROM)をSection X(RAM)にコピー
+    MOV.L @_D_Head,ER0      ;source address to ER0
+    MOV.L @_X_Head,ER1      ;destination address to ER1
+    MOV.L @_D_Size,ER2      ;size to be copied to ER2
+    OR.L ER2,ER2            ;(ER2 or ER2) to ER2
+    JMP @LOOP_11 
+LOOP_1:
+    MOV.B @ER0+,R3H         ;source byte to E3H with ER0++
+    MOV.B R3H,@ER1          ;E3H to destination
+    INC.L #1,ER1            ;increment destination address
+    DEC.L #1,ER2            ;ER2--
+LOOP_11:
+    BNE LOOP_1
+
+    JSR @_main        ; Call main()
+EternalLoop:
+    BRA EternalLoop ;万が一戻ってきても永久ループ
+
+    .SECTION    D, DATA, ALIGN = 2 ;下で参照するために必要（実態はここにはない）
+    .SECTION    X, DATA, ALIGN = 2 ;下で参照するために必要（実態はここにはない）
+
+    .SECTION    C, DATA, ALIGN = 2
+_D_Head:
+    .DATA.L (STARTOF D)    ; Section D Head Address
+_X_Head:
+    .DATA.L (STARTOF X)    ; Section X Head Address
+_D_Size:
+    .DATA.L (SIZEOF D)     ; Section D Size
+
+    .END

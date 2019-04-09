@@ -1,0 +1,34 @@
+
+---------- EX1.SRC0
+          .CPU        300HA
+          .EXPORT     _msecwait
+          .EXPORT     _main
+          .SECTION    P,CODE,ALIGN=2
+_msecwait:                       ; function: msecwait
+          SUB.W       R1,R1
+          BRA         L11:8
+L10:                              
+          MOV.W       #2646:16,E0
+L12:                              
+          DEC.W       #1,E0
+          BNE         L12:8
+          INC.W       #1,R1
+L11:                              
+          CMP.W       R0,R1
+          BLT         L10:8
+          RTS
+_main:                           ; function: main
+          MOV.W       #1000:16,R6
+          MOV.B       #3:8,R0L
+          MOV.B       R0L,@16777160:8
+L13:                              
+          BSET.B      #0,@16777162:8
+          BCLR.B      #1,@16777162:8
+          MOV.W       R6,R0
+          BSR         _msecwait:8
+          BCLR.B      #0,@16777162:8
+          BSET.B      #1,@16777162:8
+          MOV.W       R6,R0
+          BSR         _msecwait:8
+          BRA         L13:8
+          .END

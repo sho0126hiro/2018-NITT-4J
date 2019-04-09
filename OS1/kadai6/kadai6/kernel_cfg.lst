@@ -1,0 +1,301 @@
+H8S,H8/300 SERIES C COMPILER (Ver. 2.0D for Evaluation)21-Jan-2019  10:39:49  PAGE   1
+
+************ SOURCE LISTING ************
+
+FILE NAME: kernel_cfg.c
+
+  Seq File        Line Pi 0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+
+    1 kernel_cfg     1     /* ------------------------------------------------------------------------ */
+    2 kernel_cfg     2     /*  HOS-V4  kernel configuration                                            */
+    3 kernel_cfg     3     /*    kernel object create and initialize                                   */
+    4 kernel_cfg     4     /*                                                                          */
+    5 kernel_cfg     5     /* ------------------------------------------------------------------------ */
+    6 kernel_cfg     6     
+    7 kernel_cfg     7     
+    8 kernel_cfg     8     #include "kernel.h"
+ 4924 kernel_cfg     9     #include "kernel_id.h"
+ 4964 kernel_cfg    10     
+ 4965 kernel_cfg    11     #include "sample.h"
+ 4973 kernel_cfg    12     #include "MinSys3069.h"
+ 5135 kernel_cfg    13     
+ 5136 kernel_cfg    14     
+ 5137 kernel_cfg    15     
+ 5138 kernel_cfg    16     /* ------------------------------------------ */
+ 5139 kernel_cfg    17     /*                 idle stack                 */
+ 5140 kernel_cfg    18     /* ------------------------------------------ */
+ 5141 kernel_cfg    19     
+ 5142 kernel_cfg    20     VP         mknl_idl_stkblk[((128) + sizeof(VP) - 1) / sizeof(VP)];      /* idle stack block*/
+ 5143 kernel_cfg    21     const VP   mknl_idl_stk   = (VP)(mknl_idl_stkblk);      /* idle stack */
+ 5144 kernel_cfg    22     const SIZE mknl_idl_stksz = (SIZE)sizeof(mknl_idl_stkblk);      /* idle stack size */
+ 5145 kernel_cfg    23     
+ 5146 kernel_cfg    24     
+ 5147 kernel_cfg    25     
+ 5148 kernel_cfg    26     /* ------------------------------------------ */
+ 5149 kernel_cfg    27     /*           create ready queue               */
+ 5150 kernel_cfg    28     /* ------------------------------------------ */
+ 5151 kernel_cfg    29     
+ 5152 kernel_cfg    30     T_MKNL_QUE mknl_rdq_tbl[8];
+ 5153 kernel_cfg    31     const INT  mknl_rdq_cnt = 8;
+ 5154 kernel_cfg    32     
+ 5155 kernel_cfg    33     
+ 5156 kernel_cfg    34     
+ 5157 kernel_cfg    35     /* ------------------------------------------ */
+ 5158 kernel_cfg    36     /*                kernel heap                 */
+ 5159 kernel_cfg    37     /* ------------------------------------------ */
+ 5160 kernel_cfg    38     
+ 5161 kernel_cfg    39     VP kernel_heap_mem[((32768) + sizeof(VP) - 1) / sizeof(VP)];    /* kernel heap */
+ 5162 kernel_cfg    40     
+ 5163 kernel_cfg    41     
+ 5164 kernel_cfg    42     
+ 5165 kernel_cfg    43     /* ------------------------------------------ */
+ 5166 kernel_cfg    44     /*               set time tic                 */
+ 5167 kernel_cfg    45     /* ------------------------------------------ */
+ 5168 kernel_cfg    46     
+ 5169 kernel_cfg    47     const UW kernel_tic_deno = TIC_DENO;
+ 5170 kernel_cfg    48     const UW kernel_tic_div  = TIC_NUME / TIC_DENO;
+ 5171 kernel_cfg    49     const UW kernel_tic_mod  = TIC_NUME % TIC_DENO;
+ 5172 kernel_cfg    50     
+ 5173 kernel_cfg    51     
+ 5174 kernel_cfg    52     
+ 5175 kernel_cfg    53     /* ------------------------------------------ */
+ 5176 kernel_cfg    54     /*          create task objects               */
+ 5177 kernel_cfg    55     /* ------------------------------------------ */
+ 5178 kernel_cfg    56     
+ 5179 kernel_cfg    57     /* stack area */
+ 5180 kernel_cfg    58     static VP kernel_tsk1_stk[((128) + sizeof(VP) - 1) / sizeof(VP)];
+ 5181 kernel_cfg    59     static VP kernel_tsk2_stk[((256) + sizeof(VP) - 1) / sizeof(VP)];
+ 5182 kernel_cfg    60     static VP kernel_tsk3_stk[((256) + sizeof(VP) - 1) / sizeof(VP)];
+ 5183 kernel_cfg    61     static VP kernel_tsk4_stk[((256) + sizeof(VP) - 1) / sizeof(VP)];
+ 5184 kernel_cfg    62     
+ 5185 kernel_cfg    63     /* task control block for rom area */
+ 5186 kernel_cfg    64     const T_KERNEL_TCB_ROM kernel_tcb_rom[4] =
+ 5187 kernel_cfg    65             {
+ 5188 kernel_cfg    66                     {(ATR)(TA_HLNG | TA_ACT), (VP_INT)(1), (FP)(idletask), (PRI)(8), (SIZE)(128), (VP)kernel_tsk1_stk},
+ 5189 kernel_cfg    67                     {(ATR)(TA_HLNG), (VP_INT)(1), (FP)(taskA), (PRI)(1), (SIZE)(256), (VP)kernel_tsk2_stk},
+ 5190 kernel_cfg    68                     {(ATR)(TA_HLNG), (VP_INT)(1), (FP)(taskB), (PRI)(2), (SIZE)(256), (VP)kernel_tsk3_stk},
+ 5191 kernel_cfg    69                     {(ATR)(TA_HLNG), (VP_INT)(1), (FP)(taskC), (PRI)(3), (SIZE)(256), (VP)kernel_tsk4_stk},
+ 5192 kernel_cfg    70             };
+ 5193 kernel_cfg    71     
+ 5194 kernel_cfg    72     /* task control block for ram area */
+ 5195 kernel_cfg    73     T_KERNEL_TCB_RAM kernel_tcb_ram[4];
+ 5196 kernel_cfg    74     
+ 5197 kernel_cfg    75     /* task control block table */
+ 5198 kernel_cfg    76     T_KERNEL_TCB_RAM *kernel_tcb_ram_tbl[8] =
+ 5199 kernel_cfg    77             {
+ 5200 kernel_cfg    78                     &kernel_tcb_ram[0],
+ 5201 kernel_cfg    79                     &kernel_tcb_ram[1],
+ 5202 kernel_cfg    80                     &kernel_tcb_ram[2],
+ 5203 kernel_cfg    81                     &kernel_tcb_ram[3],
+ 5204 kernel_cfg    82                     NULL,
+ 5205 kernel_cfg    83                     NULL,
+ 5206 kernel_cfg    84                     NULL,
+ 5207 kernel_cfg    85                     NULL,
+ 5208 kernel_cfg    86             };
+ 5209 kernel_cfg    87     
+ 5210 kernel_cfg    88     /* task control block count */
+ 5211 kernel_cfg    89     const INT kernel_tcb_cnt = 8;
+ 5212 kernel_cfg    90     
+ 5213 kernel_cfg    91     
+ 5214 kernel_cfg    92     
+ 5215 kernel_cfg    93     /* ------------------------------------------ */
+ 5216 kernel_cfg    94     /*         create semaphore objects           */
+ 5217 kernel_cfg    95     /* ------------------------------------------ */
+ 5218 kernel_cfg    96     
+ 5219 kernel_cfg    97     /* semaphore control block count */
+ 5220 kernel_cfg    98     const INT kernel_semcb_cnt = 0;
+ 5221 kernel_cfg    99     
+ 5222 kernel_cfg   100     
+ 5223 kernel_cfg   101     
+ 5224 kernel_cfg   102     /* ------------------------------------------ */
+ 5225 kernel_cfg   103     /*        create event flag objects           */
+ 5226 kernel_cfg   104     /* ------------------------------------------ */
+ 5227 kernel_cfg   105     
+ 5228 kernel_cfg   106     /* event flag control block count */
+ 5229 kernel_cfg   107     const INT kernel_flgcb_cnt = 0;
+ 5230 kernel_cfg   108     
+ 5231 kernel_cfg   109     
+ 5232 kernel_cfg   110     
+ 5233 kernel_cfg   111     /* ------------------------------------------ */
+ 5234 kernel_cfg   112     /*        create data queue objects           */
+ 5235 kernel_cfg   113     /* ------------------------------------------ */
+ 5236 kernel_cfg   114     
+ 5237 kernel_cfg   115     /* data queue control block count */
+ 5238 kernel_cfg   116     const INT kernel_dtqcb_cnt = 0;
+ 5239 kernel_cfg   117     
+ 5240 kernel_cfg   118     
+ 5241 kernel_cfg   119     
+ 5242 kernel_cfg   120     /* ------------------------------------------ */
+ 5243 kernel_cfg   121     /*         create mail box objects            */
+ 5244 kernel_cfg   122     /* ------------------------------------------ */
+ 5245 kernel_cfg   123     
+ 5246 kernel_cfg   124     /* mail box control block count */
+ 5247 kernel_cfg   125     const INT kernel_mbxcb_cnt = 0;
+ 5248 kernel_cfg   126     
+ 5249 kernel_cfg   127     
+ 5250 kernel_cfg   128     
+ 5251 kernel_cfg   129     /* ------------------------------------------ */
+ 5252 kernel_cfg   130     /*      create message buffer objects         */
+ 5253 kernel_cfg   131     /* ------------------------------------------ */
+ 5254 kernel_cfg   132     
+ 5255 kernel_cfg   133     /* mail box control block count */
+ 5256 kernel_cfg   134     const INT kernel_mbfcb_cnt = 0;
+ 5257 kernel_cfg   135     
+ 5258 kernel_cfg   136     
+ 5259 kernel_cfg   137     
+ 5260 kernel_cfg   138     /* ------------------------------------------ */
+ 5261 kernel_cfg   139     /*   create fixed size memory-pool objects    */
+ 5262 kernel_cfg   140     /* ------------------------------------------ */
+ 5263 kernel_cfg   141     
+ 5264 kernel_cfg   142     /* fixed size memory-pool area */
+ 5265 kernel_cfg   143     static VP kernel_mpf1_heap[1][(((256) + sizeof(VP) - 1) / sizeof(VP))];
+ 5266 kernel_cfg   144     
+ 5267 kernel_cfg   145     /* fixed size memory-pool control block for rom area */
+ 5268 kernel_cfg   146     const T_KERNEL_MPFCB_ROM kernel_mpfcb_rom[1] =
+ 5269 kernel_cfg   147             {
+ 5270 kernel_cfg   148                     {(ATR)(TA_TPRI), (UINT)(1), (SIZE)sizeof(kernel_mpf1_heap[0]), (VP)kernel_mpf1_heap},
+ 5271 kernel_cfg   149             };
+ 5272 kernel_cfg   150     
+ 5273 kernel_cfg   151     /* fixed size memory-pool control block for ram area */
+ 5274 kernel_cfg   152     T_KERNEL_MPFCB_RAM kernel_mpfcb_ram[1];
+ 5275 kernel_cfg   153     
+ 5276 kernel_cfg   154     /* fixed size memory-pool control block table */
+ 5277 kernel_cfg   155     T_KERNEL_MPFCB_RAM *kernel_mpfcb_ram_tbl[1] =
+ 5278 kernel_cfg   156             {
+ 5279 kernel_cfg   157                     &kernel_mpfcb_ram[0],
+ 5280 kernel_cfg   158             };
+ 5281 kernel_cfg   159     
+ 5282 kernel_cfg   160     /* fixed size memory-pool control block count */
+ 5283 kernel_cfg   161     const INT kernel_mpfcb_cnt = 1;
+ 5284 kernel_cfg   162     
+ 5285 kernel_cfg   163     
+ 5286 kernel_cfg   164     
+ 5287 kernel_cfg   165     /* ------------------------------------------ */
+ 5288 kernel_cfg   166     /*  create variable size memory-pool objects  */
+ 5289 kernel_cfg   167     /* ------------------------------------------ */
+ 5290 kernel_cfg   168     
+ 5291 kernel_cfg   169     /* variable size memory-pool control block count */
+ 5292 kernel_cfg   170     const INT kernel_mplcb_cnt = 0;
+ 5293 kernel_cfg   171     
+ 5294 kernel_cfg   172     
+ 5295 kernel_cfg   173     
+ 5296 kernel_cfg   174     /* ------------------------------------------ */
+ 5297 kernel_cfg   175     /*       create cyclic handler objects        */
+ 5298 kernel_cfg   176     /* ------------------------------------------ */
+ 5299 kernel_cfg   177     
+ 5300 kernel_cfg   178     /* cyclic handler control block count */
+ 5301 kernel_cfg   179     const INT kernel_cyccb_cnt = 0;
+ 5302 kernel_cfg   180     
+ 5303 kernel_cfg   181     
+ 5304 kernel_cfg   182     
+ 5305 kernel_cfg   183     /* ------------------------------------------ */
+ 5306 kernel_cfg   184     /*       create alarm handler objects         */
+ 5307 kernel_cfg   185     /* ------------------------------------------ */
+ 5308 kernel_cfg   186     
+ 5309 kernel_cfg   187     /* alarm handler control block count */
+ 5310 kernel_cfg   188     const INT kernel_almcb_cnt = 0;
+ 5311 kernel_cfg   189     
+ 5312 kernel_cfg   190     
+ 5313 kernel_cfg   191     
+ 5314 kernel_cfg   192     /* ------------------------------------------ */
+ 5315 kernel_cfg   193     /*        interrupt control objects           */
+ 5316 kernel_cfg   194     /* ------------------------------------------ */
+ 5317 kernel_cfg   195     
+ 5318 kernel_cfg   196     /* interrupt control */
+ 5319 kernel_cfg   197     T_KERNEL_INTCB kernel_intcb_tbl[257];           /* interrupt control block table */
+ 5320 kernel_cfg   198     const INT      kernel_intcb_cnt = 257;          /* interrupt control block count */
+ 5321 kernel_cfg   199     const INTNO    kernel_min_intno = 0;            /* minimum intrrupt number */
+ 5322 kernel_cfg   200     
+ 5323 kernel_cfg   201     /* interrupt service routine control */
+ 5324 kernel_cfg   202     const INT      kernel_isrcb_cnt = 0;            /* ISR control block count */
+ 5325 kernel_cfg   203     
+ 5326 kernel_cfg   204     
+ 5327 kernel_cfg   205     
+ 5328 kernel_cfg   206     /* ------------------------------------------ */
+ 5329 kernel_cfg   207     /*    CPU exception handler control objects   */
+ 5330 kernel_cfg   208     /* ------------------------------------------ */
+ 5331 kernel_cfg   209     
+ 5332 kernel_cfg   210     /* interrupt control */
+ 5333 kernel_cfg   211     T_KERNEL_EXCCB kernel_exccb_tbl[1];             /* CPU exception handler control block table */
+ 5334 kernel_cfg   212     const INT      kernel_exccb_cnt = 1;            /* CPU exception handler control block count */
+ 5335 kernel_cfg   213     const EXCNO    kernel_min_excno = 0;            /* minimum CPU exception handler number */
+ 5336 kernel_cfg   214     
+ 5337 kernel_cfg   215     
+ 5338 kernel_cfg   216     
+ 5339 kernel_cfg   217     /* ------------------------------------------ */
+ 5340 kernel_cfg   218     /*          initialize functions              */
+ 5341 kernel_cfg   219     /* ------------------------------------------ */
+ 5342 kernel_cfg   220     
+ 5343 kernel_cfg   221     /* object initialize */
+ 5344 kernel_cfg   222     void kernel_cfg_init(void)
+ 5345 kernel_cfg   223     {
+ 5346 kernel_cfg   224             int i;
+ 5347 kernel_cfg   225             
+ 5348 kernel_cfg   226             
+ 5349 kernel_cfg   227             /* initialize task control block */
+ 5350 kernel_cfg   228             for ( i = 0; i < 4; i++ )
+ 5351 kernel_cfg   229             {
+ 5352 kernel_cfg   230                     kernel_tcb_ram[i].tcb_rom = &kernel_tcb_rom[i];
+ 5353 kernel_cfg   231             }
+ 5354 kernel_cfg   232             
+ 5355 kernel_cfg   233             
+ 5356 kernel_cfg   234             /* initialize fixed size memory-pool control block */
+ 5357 kernel_cfg   235             for ( i = 0; i < 1; i++ )
+ 5358 kernel_cfg   236             {
+ 5359 kernel_cfg   237                     kernel_mpfcb_ram[i].mpfcb_rom = &kernel_mpfcb_rom[i];
+ 5360 kernel_cfg   238             }
+ 5361 kernel_cfg   239     
+ 5362 kernel_cfg   240             /* initialize interrupt table */
+ 5363 kernel_cfg   241             kernel_intcb_tbl[24].exinf = (VP_INT)(0);
+ 5364 kernel_cfg   242             kernel_intcb_tbl[24].isr   = (FP)(SystemTimerHandler);
+ 5365 kernel_cfg   243             kernel_intcb_tbl[57].exinf = (VP_INT)(0);
+ 5366 kernel_cfg   244             kernel_intcb_tbl[57].isr   = (FP)(SCI1_RXI_handler);
+ 5367 kernel_cfg   245             kernel_intcb_tbl[56].exinf = (VP_INT)(0);
+ 5368 kernel_cfg   246             kernel_intcb_tbl[56].isr   = (FP)(SCI1_ERI_handler);
+ 5369 kernel_cfg   247     }
+ 5370 kernel_cfg   248     
+ 5371 kernel_cfg   249     /* start up */
+ 5372 kernel_cfg   250     void kernel_cfg_start(void)
+ 5373 kernel_cfg   251     {
+ 5374 kernel_cfg   252             kernel_ini_mem(kernel_heap_mem, sizeof(kernel_heap_mem));               /* initialize kernel heap */
+ 5375 kernel_cfg   253     
+ 5376 kernel_cfg   254             kernel_ini_tsk();               /* initialize task */
+ 5377 kernel_cfg   255             kernel_ini_mpf();               /* initialize fixed size memory-pool */
+ 5378 kernel_cfg   256     
+ 5379 kernel_cfg   257             /* call initialize routine*/
+ 5380 kernel_cfg   258             ((FP)(initSystemTimer))((VP_INT)(0));
+ 5381 kernel_cfg   259             ((FP)(OnHosStart))((VP_INT)(0));
+ 5382 kernel_cfg   260     }
+ 5383 kernel_cfg   261     
+ 5384 kernel_cfg   262     
+ 5385 kernel_cfg   263     /* ------------------------------------------------------------------------ */
+ 5386 kernel_cfg   264     /*  End of file                                                             */
+ 5387 kernel_cfg   265     /* ------------------------------------------------------------------------ */
+H8S,H8/300 SERIES C COMPILER (Ver. 2.0D for Evaluation)21-Jan-2019  10:39:49  PAGE   1
+
+******* SECTION SIZE INFORMATION *******
+
+PROGRAM  SECTION(P):                                0x000000BC Byte(s)
+CONSTANT SECTION(C):                                0x0000008E Byte(s)
+DATA     SECTION(D):                                0x00000024 Byte(s)
+BSS      SECTION(B):                                0x00008E10 Byte(s)
+
+TOTAL PROGRAM  SECTION: 0x000000BC Byte(s)
+TOTAL CONSTANT SECTION: 0x0000008E Byte(s)
+TOTAL DATA     SECTION: 0x00000024 Byte(s)
+TOTAL BSS      SECTION: 0x00008E10 Byte(s)
+
+    TOTAL PROGRAM SIZE: 0x00008F7E Byte(s)
+
+
+
+** ASSEMBLER/LINKAGE EDITOR LIMITS INFORMATION **
+
+NUMBER OF EXTERNAL REFERENCE  SYMBOLS:       14 
+NUMBER OF EXTERNAL DEFINITION SYMBOLS:       34 
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:         54 
+
+
+
+********* CPU MODE INFORMATION *********
+
+cpu=300ha

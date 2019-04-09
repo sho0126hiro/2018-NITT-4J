@@ -1,0 +1,58 @@
+H8S,H8/300 SERIES C COMPILER (Ver. 2.0D for Evaluation)22-May-2018  12:02:31  PAGE   1
+
+************ SOURCE LISTING ************
+
+FILE NAME: C2asm03.c
+
+  Seq File        Line Pi 0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+
+    1 C2asm03.c      1     int ans1;
+    2 C2asm03.c      2     long int ans2;
+    3 C2asm03.c      3     
+    4 C2asm03.c      4     int test1(int a, int b)
+    5 C2asm03.c      5     {
+    6 C2asm03.c      6         int ret;
+    7 C2asm03.c      7         ret=a-b;
+    8 C2asm03.c      8         return ret;
+    9 C2asm03.c      9     }
+   10 C2asm03.c     10     
+   11 C2asm03.c     11     int test2(int a, int b, int c)
+   12 C2asm03.c     12     {
+   13 C2asm03.c     13         int ret;
+   14 C2asm03.c     14         ret=a-b-(c-1);
+   15 C2asm03.c     15         return ret;
+   16 C2asm03.c     16     }
+   17 C2asm03.c     17     
+   18 C2asm03.c     18     long int test3(long int a, long int b)
+   19 C2asm03.c     19     {
+   20 C2asm03.c     20         long int ret;
+   21 C2asm03.c     21         ret=a-b;
+   22 C2asm03.c     22         return ret;
+   23 C2asm03.c     23     }
+   24 C2asm03.c     24     
+   25 C2asm03.c     25     long int test4(long int a, long int b, long int c)
+   26 C2asm03.c     26     {
+   27 C2asm03.c     27         long int ret;
+   28 C2asm03.c     28         ret=a-b-(c-1);
+   29 C2asm03.c     29         return ret;
+   30 C2asm03.c     30     }
+   31 C2asm03.c     31     
+   32 C2asm03.c     32     int main(void)
+   33 C2asm03.c     33     {
+   34 C2asm03.c     34         ans1=test1(0x123,0x456);
+   35 C2asm03.c     35         ans1=test2(0x123,0x456,0x789);
+   36 C2asm03.c     36         ans2=test3(0x123,0x456);
+   37 C2asm03.c     37         ans2=test4(0x123,0x456,0x789);
+   38 C2asm03.c     38     }
+H8S,H8/300 SERIES C COMPILER (Ver. 2.0D for Evaluation)22-May-2018  12:02:32  PAGE   1
+
+** ASSEMBLER/LINKAGE EDITOR LIMITS INFORMATION **
+
+NUMBER OF EXTERNAL REFERENCE  SYMBOLS:        0 
+NUMBER OF EXTERNAL DEFINITION SYMBOLS:        7 
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:          7 
+
+
+
+********* CPU MODE INFORMATION *********
+
+cpu=300ha

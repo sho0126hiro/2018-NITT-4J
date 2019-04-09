@@ -1,0 +1,33 @@
+                                        H SERIES LINKAGE EDITOR Ver. 5.3B
+
+
+LINK COMMAND LINE
+
+
+LNK mon2ex0502 -PRINT=mon2ex0502 
+
+
+
+                                  H SERIES LINKAGE EDITOR Ver. 5.3B                      PAGE :     1
+
+                                        ***     LINKAGE EDITOR LINK MAP LIST      ***
+
+
+SECTION   NAME                       START      -      END         LENGTH
+                                                              UNIT NAME                          MODULE NAME
+
+
+ATTRIBUTE  :   DATA  NOSHR
+
+A                                 H'000FF030    -    H'000FF033   H'00000004
+                                                              mon2ex0502                         mon2ex0502                      
+
+* TOTAL ADDRESS *                 H'000FF030    -    H'000FF033   H'00000004
+
+
+ATTRIBUTE  :   CODE  NOSHR
+
+P                                 H'000FF130    -    H'000FF15D   H'0000002E
+                                                              mon2ex0502                         mon2ex0502                      
+
+* TOTAL ADDRESS *                 H'000FF130    -    H'000FF15D   H'0000002E

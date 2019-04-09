@@ -1,0 +1,53 @@
+H8S,H8/300 SERIES C COMPILER (Ver. 2.0D for Evaluation)12-Jul-2018  12:40:52  PAGE   1
+
+************ SOURCE LISTING ************
+
+FILE NAME: ex1.c
+
+  Seq File        Line Pi 0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+
+    1 ex1.c          1     /*  msecwait関数で1秒ごとのLEDのON-OFFを行う  */
+    2 ex1.c          2     #include <3048fone.h>
+ 1011 ex1.c          3     
+ 1012 ex1.c          4     void msecwait(int msec)
+ 1013 ex1.c          5     /*msec間なにもしない時間稼ぎ関数*/
+ 1014 ex1.c          6     {
+ 1015 ex1.c          7         int i,j;
+ 1016 ex1.c          8         for (i=0;i<msec;i++) {
+ 1017 ex1.c          9             for (j=0;j<2646;j++);    /*2646は実測によって求めた値*/
+ 1018 ex1.c         10         }
+ 1019 ex1.c         11     }
+ 1020 ex1.c         12     
+ 1021 ex1.c         13     main()
+ 1022 ex1.c         14     {
+ 1023 ex1.c         15         /*P5の下位2ビットを出力に設定*/
+ 1024 ex1.c         16         /* P5のDDRの下位2ビットに1を与えるとこの設定になる*/
+ 1025 ex1.c         17         /*DDRとはDataDirectionRegister(データ方向設定レジスタ)*/
+ 1026 ex1.c         18         P5.DDR =  0x3;  /*0x3 = 00000011(二進数)*/
+ 1027 ex1.c         19         while(1) {/*これは無限ループ*/
+ 1028 ex1.c         20             /*LED0をONにする  P5のDRの第0ビットを1にする*/
+ 1029 ex1.c         21             /*DRとはDataRegister(データレジスタ)*/
+ 1030 ex1.c         22             P5.DR.BIT.B0=1;
+ 1031 ex1.c         23             /*LED1をOFFにする  P5のDRの第1ビットを0にする*/
+ 1032 ex1.c         24             P5.DR.BIT.B1=0;
+ 1033 ex1.c         25             msecwait(1000);/*1000msecの間なにもしない*/
+ 1034 ex1.c         26             /*LED0をOFFにする  P5のDRの第0ビットを0にする*/
+ 1035 ex1.c         27             P5.DR.BIT.B0=0;
+ 1036 ex1.c         28             /*LED1をONにする  P5のDRの第1ビットを1にする*/
+ 1037 ex1.c         29             P5.DR.BIT.B1=1;
+ 1038 ex1.c         30             msecwait(1000);
+ 1039 ex1.c         31         }
+ 1040 ex1.c         32     }
+ 1041 ex1.c         33      
+H8S,H8/300 SERIES C COMPILER (Ver. 2.0D for Evaluation)12-Jul-2018  12:40:52  PAGE   1
+
+** ASSEMBLER/LINKAGE EDITOR LIMITS INFORMATION **
+
+NUMBER OF EXTERNAL REFERENCE  SYMBOLS:        0 
+NUMBER OF EXTERNAL DEFINITION SYMBOLS:        2 
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:          6 
+
+
+
+********* CPU MODE INFORMATION *********
+
+cpu=300ha

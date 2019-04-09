@@ -1,0 +1,78 @@
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/06/18 12:57:04                                                              PAGE     1
+PROGRAM NAME =
+
+    1                             1         .CPU 300HA        ;CPUは300Hシリーズアドバンストモード
+    2                             2     
+    3                             3         .IMPORT _main     ;mainはこのファイル以外に定義されているのでそれをつかえという意味
+    4                             4     
+    5 000000                      5         .SECTION A,DATA,LOCATE=H'000000
+    6 000000                      6     RSTVEC:
+    7 000000 00000000             7         .DATA.L START       ;アドレス0にスタートアップルーチンのアドレスを書いておく
+    8                             8     
+    9 000000                      9         .SECTION    P,CODE,ALIGN=2    ;ここがスタートアップルーチンの先頭
+   10 000000                     10     START:
+   11 000000 7A07000FFF10        11         MOV.L #H'FFF10,ER7 ;スタックポインタ設定
+   12                            12     
+   13                            13            ; セクションD(ROM)をSection X(RAM)にコピー
+   14 000006 01006B2000000000    14         MOV.L @_D_Head,ER0      ;source address to ER0
+   15 00000E 01006B2100000000    15         MOV.L @_X_Head,ER1      ;destination address to ER1
+   16 000016 01006B2200000000    16         MOV.L @_D_Size,ER2      ;size to be copied to ER2
+   17 00001E 01F06422            17         OR.L ER2,ER2            ;(ER2 or ER2) to ER2
+   18 000022 5A000000            18         JMP @LOOP_11
+   19 000026                     19     LOOP_1:
+   20 000026 6C03                20         MOV.B @ER0+,R3H         ;source byte to E3H with ER0++
+   21 000028 6893                21         MOV.B R3H,@ER1          ;E3H to destination
+   22 00002A 0B71                22         INC.L #1,ER1            ;increment destination address
+   23 00002C 1B72                23         DEC.L #1,ER2            ;ER2--
+   24 00002E                     24     LOOP_11:
+   25 00002E 46F6                25         BNE LOOP_1
+   26                            26     
+   27 000030 5E000000            27         JSR @_main        ; Call main()
+   28 000034                     28     EternalLoop:
+   29 000034 40FE                29         BRA EternalLoop ;万が一戻ってきても永久ループ
+   30                            30     
+   31 000000                     31         .SECTION    D, DATA, ALIGN = 2 ;下で参照するために必要（実態はここにはない）
+   32 000000                     32         .SECTION    X, DATA, ALIGN = 2 ;下で参照するために必要（実態はここにはない）
+   33                            33     
+   34 000000                     34         .SECTION    C, DATA, ALIGN = 2
+   35 000000                     35     _D_Head:
+   36 000000 00000000            36         .DATA.L (STARTOF D)    ; Section D Head Address
+   37 000004                     37     _X_Head:
+   38 000004 00000000            38         .DATA.L (STARTOF X)    ; Section X Head Address
+   39 000008                     39     _D_Size:
+   40 000008 00000000            40         .DATA.L (SIZEOF D)     ; Section D Size
+   41                            41     
+   42                            42         .END
+  *****TOTAL ERRORS       0
+  *****TOTAL WARNINGS     0
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/06/18 12:57:04                                                              PAGE     2
+
+*** CROSS REFERENCE LIST
+
+NAME                             SECTION  ATTR VALUE             SEQUENCE
+
+A                                A        SCT  00000000      5*
+C                                C        SCT  00000000     34*
+D                                D        SCT  00000000     31*   36    40 
+EternalLoop                      P             00000034     28*   29 
+LOOP_1                           P             00000026     19*   25 
+LOOP_11                          P             0000002E     18    24*
+P                                P        SCT  00000000      9*
+RSTVEC                           A             00000000      6*
+START                            P             00000000      7    10*
+X                                X        SCT  00000000     32*   38 
+_D_Head                          C             00000000     14    35*
+_D_Size                          C             00000008     16    39*
+_X_Head                          C             00000004     15    37*
+_main                                     IMPT 00000000      3    27 
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/06/18 12:57:04                                                              PAGE     3
+
+*** SECTION DATA LIST
+
+SECTION                          ATTRIBUTE    SIZE             START
+
+A                                ABS-DATA    0000004           000000          
+P                                REL-CODE    0000036          
+D                                REL-DATA    0000000          
+X                                REL-DATA    0000000          
+C                                REL-DATA    000000C          

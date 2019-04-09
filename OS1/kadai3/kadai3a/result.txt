@@ -1,0 +1,977 @@
+preStartHos: start!
+OnHosStart: starting!
+OnHosStart: primeNumber Pri,id= 4,8
+OnHosStart: printLine Pri,id= 3,7
+OnHosStart: printLine Pri,id= 3,6
+OnHosStart: flgid=4
+primeNumber :   10007
+primeNumber :   10009
+primeNumber :   10037
+primeNumber :   10039
+primeNumber :   10061
+------------------------------
+primeNumber :   10067
+primeNumber :   10069
+primeNumber :   10079
+primeNumber :   10091
+primeNumber :   10093
+------------------------------
+primeNumber :   10099
+primeNumber :   10103
+primeNumber :   10111
+primeNumber :   10133
+primeNumber :   10139
+------------------------------
+primeNumber :   10141
+primeNumber :   10151
+primeNumber :   10159
+primeNumber :   10163
+primeNumber :   10169
+------------------------------
+primeNumber :   10177
+primeNumber :   10181
+primeNumber :   10193
+primeNumber :   10211
+primeNumber :   10223
+------------------------------
+primeNumber :   10243
+primeNumber :   10247
+primeNumber :   10253
+primeNumber :   10259
+primeNumber :   10267
+------------------------------
+primeNumber :   10271
+primeNumber :   10273
+primeNumber :   10289
+primeNumber :   10301
+primeNumber :   10303
+------------------------------
+primeNumber :   10313
+primeNumber :   10321
+primeNumber :   10331
+primeNumber :   10333
+primeNumber :   10337
+------------------------------
+primeNumber :   10343
+primeNumber :   10357
+primeNumber :   10369
+primeNumber :   10391
+primeNumber :   10399
+------------------------------
+primeNumber :   10427
+primeNumber :   10429
+primeNumber :   10433
+primeNumber :   10453
+primeNumber :   10457
+==============================
+primeNumber :   10459
+primeNumber :   10463
+primeNumber :   10477
+primeNumber :   10487
+primeNumber :   10499
+------------------------------
+primeNumber :   10501
+primeNumber :   10513
+primeNumber :   10529
+primeNumber :   10531
+primeNumber :   10559
+------------------------------
+primeNumber :   10567
+primeNumber :   10589
+primeNumber :   10597
+primeNumber :   10601
+primeNumber :   10607
+------------------------------
+primeNumber :   10613
+primeNumber :   10627
+primeNumber :   10631
+primeNumber :   10639
+primeNumber :   10651
+------------------------------
+primeNumber :   10657
+primeNumber :   10663
+primeNumber :   10667
+primeNumber :   10687
+primeNumber :   10691
+------------------------------
+primeNumber :   10709
+primeNumber :   10711
+primeNumber :   10723
+primeNumber :   10729
+primeNumber :   10733
+------------------------------
+primeNumber :   10739
+primeNumber :   10753
+primeNumber :   10771
+primeNumber :   10781
+primeNumber :   10789
+------------------------------
+primeNumber :   10799
+primeNumber :   10831
+primeNumber :   10837
+primeNumber :   10847
+primeNumber :   10853
+------------------------------
+primeNumber :   10859
+primeNumber :   10861
+primeNumber :   10867
+primeNumber :   10883
+primeNumber :   10889
+------------------------------
+primeNumber :   10891
+primeNumber :   10903
+primeNumber :   10909
+primeNumber :   10937
+primeNumber :   10939
+==============================
+primeNumber :   10949
+primeNumber :   10957
+primeNumber :   10973
+primeNumber :   10979
+primeNumber :   10987
+------------------------------
+primeNumber :   10993
+primeNumber :   11003
+primeNumber :   11027
+primeNumber :   11047
+primeNumber :   11057
+------------------------------
+primeNumber :   11059
+primeNumber :   11069
+primeNumber :   11071
+primeNumber :   11083
+primeNumber :   11087
+------------------------------
+primeNumber :   11093
+primeNumber :   11113
+primeNumber :   11117
+primeNumber :   11119
+primeNumber :   11131
+------------------------------
+primeNumber :   11149
+primeNumber :   11159
+primeNumber :   11161
+primeNumber :   11171
+primeNumber :   11173
+------------------------------
+primeNumber :   11177
+primeNumber :   11197
+primeNumber :   11213
+primeNumber :   11239
+primeNumber :   11243
+------------------------------
+primeNumber :   11251
+primeNumber :   11257
+primeNumber :   11261
+primeNumber :   11273
+primeNumber :   11279
+------------------------------
+primeNumber :   11287
+primeNumber :   11299
+primeNumber :   11311
+primeNumber :   11317
+primeNumber :   11321
+------------------------------
+primeNumber :   11329
+primeNumber :   11351
+primeNumber :   11353
+primeNumber :   11369
+primeNumber :   11383
+------------------------------
+primeNumber :   11393
+primeNumber :   11399
+primeNumber :   11411
+primeNumber :   11423
+primeNumber :   11437
+==============================
+primeNumber :   11443
+primeNumber :   11447
+primeNumber :   11467
+primeNumber :   11471
+primeNumber :   11483
+------------------------------
+primeNumber :   11489
+primeNumber :   11491
+primeNumber :   11497
+primeNumber :   11503
+primeNumber :   11519
+------------------------------
+primeNumber :   11527
+primeNumber :   11549
+primeNumber :   11551
+primeNumber :   11579
+primeNumber :   11587
+------------------------------
+primeNumber :   11593
+primeNumber :   11597
+primeNumber :   11617
+primeNumber :   11621
+primeNumber :   11633
+------------------------------
+primeNumber :   11657
+primeNumber :   11677
+primeNumber :   11681
+primeNumber :   11689
+primeNumber :   11699
+------------------------------
+primeNumber :   11701
+primeNumber :   11717
+primeNumber :   11719
+primeNumber :   11731
+primeNumber :   11743
+------------------------------
+primeNumber :   11777
+primeNumber :   11779
+primeNumber :   11783
+primeNumber :   11789
+primeNumber :   11801
+------------------------------
+primeNumber :   11807
+primeNumber :   11813
+primeNumber :   11821
+primeNumber :   11827
+primeNumber :   11831
+------------------------------
+primeNumber :   11833
+primeNumber :   11839
+primeNumber :   11863
+primeNumber :   11867
+primeNumber :   11887
+------------------------------
+primeNumber :   11897
+primeNumber :   11903
+primeNumber :   11909
+primeNumber :   11923
+primeNumber :   11927
+==============================
+primeNumber :   11933
+primeNumber :   11939
+primeNumber :   11941
+primeNumber :   11953
+primeNumber :   11959
+------------------------------
+primeNumber :   11969
+primeNumber :   11971
+primeNumber :   11981
+primeNumber :   11987
+primeNumber :   12007
+------------------------------
+primeNumber :   12011
+primeNumber :   12037
+primeNumber :   12041
+primeNumber :   12043
+primeNumber :   12049
+------------------------------
+primeNumber :   12071
+primeNumber :   12073
+primeNumber :   12097
+primeNumber :   12101
+primeNumber :   12107
+------------------------------
+primeNumber :   12109
+primeNumber :   12113
+primeNumber :   12119
+primeNumber :   12143
+primeNumber :   12149
+------------------------------
+primeNumber :   12157
+primeNumber :   12161
+primeNumber :   12163
+primeNumber :   12197
+primeNumber :   12203
+------------------------------
+primeNumber :   12211
+primeNumber :   12227
+primeNumber :   12239
+primeNumber :   12241
+primeNumber :   12251
+------------------------------
+primeNumber :   12253
+primeNumber :   12263
+primeNumber :   12269
+primeNumber :   12277
+primeNumber :   12281
+------------------------------
+primeNumber :   12289
+primeNumber :   12301
+primeNumber :   12323
+primeNumber :   12329
+primeNumber :   12343
+------------------------------
+primeNumber :   12347
+primeNumber :   12373
+primeNumber :   12377
+primeNumber :   12379
+primeNumber :   12391
+==============================
+primeNumber :   12401
+primeNumber :   12409
+primeNumber :   12413
+primeNumber :   12421
+primeNumber :   12433
+------------------------------
+primeNumber :   12437
+primeNumber :   12451
+primeNumber :   12457
+primeNumber :   12473
+primeNumber :   12479
+------------------------------
+primeNumber :   12487
+primeNumber :   12491
+primeNumber :   12497
+primeNumber :   12503
+primeNumber :   12511
+------------------------------
+primeNumber :   12517
+primeNumber :   12527
+primeNumber :   12539
+primeNumber :   12541
+primeNumber :   12547
+------------------------------
+primeNumber :   12553
+primeNumber :   12569
+primeNumber :   12577
+primeNumber :   12583
+primeNumber :   12589
+------------------------------
+primeNumber :   12601
+primeNumber :   12611
+primeNumber :   12613
+primeNumber :   12619
+primeNumber :   12637
+------------------------------
+primeNumber :   12641
+primeNumber :   12647
+primeNumber :   12653
+primeNumber :   12659
+primeNumber :   12671
+------------------------------
+primeNumber :   12689
+primeNumber :   12697
+primeNumber :   12703
+primeNumber :   12713
+primeNumber :   12721
+------------------------------
+primeNumber :   12739
+primeNumber :   12743
+primeNumber :   12757
+primeNumber :   12763
+primeNumber :   12781
+------------------------------
+primeNumber :   12791
+primeNumber :   12799
+primeNumber :   12809
+primeNumber :   12821
+primeNumber :   12823
+==============================
+primeNumber :   12829
+primeNumber :   12841
+primeNumber :   12853
+primeNumber :   12889
+primeNumber :   12893
+------------------------------
+primeNumber :   12899
+primeNumber :   12907
+primeNumber :   12911
+primeNumber :   12917
+primeNumber :   12919
+------------------------------
+primeNumber :   12923
+primeNumber :   12941
+primeNumber :   12953
+primeNumber :   12959
+primeNumber :   12967
+------------------------------
+primeNumber :   12973
+primeNumber :   12979
+primeNumber :   12983
+primeNumber :   13001
+primeNumber :   13003
+------------------------------
+primeNumber :   13007
+primeNumber :   13009
+primeNumber :   13033
+primeNumber :   13037
+primeNumber :   13043
+------------------------------
+primeNumber :   13049
+primeNumber :   13063
+primeNumber :   13093
+primeNumber :   13099
+primeNumber :   13103
+------------------------------
+primeNumber :   13109
+primeNumber :   13121
+primeNumber :   13127
+primeNumber :   13147
+primeNumber :   13151
+------------------------------
+primeNumber :   13159
+primeNumber :   13163
+primeNumber :   13171
+primeNumber :   13177
+primeNumber :   13183
+------------------------------
+primeNumber :   13187
+primeNumber :   13217
+primeNumber :   13219
+primeNumber :   13229
+primeNumber :   13241
+------------------------------
+primeNumber :   13249
+primeNumber :   13259
+primeNumber :   13267
+primeNumber :   13291
+primeNumber :   13297
+==============================
+primeNumber :   13309
+primeNumber :   13313
+primeNumber :   13327
+primeNumber :   13331
+primeNumber :   13337
+------------------------------
+primeNumber :   13339
+primeNumber :   13367
+primeNumber :   13381
+primeNumber :   13397
+primeNumber :   13399
+------------------------------
+primeNumber :   13411
+primeNumber :   13417
+primeNumber :   13421
+primeNumber :   13441
+primeNumber :   13451
+------------------------------
+primeNumber :   13457
+primeNumber :   13463
+primeNumber :   13469
+primeNumber :   13477
+primeNumber :   13487
+------------------------------
+primeNumber :   13499
+primeNumber :   13513
+primeNumber :   13523
+primeNumber :   13537
+primeNumber :   13553
+------------------------------
+primeNumber :   13567
+primeNumber :   13577
+primeNumber :   13591
+primeNumber :   13597
+primeNumber :   13613
+------------------------------
+primeNumber :   13619
+primeNumber :   13627
+primeNumber :   13633
+primeNumber :   13649
+primeNumber :   13669
+------------------------------
+primeNumber :   13679
+primeNumber :   13681
+primeNumber :   13687
+primeNumber :   13691
+primeNumber :   13693
+------------------------------
+primeNumber :   13697
+primeNumber :   13709
+primeNumber :   13711
+primeNumber :   13721
+primeNumber :   13723
+------------------------------
+primeNumber :   13729
+primeNumber :   13751
+primeNumber :   13757
+primeNumber :   13759
+primeNumber :   13763
+==============================
+primeNumber :   13781
+primeNumber :   13789
+primeNumber :   13799
+primeNumber :   13807
+primeNumber :   13829
+------------------------------
+primeNumber :   13831
+primeNumber :   13841
+primeNumber :   13859
+primeNumber :   13873
+primeNumber :   13877
+------------------------------
+primeNumber :   13879
+primeNumber :   13883
+primeNumber :   13901
+primeNumber :   13903
+primeNumber :   13907
+------------------------------
+primeNumber :   13913
+primeNumber :   13921
+primeNumber :   13931
+primeNumber :   13933
+primeNumber :   13963
+------------------------------
+primeNumber :   13967
+primeNumber :   13997
+primeNumber :   13999
+primeNumber :   14009
+primeNumber :   14011
+------------------------------
+primeNumber :   14029
+primeNumber :   14033
+primeNumber :   14051
+primeNumber :   14057
+primeNumber :   14071
+------------------------------
+primeNumber :   14081
+primeNumber :   14083
+primeNumber :   14087
+primeNumber :   14107
+primeNumber :   14143
+------------------------------
+primeNumber :   14149
+primeNumber :   14153
+primeNumber :   14159
+primeNumber :   14173
+primeNumber :   14177
+------------------------------
+primeNumber :   14197
+primeNumber :   14207
+primeNumber :   14221
+primeNumber :   14243
+primeNumber :   14249
+------------------------------
+primeNumber :   14251
+primeNumber :   14281
+primeNumber :   14293
+primeNumber :   14303
+primeNumber :   14321
+==============================
+primeNumber :   14323
+primeNumber :   14327
+primeNumber :   14341
+primeNumber :   14347
+primeNumber :   14369
+------------------------------
+primeNumber :   14387
+primeNumber :   14389
+primeNumber :   14401
+primeNumber :   14407
+primeNumber :   14411
+------------------------------
+primeNumber :   14419
+primeNumber :   14423
+primeNumber :   14431
+primeNumber :   14437
+primeNumber :   14447
+------------------------------
+primeNumber :   14449
+primeNumber :   14461
+primeNumber :   14479
+primeNumber :   14489
+primeNumber :   14503
+------------------------------
+primeNumber :   14519
+primeNumber :   14533
+primeNumber :   14537
+primeNumber :   14543
+primeNumber :   14549
+------------------------------
+primeNumber :   14551
+primeNumber :   14557
+primeNumber :   14561
+primeNumber :   14563
+primeNumber :   14591
+------------------------------
+primeNumber :   14593
+primeNumber :   14621
+primeNumber :   14627
+primeNumber :   14629
+primeNumber :   14633
+------------------------------
+primeNumber :   14639
+primeNumber :   14653
+primeNumber :   14657
+primeNumber :   14669
+primeNumber :   14683
+------------------------------
+primeNumber :   14699
+primeNumber :   14713
+primeNumber :   14717
+primeNumber :   14723
+primeNumber :   14731
+------------------------------
+primeNumber :   14737
+primeNumber :   14741
+primeNumber :   14747
+primeNumber :   14753
+primeNumber :   14759
+==============================
+primeNumber :   14767
+primeNumber :   14771
+primeNumber :   14779
+primeNumber :   14783
+primeNumber :   14797
+------------------------------
+primeNumber :   14813
+primeNumber :   14821
+primeNumber :   14827
+primeNumber :   14831
+primeNumber :   14843
+------------------------------
+primeNumber :   14851
+primeNumber :   14867
+primeNumber :   14869
+primeNumber :   14879
+primeNumber :   14887
+------------------------------
+primeNumber :   14891
+primeNumber :   14897
+primeNumber :   14923
+primeNumber :   14929
+primeNumber :   14939
+------------------------------
+primeNumber :   14947
+primeNumber :   14951
+primeNumber :   14957
+primeNumber :   14969
+primeNumber :   14983
+------------------------------
+primeNumber :   15013
+primeNumber :   15017
+primeNumber :   15031
+primeNumber :   15053
+primeNumber :   15061
+------------------------------
+primeNumber :   15073
+primeNumber :   15077
+primeNumber :   15083
+primeNumber :   15091
+primeNumber :   15101
+------------------------------
+primeNumber :   15107
+primeNumber :   15121
+primeNumber :   15131
+primeNumber :   15137
+primeNumber :   15139
+------------------------------
+primeNumber :   15149
+primeNumber :   15161
+primeNumber :   15173
+primeNumber :   15187
+primeNumber :   15193
+------------------------------
+primeNumber :   15199
+primeNumber :   15217
+primeNumber :   15227
+primeNumber :   15233
+primeNumber :   15241
+==============================
+primeNumber :   15259
+primeNumber :   15263
+primeNumber :   15269
+primeNumber :   15271
+primeNumber :   15277
+------------------------------
+primeNumber :   15287
+primeNumber :   15289
+primeNumber :   15299
+primeNumber :   15307
+primeNumber :   15313
+------------------------------
+primeNumber :   15319
+primeNumber :   15329
+primeNumber :   15331
+primeNumber :   15349
+primeNumber :   15359
+------------------------------
+primeNumber :   15361
+primeNumber :   15373
+primeNumber :   15377
+primeNumber :   15383
+primeNumber :   15391
+------------------------------
+primeNumber :   15401
+primeNumber :   15413
+primeNumber :   15427
+primeNumber :   15439
+primeNumber :   15443
+------------------------------
+primeNumber :   15451
+primeNumber :   15461
+primeNumber :   15467
+primeNumber :   15473
+primeNumber :   15493
+------------------------------
+primeNumber :   15497
+primeNumber :   15511
+primeNumber :   15527
+primeNumber :   15541
+primeNumber :   15551
+------------------------------
+primeNumber :   15559
+primeNumber :   15569
+primeNumber :   15581
+primeNumber :   15583
+primeNumber :   15601
+------------------------------
+primeNumber :   15607
+primeNumber :   15619
+primeNumber :   15629
+primeNumber :   15641
+primeNumber :   15643
+------------------------------
+primeNumber :   15647
+primeNumber :   15649
+primeNumber :   15661
+primeNumber :   15667
+primeNumber :   15671
+==============================
+primeNumber :   15679
+primeNumber :   15683
+primeNumber :   15727
+primeNumber :   15731
+primeNumber :   15733
+------------------------------
+primeNumber :   15737
+primeNumber :   15739
+primeNumber :   15749
+primeNumber :   15761
+primeNumber :   15767
+------------------------------
+primeNumber :   15773
+primeNumber :   15787
+primeNumber :   15791
+primeNumber :   15797
+primeNumber :   15803
+------------------------------
+primeNumber :   15809
+primeNumber :   15817
+primeNumber :   15823
+primeNumber :   15859
+primeNumber :   15877
+------------------------------
+primeNumber :   15881
+primeNumber :   15887
+primeNumber :   15889
+primeNumber :   15901
+primeNumber :   15907
+------------------------------
+primeNumber :   15913
+primeNumber :   15919
+primeNumber :   15923
+primeNumber :   15937
+primeNumber :   15959
+------------------------------
+primeNumber :   15971
+primeNumber :   15973
+primeNumber :   15991
+primeNumber :   16001
+primeNumber :   16007
+------------------------------
+primeNumber :   16033
+primeNumber :   16057
+primeNumber :   16061
+primeNumber :   16063
+primeNumber :   16067
+------------------------------
+primeNumber :   16069
+primeNumber :   16073
+primeNumber :   16087
+primeNumber :   16091
+primeNumber :   16097
+------------------------------
+primeNumber :   16103
+primeNumber :   16111
+primeNumber :   16127
+primeNumber :   16139
+primeNumber :   16141
+==============================
+primeNumber :   16183
+primeNumber :   16187
+primeNumber :   16189
+primeNumber :   16193
+primeNumber :   16217
+------------------------------
+primeNumber :   16223
+primeNumber :   16229
+primeNumber :   16231
+primeNumber :   16249
+primeNumber :   16253
+------------------------------
+primeNumber :   16267
+primeNumber :   16273
+primeNumber :   16301
+primeNumber :   16319
+primeNumber :   16333
+------------------------------
+primeNumber :   16339
+primeNumber :   16349
+primeNumber :   16361
+primeNumber :   16363
+primeNumber :   16369
+------------------------------
+primeNumber :   16381
+primeNumber :   16411
+primeNumber :   16417
+primeNumber :   16421
+primeNumber :   16427
+------------------------------
+primeNumber :   16433
+primeNumber :   16447
+primeNumber :   16451
+primeNumber :   16453
+primeNumber :   16477
+------------------------------
+primeNumber :   16481
+primeNumber :   16487
+primeNumber :   16493
+primeNumber :   16519
+primeNumber :   16529
+------------------------------
+primeNumber :   16547
+primeNumber :   16553
+primeNumber :   16561
+primeNumber :   16567
+primeNumber :   16573
+------------------------------
+primeNumber :   16603
+primeNumber :   16607
+primeNumber :   16619
+primeNumber :   16631
+primeNumber :   16633
+------------------------------
+primeNumber :   16649
+primeNumber :   16651
+primeNumber :   16657
+primeNumber :   16661
+primeNumber :   16673
+==============================
+primeNumber :   16691
+primeNumber :   16693
+primeNumber :   16699
+primeNumber :   16703
+primeNumber :   16729
+------------------------------
+primeNumber :   16741
+primeNumber :   16747
+primeNumber :   16759
+primeNumber :   16763
+primeNumber :   16787
+------------------------------
+primeNumber :   16811
+primeNumber :   16823
+primeNumber :   16829
+primeNumber :   16831
+primeNumber :   16843
+------------------------------
+primeNumber :   16871
+primeNumber :   16879
+primeNumber :   16883
+primeNumber :   16889
+primeNumber :   16901
+------------------------------
+primeNumber :   16903
+primeNumber :   16921
+primeNumber :   16927
+primeNumber :   16931
+primeNumber :   16937
+------------------------------
+primeNumber :   16943
+primeNumber :   16963
+primeNumber :   16979
+primeNumber :   16981
+primeNumber :   16987
+------------------------------
+primeNumber :   16993
+primeNumber :   17011
+primeNumber :   17021
+primeNumber :   17027
+primeNumber :   17029
+------------------------------
+primeNumber :   17033
+primeNumber :   17041
+primeNumber :   17047
+primeNumber :   17053
+primeNumber :   17077
+------------------------------
+primeNumber :   17093
+primeNumber :   17099
+primeNumber :   17107
+primeNumber :   17117
+primeNumber :   17123
+------------------------------
+primeNumber :   17137
+primeNumber :   17159
+primeNumber :   17167
+primeNumber :   17183
+primeNumber :   17189
+==============================
+primeNumber :   17191
+primeNumber :   17203
+primeNumber :   17207
+primeNumber :   17209
+primeNumber :   17231
+------------------------------
+primeNumber :   17239
+primeNumber :   17257
+primeNumber :   17291
+primeNumber :   17293
+primeNumber :   17299
+------------------------------
+primeNumber :   17317
+primeNumber :   17321
+primeNumber :   17327
+primeNumber :   17333
+primeNumber :   17341
+------------------------------
+primeNumber :   17351
+primeNumber :   17359
+primeNumber :   17377
+primeNumber :   17383
+primeNumber :   17387
+------------------------------
+primeNumber :   17389
+primeNumber :   17393
+primeNumber :   17401
+primeNumber :   17417
+primeNumber :   17419
+------------------------------
+primeNumber :   17431
+primeNumber :   17443
+primeNumber :   17449
+primeNumber :   17467
+primeNumber :   17471
+------------------------------
+primeNumber :   17477
+primeNumber :   17483
+primeNumber :   17489
+primeNumber :   17491
+primeNumber :   17497
+------------------------------
+primeNumber :   17509
+primeNumber :   17519
+primeNumber :   17539
+primeNumber :   17551
+primeNumber :   17569
+------------------------------
+primeNumber :   17573
+primeNumber :   17579
+primeNumber :   17581
+primeNumber :   17597
+primeNumber :   17599
+------------------------------
+primeNumber :   17609
+primeNumber :   17623
+primeNumber :   17627
+primeNumber :   17657
+primeNumber :   17659
+==============================
+primeNumber :   17669
+primeNumber :   17681
+primeNumber :   17683
+primeNumber :   17707
+primeNumber :   17713
+------------------------------
+primeNumber :   17729
+primeNumber :   17737
+primeNumber :   17747
+primeNumber :   17749
+primeNumber :   17761

@@ -1,0 +1,6 @@
+ROM (D,X)
+
+;ROMエリア＝00000-07fff  8000:32kbytes
+;RAMエリア＝fef10-fff0f  1000:4kbytes
+START P,C,D(100),X,B(0FEF10)
+EXIT

@@ -1,0 +1,194 @@
+                                        H SERIES LINKAGE EDITOR Ver. 5.3B
+
+
+LINK COMMAND LINE
+
+
+LNK C:\Progra~1\h8v2\lib\start3048.obj taskSwitcherDemo1 -subcommand=h8_3048.sub -LIB=C:\Progra~1\h8v2\lib\c38ha.lib -O=taskSwitcherDemo1 -P=taskSwitcherDemo1 
+
+
+
+LINK SUBCOMMANDS
+
+
+ROM (D,X)
+
+;ROMエリア＝00000-07fff  8000:32kbytes
+;RAMエリア＝fef10-fff0f  1000:4kbytes
+START P,C,D(100),X,B(0FEF10)
+EXIT
+
+
+
+                                  H SERIES LINKAGE EDITOR Ver. 5.3B                      PAGE :     1
+
+                                        ***     LINKAGE EDITOR LINK MAP LIST      ***
+
+
+SECTION   NAME                       START      -      END         LENGTH
+                                                              UNIT NAME                          MODULE NAME
+
+
+ATTRIBUTE  :   DATA  NOSHR
+
+VEC                               H'00000000    -    H'00000003   H'00000004
+                                                              start3048                          start3048                       
+
+* TOTAL ADDRESS *                 H'00000000    -    H'00000003   H'00000004
+
+
+ATTRIBUTE  :   DATA  NOSHR
+
+MYVEC                             H'00000070    -    H'00000073   H'00000004
+                                                              taskSwitcherDemo1                  taskSwitcherDemo1               
+
+* TOTAL ADDRESS *                 H'00000070    -    H'00000073   H'00000004
+
+
+ATTRIBUTE  :   CODE  NOSHR
+
+P                                 H'00000100    -    H'0000015F   H'00000060
+                                                              start3048                          start3048                       
+                                  H'00000160    -    H'00000FF3   H'00000E94
+                                                              taskSwitcherDemo1                  taskSwitcherDemo1               
+                                  H'00000FF4    -    H'0000102F   H'0000003C
+                                                              divul3                             divul3                          
+                                  H'00001030    -    H'00001057   H'00000028
+                                                              spregsv3                           spregsv3                        
+                                  H'00001058    -    H'0000106D   H'00000016
+                                                              sprgld23                           sprgld23                        
+
+* TOTAL ADDRESS *                 H'00000100    -    H'0000106D   H'00000F6E
+
+
+ATTRIBUTE  :   DATA  NOSHR
+
+C                                 H'0000106E    -    H'00001081   H'00000014
+                                                              start3048                          start3048                       
+                                  H'00001082    -    H'00001101   H'00000080
+                                                              taskSwitcherDemo1                  taskSwitcherDemo1               
+
+* TOTAL ADDRESS *                 H'0000106E    -    H'00001101   H'00000094
+
+
+ATTRIBUTE  :   DATA  NOSHR ROM
+
+D                                 H'00001102    -    H'00001102   H'00000000
+                                                              start3048                          start3048                       
+                                  H'00001102    -    H'00001113   H'00000012
+                                                              taskSwitcherDemo1                  taskSwitcherDemo1               
+
+
+
+                                  H SERIES LINKAGE EDITOR Ver. 5.3B                      PAGE :     2
+
+                                        ***     LINKAGE EDITOR LINK MAP LIST      ***
+
+
+SECTION   NAME                       START      -      END         LENGTH
+                                                              UNIT NAME                          MODULE NAME
+
+* TOTAL ADDRESS *                 H'00001102    -    H'00001113   H'00000012
+
+
+ATTRIBUTE  :   DATA  NOSHR RAM
+
+X                                 H'000FEF10    -    H'000FEF10   H'00000000
+                                                              start3048                          start3048                       
+                                  H'000FEF10    -    H'000FEF21   H'00000012
+                                                              taskSwitcherDemo1                  taskSwitcherDemo1               
+
+* TOTAL ADDRESS *                 H'000FEF10    -    H'000FEF21   H'00000012
+
+
+ATTRIBUTE  :   DATA  NOSHR
+
+B                                 H'000FEF22    -    H'000FEF22   H'00000000
+                                                              start3048                          start3048                       
+                                  H'000FEF22    -    H'000FF071   H'00000150
+                                                              taskSwitcherDemo1                  taskSwitcherDemo1               
+
+* TOTAL ADDRESS *                 H'000FEF22    -    H'000FF071   H'00000150
+
+
+
+                                  H SERIES LINKAGE EDITOR Ver. 5.3B                      PAGE :     1
+
+                                      ***  LINKAGE EDITOR EXTERNALLY DEFINED SYMBOLS LIST  ***
+
+                                 SYMBOL  NAME                         ADDR                 TYPE
+
+                                  $DIVUL$3                             H'00000FF4           DAT
+                                  $sp_regsv$3                          H'00001030           DAT
+                                  $spregld2$3                          H'00001058           DAT
+                                  _Ber0                                H'000FF06A           DAT
+                                  _D_INT                               H'0000015C           DAT
+                                  _Device_printf                       H'000006BA           DAT
+                                  _E_INT                               H'00000158           DAT
+                                  _LCD_printf                          H'00000CBC           DAT
+                                  _LCDclrscr                           H'000006AC           DAT
+                                  _LCDdevice                           H'000010A8           DAT
+                                  _LCDgotoxy                           H'00000690           DAT
+                                  _LCDputchar                          H'000005EC           DAT
+                                  _LCDputs                             H'0000060E           DAT
+                                  _P1DDR                               H'000FEF10           DAT
+                                  _P2DDR                               H'000FEF11           DAT
+                                  _P3DDR                               H'000FEF12           DAT
+                                  _P4DDR                               H'000FEF13           DAT
+                                  _P5DDR                               H'000FEF14           DAT
+                                  _P6DDR                               H'000FEF15           DAT
+                                  _P7DDR                               H'000FEF16           DAT
+                                  _P8DDR                               H'000FEF17           DAT
+                                  _P9DDR                               H'000FEF18           DAT
+                                  _PADDR                               H'000FEF19           DAT
+                                  _PBDDR                               H'000FEF1A           DAT
+                                  _SCI0_printf                         H'00000C1C           DAT
+                                  _SCI0device                          H'000010A4           DAT
+                                  _SCI1_printf                         H'00000C6C           DAT
+                                  _SCI1device                          H'000010A6           DAT
+                                  _buff0Address                        H'000010BA           DAT
+                                  _buff1Address                        H'000010BE           DAT
+                                  _check8BitSW                         H'00000DAA           DAT
+                                  _checkPushSW                         H'00000D6E           DAT
+                                  _chkgetCharSCI0                      H'000003C2           DAT
+                                  _chkgetCharSCI1                      H'000001AE           DAT
+                                  _context0                            H'000FEF22           DAT
+                                  _context1                            H'000FEFC6           DAT
+                                  _getCharSCI0                         H'0000038E           DAT
+                                  _getCharSCI1                         H'0000017A           DAT
+                                  _getIntSCI0                          H'00000452           DAT
+                                  _getIntSCI1                          H'0000023E           DAT
+                                  _getStringSCI0                       H'000003FE           DAT
+                                  _getStringSCI1                       H'000001EA           DAT
+                                  _hexstring                           H'00001082           DAT
+                                  _init8BitSW                          H'00000D98           DAT
+                                  _initLCD                             H'00000626           DAT
+                                  _initLed                             H'00000D0C           DAT
+                                  _initPushSW                          H'00000D56           DAT
+                                  _initSCI0                            H'00000374           DAT
+                                  _initSCI1                            H'00000160           DAT
+                                  _initTimer01Int                      H'00000E16           DAT
+                                  _initTimer1Int                       H'00000DD4           DAT
+
+
+
+                                  H SERIES LINKAGE EDITOR Ver. 5.3B                      PAGE :     2
+
+                                      ***  LINKAGE EDITOR EXTERNALLY DEFINED SYMBOLS LIST  ***
+
+                                 SYMBOL  NAME                         ADDR                 TYPE
+
+                                  _main                                H'00000EB2           DAT
+                                  _msecwait                            H'00000E38           DAT
+                                  _putCharSCI0                         H'00000550           DAT
+                                  _putCharSCI1                         H'0000033C           DAT
+                                  _putStringSCI0                       H'0000056E           DAT
+                                  _putStringSCI1                       H'0000035A           DAT
+                                  _stackPtr0Address                    H'000010C2           DAT
+                                  _stackPtr1Address                    H'000010C6           DAT
+                                  _systemstackPtr                      H'000FF06E           DAT
+                                  _task0                               H'00000E4E           DAT
+                                  _task1                               H'00000E7E           DAT
+                                  _tasksw                              H'000FEF20           DAT
+                                  _turnOffLed                          H'00000D3A           DAT
+                                  _turnOnLed                           H'00000D1E           DAT

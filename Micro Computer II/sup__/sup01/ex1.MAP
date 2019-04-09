@@ -1,0 +1,54 @@
+                                        H SERIES LINKAGE EDITOR Ver. 5.3B
+
+
+LINK COMMAND LINE
+
+
+LNK start00.OBJ ex1.OBJ -subcommand=ex1.sub -LIB=C:\Progra~1\h8v2\lib\c38ha.lib -O=ex1 -P=ex1 
+
+
+
+LINK SUBCOMMANDS
+
+
+START P(200)
+EXIT
+
+
+
+                                  H SERIES LINKAGE EDITOR Ver. 5.3B                      PAGE :     1
+
+                                        ***     LINKAGE EDITOR LINK MAP LIST      ***
+
+
+SECTION   NAME                       START      -      END         LENGTH
+                                                              UNIT NAME                          MODULE NAME
+
+
+ATTRIBUTE  :   DATA  NOSHR
+
+A                                 H'00000000    -    H'00000003   H'00000004
+                                                              start00                            start00                         
+
+* TOTAL ADDRESS *                 H'00000000    -    H'00000003   H'00000004
+
+
+ATTRIBUTE  :   CODE  NOSHR
+
+P                                 H'00000200    -    H'0000020B   H'0000000C
+                                                              start00                            start00                         
+                                  H'0000020C    -    H'00000241   H'00000036
+                                                              ex1                                ex1                             
+
+* TOTAL ADDRESS *                 H'00000200    -    H'00000241   H'00000042
+
+
+
+                                  H SERIES LINKAGE EDITOR Ver. 5.3B                      PAGE :     1
+
+                                      ***  LINKAGE EDITOR EXTERNALLY DEFINED SYMBOLS LIST  ***
+
+                                 SYMBOL  NAME                         ADDR                 TYPE
+
+                                  _main                                H'00000220           DAT
+                                  _msecwait                            H'0000020C           DAT

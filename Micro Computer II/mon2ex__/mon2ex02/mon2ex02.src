@@ -1,0 +1,42 @@
+     .CPU 300HA
+    .SECTION A,DATA,LOCATE=H'0FF030
+    .DATA.L H'0FF200  ;リセットベクトル
+
+    .SECTION P,CODE,LOCATE=H'0FF200
+    MOV.L  #H'FFF00,ER7  ;スタックポインタ設定
+    MOV.L  #H'FF800,ER1  ;作業対象先頭アドレスをレジスタer1へ
+    MOV.B  #H'80, r0l    ;埋める値0x80をレジスタr0lへ
+    MOV.B  #H'80, r0h    ;埋める個数0x80をレジスタr0h
+L000:
+    MOV.B  r0l,@ER1      ;0xr0lをER1の指しているところへ
+    INC.L  #1,ER1        ;ER1を1増やす（32bit操作）
+    DEC.B  r0h           ;R0Hを1減らす（8bit操作）
+    BNE    L000:8        ;r0h!=0の場合はL000へジャンプ
+    
+    MOV.L  #H'FF800,ER1  ;コピー元先頭アドレスをレジスタer1へ
+    MOV.L  #area,ER2     ;コピー先先頭アドレスをレジスタer2へ
+    MOV.B  #H'80, r0h    ;コピー個数0x80をレジスタr0h
+L001:
+    MOV.B  @ER1,r0l      ;ER1(コピー元アドレス)の指しているバイト値をr0lへ
+    MOV.B  r0l,@ER2      ;r0lの値をER2(コピー先アドレス)の指しているところへ
+    INC.L  #1,ER1        ;ER1を1増やす（32bit操作）
+    INC.L  #1,ER2        ;ER2を1増やす（32bit操作）
+    DEC.B  r0h           ;R0Hを1減らす（8bit操作）
+    BNE    L001:8        ;r0h!=0の場合はL001へジャンプ
+    
+    MOV.L  #H'FF200,ER1  ;コピー元先頭アドレスをレジスタer1へ
+    MOV.L  #area,ER2     ;コピー先先頭アドレスをレジスタer2へ
+    MOV.B  #H'60, r0h    ;コピー個数0x80をレジスタr0h
+L002:
+    MOV.B  @ER1,r0l      ;ER1(コピー元アドレス)の指しているバイト値をr0lへ
+    MOV.B  r0l,@ER2      ;r0lの値をER2(コピー先アドレス)の指しているところへ
+    INC.L  #1,ER1        ;ER1を1増やす（32bit操作）
+    INC.L  #1,ER2        ;ER2を1増やす（32bit操作）
+    DEC.B  r0h           ;R0Hを1減らす（8bit操作）
+    BNE    L002:8        ;r0h!=0の場合はL001へジャンプ
+EternalLoop:
+    BRA EternalLoop ;永久ループ
+    .SECTION D,DATA,LOCATE=H'0FF900   ;データ領域0FF900から
+area:
+    .res.b H'80          ;40バイトの領域を確保　先頭アドレスはFF900になる
+    .END

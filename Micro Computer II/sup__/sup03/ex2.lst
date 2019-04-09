@@ -1,0 +1,53 @@
+H8S,H8/300 SERIES C COMPILER (Ver. 2.0D for Evaluation)19-Jul-2018  12:35:27  PAGE   1
+
+************ SOURCE LISTING ************
+
+FILE NAME: ex2.c
+
+  Seq File        Line Pi 0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+
+    1 ex2.c          1     /**********************************************************
+    2 ex2.c          2     msecwait関数で0.25秒ごとのLEDのON-OFFを行う
+    3 ex2.c          3     **********************************************************/
+    4 ex2.c          4     #include <3048fone.h>
+ 1013 ex2.c          5     #include "h8_3048fone.h"
+ 1997 ex2.c          6     
+ 1998 ex2.c          7     void msecwait(int msec)
+ 1999 ex2.c          8     {
+ 2000 ex2.c          9             int i,j;
+ 2001 ex2.c         10             for (i=0;i<msec;i++) {
+ 2002 ex2.c         11                     for (j=0;j<3352;j++);    /*3352は実測によって求めた値 20MHz駆動*/
+ 2003 ex2.c         12             }
+ 2004 ex2.c         13     }
+ 2005 ex2.c         14     
+ 2006 ex2.c         15     int count1=1000;
+ 2007 ex2.c         16     int count2;
+ 2008 ex2.c         17     
+ 2009 ex2.c         18     main()
+ 2010 ex2.c         19     {
+ 2011 ex2.c         20             int count3=3000;
+ 2012 ex2.c         21             count2=2000;
+ 2013 ex2.c         22             initSCI1(); /*シリアル通信ユニットSCI1の初期化*/
+ 2014 ex2.c         23             initLed();  /*LED初期化*/
+ 2015 ex2.c         24             while(1) {
+ 2016 ex2.c         25                     SCI1_printf("%5d %5d %5d\n",count1++,count2++,count3++);
+ 2017 ex2.c         26                     turnOnLed(0); /*LED0のON*/
+ 2018 ex2.c         27                     turnOffLed(1); /*LED1のOFF*/
+ 2019 ex2.c         28                     msecwait(250);
+ 2020 ex2.c         29                     turnOffLed(0); /*LED0のOFF*/
+ 2021 ex2.c         30                     turnOnLed(1); /*LED1のON*/
+ 2022 ex2.c         31                     msecwait(250);
+ 2023 ex2.c         32             }
+ 2024 ex2.c         33     }
+H8S,H8/300 SERIES C COMPILER (Ver. 2.0D for Evaluation)19-Jul-2018  12:35:27  PAGE   1
+
+** ASSEMBLER/LINKAGE EDITOR LIMITS INFORMATION **
+
+NUMBER OF EXTERNAL REFERENCE  SYMBOLS:        4 
+NUMBER OF EXTERNAL DEFINITION SYMBOLS:       42 
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:        222 
+
+
+
+********* CPU MODE INFORMATION *********
+
+cpu=300ha

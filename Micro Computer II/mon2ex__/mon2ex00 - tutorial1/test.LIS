@@ -1,0 +1,49 @@
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 05/24/18 11:51:26                                                              PAGE     1
+PROGRAM NAME =
+
+    1                             1         .CPU 300HA
+    2 0FF030                      2         .SECTION A,DATA,LOCATE=H'0FF030
+    3 0FF030 000FF130             3         .DATA.L H'0FF130  ;リセットベクトル
+    4                             4     
+    5 0FF130                      5         .SECTION P,CODE,LOCATE=H'0FF130
+    6 0FF130 7A07000FFF00         6         MOV.L  #H'FFF00,ER7  ;スタックポインタ設定
+    7 0FF136 6B20000FF800         7         MOV.W @data1, r0     ;data1にある値をレジスタr0へ
+    8 0FF13C 6B21000FF802         8         MOV.W @data2, r1     ;data2にある値をレジスタr1へ
+    9 0FF142 0910                 9         ADD.W r1,r0          ;レジスタr0+r1→r0
+   10 0FF144 6BA0000FF804        10         MOV.W r0,@data3      ;レジスタr0にある値をdata3へ
+   11 0FF14A                     11     EternalLoop:
+   12 0FF14A 40FE                12         BRA EternalLoop ;永久ループ
+   13                            13     
+   14 0FF800                     14         .SECTION D,DATA,LOCATE=H'0FF800
+   15 0FF800                     15     data1:
+   16 0FF800 1234                16         .DATA.W H'1234
+   17 0FF802                     17     data2:
+   18 0FF802 2345                18         .DATA.W H'2345
+   19 0FF804                     19     data3:
+   20 0FF804 3456                20         .DATA.W H'3456
+   21                            21     
+   22                            22         .END
+  *****TOTAL ERRORS       0
+  *****TOTAL WARNINGS     0
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 05/24/18 11:51:26                                                              PAGE     2
+
+*** CROSS REFERENCE LIST
+
+NAME                             SECTION  ATTR VALUE             SEQUENCE
+
+A                                A        SCT  000FF030      2*
+D                                D        SCT  000FF800     14*
+EternalLoop                      P             000FF14A     11*   12 
+P                                P        SCT  000FF130      5*
+data1                            D             000FF800      7    15*
+data2                            D             000FF802      8    17*
+data3                            D             000FF804     10    19*
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 05/24/18 11:51:26                                                              PAGE     3
+
+*** SECTION DATA LIST
+
+SECTION                          ATTRIBUTE    SIZE             START
+
+A                                ABS-DATA    0000004           0FF030          
+P                                ABS-CODE    000001C           0FF130          
+D                                ABS-DATA    0000006           0FF800          

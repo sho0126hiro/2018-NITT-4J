@@ -1,0 +1,68 @@
+
+preStartHos: start!
+OnHosStart: starting!
+OnHosStart: primeNumber Pri,id= 3,8
+OnHosStart: printLine Pri,id= 2,7
+OnHosStart: flgid=4
+primeNumber :   10007
+primeNumber :   10009
+primeNumber :   10037
+primeNumber :   10039
+primeNumber :   10061
+primeNumber :   10067
+primeNumber :   10069
+primeNumber :   10079
+primeNumber :   10091
+primeNumber :   10093
+------------------------------
+primeNumber :   10099
+primeNumber :   10103
+primeNumber :   10111
+primeNumber :   10133
+primeNumber :   10139
+primeNumber :   10141
+primeNumber :   10151
+primeNumber :   10159
+primeNumber :   10163
+primeNumber :   10169
+------------------------------
+primeNumber :   10177
+primeNumber :   10181
+primeNumber :   10193
+primeNumber :   10211
+primeNumber :   10223
+primeNumber :   10243
+primeNumber :   10247
+primeNumber :   10253
+primeNumber :   10259
+primeNumber :   10267
+------------------------------
+primeNumber :   10271
+primeNumber :   10273
+primeNumber :   10289
+primeNumber :   10301
+primeNumber :   10303
+primeNumber :   10313
+primeNumber :   10321
+primeNumber :   10331
+primeNumber :   10333
+primeNumber :   10337
+------------------------------
+primeNumber :   10343
+primeNumber :   10357
+primeNumber :   10369
+primeNumber :   10391
+primeNumber :   10399
+primeNumber :   10427
+primeNumber :   10429
+primeNumber :   10433
+primeNumber :   10453
+primeNumber :   10457
+------------------------------
+primeNumber :   10459
+primeNumber :   10463
+primeNumber :   10477
+primeNumber :   10487
+primeNumber :   10499
+primeNumber :   10501
+primeNumber :   10513

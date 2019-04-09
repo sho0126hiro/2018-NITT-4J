@@ -1,55 +1,0 @@
-** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 06/28/18 13:59:44                                                              PAGE     1
-PROGRAM NAME =
-
-    1                             1         .CPU 300HA
-    2 0FF030                      2         .SECTION A,DATA,LOCATE=H'0FF030
-    3 0FF030 000FF200             3         .DATA.L H'0FF200  ;リセットベクトル
-    4                             4     
-    5 0FF200                      5         .SECTION P,CODE,LOCATE=H'0FF200
-    6 0FF200 7A07000FFF00         6         MOV.L  #H'FFF00,ER7  ;スタックポインタ設定
-    7 0FF206                      7     _main:                           ; function: main
-    8 0FF206 6B28000FF802         8               MOV.W       @H'FF802:24,E0
-    9 0FF20C 6B20000FF800         9               MOV.W       @H'FF800:24,R0
-   10 0FF212 5508                10               BSR         _Multiplication:8
-   11 0FF214 6BA0000FF804        11               MOV.W       R0,@H'FF804:24
-   12 0FF21A                     12     EternalLoop:
-   13 0FF21A 40FE                13         BRA EternalLoop ;永久ループ
-   14                            14     
-   15 0FF21C                     15     _Multiplication:                 ; function: Multiplication
-   16 0FF21C 0D81                16               MOV.W       E0,R1
-   17 0FF21E 1988                17               SUB.W       E0,E0
-   18 0FF220                     18     L15:
-   19 0FF220 7309                19               BTST.B      #0,R1L
-   20 0FF222 4702                20               BEQ         L16:8
-   21 0FF224 0908                21               ADD.W       R0,E0
-   22 0FF226                     22     L16:
-   23 0FF226 1010                23               SHLL.W      R0
-   24 0FF228 1191                24               SHAR.W      R1
-   25 0FF22A 46F4                25               BNE         L15:8
-   26 0FF22C 0D80                26               MOV.W       E0,R0
-   27 0FF22E 5470                27               RTS
-   28                            28     
-   29                            29         .END
-  *****TOTAL ERRORS       0
-  *****TOTAL WARNINGS     0
-** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 06/28/18 13:59:44                                                              PAGE     2
-
-*** CROSS REFERENCE LIST
-
-NAME                             SECTION  ATTR VALUE             SEQUENCE
-
-A                                A        SCT  000FF030      2*
-EternalLoop                      P             000FF21A     12*   13 
-L15                              P             000FF220     18*   25 
-L16                              P             000FF226     20    22*
-P                                P        SCT  000FF200      5*
-_Multiplication                  P             000FF21C     10    15*
-_main                            P             000FF206      7*
-** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 06/28/18 13:59:44                                                              PAGE     3
-
-*** SECTION DATA LIST
-
-SECTION                          ATTRIBUTE    SIZE             START
-
-A                                ABS-DATA    0000004           0FF030          
-P                                ABS-CODE    0000030           0FF200          

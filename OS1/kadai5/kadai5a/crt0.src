@@ -1,0 +1,155 @@
+; --------------------------------------------------------------------------- 
+;  Hyper Operating System V4  日立 H8 用 サンプルプログラム                   
+;    スタートアップルーチン                                                   
+;                                                                             
+;  1. 著作者は本ソースファイルの利用によって発生する如何なる損害にもその      
+;     責任を負いません。                                                      
+;  2. 再配布において著作権情報及び免責事項の情報改竄を固く禁じます。          
+;  3. 上記を守る限り、改版したものの再配布を含め、商用／非商用を問わず        
+;     あらゆる用途に自由に利用できます。                                      
+;  4. 改版物の再配布時は、改版者の著作情報と連絡先を必ず追記してください。    
+;                                                                             
+;                                   Copyright (C) 1998-2002 by Project HOS    
+;                                   http://sourceforge.jp/projects/hos/       
+; --------------------------------------------------------------------------- 
+
+; --------------------------------------------------------------------------- 
+;       tuned by kosaka for H8/3069 on MITSUIWA Board 7Oct2009
+; --------------------------------------------------------------------------- 
+
+
+
+				.CPU		300HA
+
+
+				.IMPORT		STACK
+				.IMPORT		_preStartHos
+				.IMPORT		_sta_hos
+				.EXPORT		_startup
+
+
+				.SECTION	D,DATA,ALIGN=2
+				.SECTION	X,DATA,ALIGN=2
+				.SECTION	B,DATA,ALIGN=2
+
+
+				.SECTION	P,CODE,ALIGN=2
+
+P1DDR   .EQU H'FEE000        ;P1 DDR
+P2DDR   .EQU H'FEE001        ;P2 DDR
+P2PCR   .EQU H'FEE03C        ;P2 PCR
+P4DDR   .EQU H'FEE003        ;P4 DDR
+P5DDR   .EQU H'FEE004        ;P5 DDR
+P5PCR   .EQU H'FEE03F        ;P5 PCR
+P8DDR   .EQU H'FEE007        ;P8 DDR
+RTCOR   .EQU H'FEE02A        ;refresh time constant
+RTMCSR  .EQU H'FEE028        ;refresh control/ status register
+DRCRB   .EQU H'FEE027        ;DRAM control register
+DRCRA   .EQU H'FEE026        ;DRAM control register A
+ASTCR   .EQU H'FEE021        ;access control reginter
+WCRL    .EQU H'FEE023        ;wait control register
+
+D_P1DDR   .EQU H'FF          ;Port1 address bus
+D_P2DDR   .EQU H'07          ;Port2 bit0,1,2:address bus, bit3,4,5,6,7:input
+D_P2PCR   .EQU H'F8          ;Port2 bit3,4,5,6,7:enable input pull up MOS
+D_P4DDR   .EQU H'FF          ;Port4 output
+D_P5DDR   .EQU H'F0          ;Port5 bit0,1,2,3:input, bit 4,5,6,7:reserved
+D_P5PCR   .EQU H'0F          ;Port5 bit0,1,2,3:enable input pull up MOS
+D_P8DDR   .EQU H'EC          ;bit2:enable CS2, bit3:enable CS1, bit7,6,5:reserved
+D_RTCOR   .EQU H'9B          ;9B(155) 64KHz refresh  
+D_RTMCSR  .EQU H'0F          ;clock/2 ManP889  
+D_DRCRB   .EQU H'98          ;column address 10bit,enable refresh ManP888  
+D_DRCRA   .EQU H'30          ;DRAM：DRAMarea CS2, RAS UpMode ManP887  
+D_ASTCR   .EQU H'FB          ;2 state acccess in area2 ManP135
+D_WCRL    .EQU H'CF          ;no wait in area2 ManP138
+
+; -------------------------------------
+;  スタートアップルーチン
+; -------------------------------------
+_startup:		
+		; ----- スタック初期化
+				mov.l	#STACK, er7
+				
+		;if the system has no DRAM, remove this hardware settings
+		;***** head of hardware settings *****
+		MOV.B #D_P1DDR,r0l     ;P1DDR
+		MOV.B r0l,@P1DDR
+		MOV.B #D_P2DDR,r0l     ;P2DDR
+		MOV.B r0l,@P2DDR
+		MOV.B #D_P2PCR,r0l     ;P2PCR
+		MOV.B r0l,@P2PCR
+		MOV.B #D_P4DDR,r0l     ;P4DDR
+		MOV.B r0l,@P4DDR
+		MOV.B #D_P5DDR,r0l     ;P5DDR
+		MOV.B r0l,@P5DDR
+		MOV.B #D_P5PCR,r0l     ;P5PCR
+		MOV.B r0l,@P5PCR
+		MOV.B #D_P8DDR,r0l     ;P8DDR
+		MOV.B r0l,@P8DDR
+
+		MOV.B #D_RTCOR,r0l     ;RTCOR
+		MOV.B r0l,@RTCOR
+		MOV.B #D_RTMCSR,r0l    ;RTMCSR
+		MOV.B r0l,@RTMCSR
+		MOV.B #D_DRCRB,r0l     ;DRCRB
+		MOV.B r0l,@DRCRB
+		MOV.B #D_DRCRA,r0l     ;DRCRA
+		MOV.B r0l,@DRCRA
+		;** wait **
+		MOV.L #10000,er0
+LOOP_R:
+		DEC.L #1,ER0
+		 BNE LOOP_R
+		;***** tail of hardware settings *****
+
+		;***** move Section D(ROM) to Section X(RAM) *****
+		MOV.L #(STARTOF D),ER0          ;source address to ER0
+		MOV.L #(STARTOF X),ER1          ;destination address to ER1
+		MOV.L #(LWORD (SIZEOF X)),ER2   ;size to be copied to ER2
+		OR.L ER2,ER2                    ;(ER2 or ER2) to ER2
+		JMP @LOOP_11 
+LOOP_1:
+		MOV.B @ER0+,R3H                 ;source byte to E3H with ER0++
+		MOV.B R3H,@ER1                  ;E3H to destination
+		INC.L #1,ER1                    ;increment destination address
+		DEC.L #1,ER2                    ;ER2--
+LOOP_11:
+		BNE LOOP_1
+
+		;***** clear Section B *****
+		MOV.L #(STARTOF B),ER1          ;destination address to ER1
+		MOV.L #(LWORD (SIZEOF B)),ER2   ;size to be copied to ER2
+		MOV.B #0,R3H                    ;0 to R3H
+		OR.L ER2,ER2                    ;(ER2 or ER2) to ER2
+		JMP @LOOP_21 
+LOOP_2:
+		MOV.B R3H,@ER1                  ;R3H to destination
+		INC.L #1,ER1                    ;increment destination address
+		DEC.L #1,ER2                    ;ER2--
+LOOP_21:
+		BNE LOOP_2
+
+				
+		; ----- 初期化ルーチン呼び出し
+				jsr	@_preStartHos
+		; ----- HOS呼び出し (実は帰ってこない)
+				jsr	@_sta_hos
+				bra		$
+
+
+
+				.SECTION	C,DATA,ALIGN=2
+
+				.EXPORT	_kernel_int_sp
+
+_kernel_int_sp:
+				.data.l	STACK
+
+
+				.END
+
+
+
+; --------------------------------------------------------------------------- 
+;  Copyright (C) 1998-2002 by Project HOS                                     
+; --------------------------------------------------------------------------- 

@@ -1,0 +1,149 @@
+/***  sup01.txt  ***/
+
+1．課題
+	(1)ex1.MAPファイルを調べ，関数main，関数msecwaitのアドレスを調べなさい。
+	(2)次にex1.subの内容でSTART P(100)をSTART P(200)に変更し，動作させ，
+	ex1.MAPファイルを調べ，関数main，関数msecwaitのアドレスを調べなさい。
+	(3)ex1.srcファイルを調べ。関数msecwait内で使われている変数はどのような領域に
+	あるのかあるいはどのようなレジスタがつかわれているのか推測しなさい。
+	その他気づいたことを述べなさい。
+
+2．使用したプログラム・実行結果
+	//ex1.MAP
+	                                        H SERIES LINKAGE EDITOR Ver. 5.3B
+
+
+	LINK COMMAND LINE
+
+
+	LNK start00.OBJ ex1.OBJ -subcommand=ex1.sub -LIB=C:\Progra~1\h8v2\lib\c38ha.lib -O=ex1 -P=ex1 
+
+
+
+	LINK SUBCOMMANDS
+
+
+	START P(100)
+	EXIT
+	
+
+
+	                                  H SERIES LINKAGE EDITOR Ver. 5.3B                      PAGE :     1
+
+	                                        ***     LINKAGE EDITOR LINK MAP LIST      ***
+
+
+	SECTION   NAME                       START      -      END         LENGTH
+	                                                              UNIT NAME                          MODULE NAME
+
+
+	ATTRIBUTE  :   DATA  NOSHR
+
+	A                                 H'00000000    -    H'00000003   H'00000004
+	                                                              start00                            start00                         
+
+	* TOTAL ADDRESS *                 H'00000000    -    H'00000003   H'00000004
+
+
+	ATTRIBUTE  :   CODE  NOSHR
+
+	P                                 H'00000100    -    H'0000010B   H'0000000C
+	                                                              start00                            start00                         
+	                                  H'0000010C    -    H'00000141   H'00000036
+	                                                              ex1                                ex1                             
+
+	* TOTAL ADDRESS *                 H'00000100    -    H'00000141   H'00000042
+	
+
+
+	                                  H SERIES LINKAGE EDITOR Ver. 5.3B                      PAGE :     1
+
+	                                      ***  LINKAGE EDITOR EXTERNALLY DEFINED SYMBOLS LIST  ***
+
+	                                 SYMBOL  NAME                         ADDR                 TYPE
+
+	                                  _main                                H'00000120           DAT
+	                                  _msecwait                            H'0000010C           DAT
+	
+	//ex1.sub
+
+	START P(100)
+	EXIT
+	
+	//ex1.src
+	---------- EX1.SRC0
+	          .CPU        300HA
+	          .EXPORT     _msecwait
+	          .EXPORT     _main
+	          .SECTION    P,CODE,ALIGN=2
+	_msecwait:                       ; function: msecwait
+	          SUB.W       R1,R1
+	          BRA         L11:8
+	L10:                              
+	          MOV.W       #2646:16,E0
+	L12:                              
+	          DEC.W       #1,E0
+	          BNE         L12:8
+	          INC.W       #1,R1
+	L11:                              
+	          CMP.W       R0,R1
+	          BLT         L10:8
+	          RTS
+	_main:                           ; function: main
+	          MOV.W       #1000:16,R6
+	          MOV.B       #3:8,R0L
+	          MOV.B       R0L,@16777160:8
+	L13:                              
+	          BSET.B      #0,@16777162:8
+	          BCLR.B      #1,@16777162:8
+	          MOV.W       R6,R0
+	          BSR         _msecwait:8
+	          BCLR.B      #0,@16777162:8
+	          BSET.B      #1,@16777162:8
+	          MOV.W       R6,R0
+	          BSR         _msecwait:8
+	          BRA         L13:8
+	          .END
+	          
+3．考察
+	(1) 関数のアドレスは以下の通りである．
+		main     : H'00000120
+		msecwait : H'0000010C
+	(2) ex1.sub | START P(100) >> START P(200)
+		関数のアドレスは以下の通りである．
+		main     : H'00000220
+		msecwait : H'0000020C
+	(3) msecwait内で使われている変数とレジスタ
+		| 変数 | レジスタ |
+		| msec |    R0    |
+		|  i   |    R1    |
+		|  j   |    E0    |
+		msecwait関数の引数は，1000しか設定していない．
+		プログラムを簡略化するために，1000をR6に格納しておき，
+		R6の値をR0に代入して，R0を引数として関数に入っている．
+		
+	また、LEDの点灯状態を操作するP5DDRの操作について、
+	Cプログラムとアセンブリプログラムの対応は以下のようになっている。
+		BCLR : ビットクリア
+		BSET : ビットセット1
+		  
+		     C                             ASM
+		P5.DR.BIT.B0=1;        BSET.B      #0,@16777162:8 //0bit目に1をセットする
+		P5.DR.BIT.B1=0;        BCLR.B      #1,@16777162:8 //1bit目をクリアする
+		P5.DR.BIT.B0=0;        BCLR.B      #0,@16777162:8 //0bit目をクリアする
+		P5.DR.BIT.B1=1;        BSET.B      #1,@16777162:8 //1bit目に1をセットする
+
+4．まとめ
+	　マイクロコンピュータ起動後，Cの関数mainを呼び出すまでのことを記述したプログラムは
+	「スタートアップルーチン」と呼ばれている。
+	　スタートアップルーチンの仕事
+		1．スタックポインタの設定
+		2．mainをサブルーチンとしてコ―ル
+		3．main内で終了（RTS）する場合、スタートアップルーチン内で無限ループ
+	
+	スタートアップルーチンのアドレスは、リンカが決める。
+		START P(n):リンカスクリプトのキーワード
+		n : セクションPの機械語コードを書き込み始める番号
+		
+
+

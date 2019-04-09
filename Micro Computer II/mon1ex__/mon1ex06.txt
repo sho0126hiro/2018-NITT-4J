@@ -1,0 +1,237 @@
+/***  mon1ex06.txt  ***/
+
+1．課題
+	FF200から機械語プログラムを置きなさい。
+	スタックポインタにFFF00をセットする。
+	レジスタER0に1122eeffをセットする。
+	レジスタER1にaabb4477をセットする。
+	レジスタER2に34567890をセットする。
+	レジスタER0をpushする。
+	レジスタER1をpushする。
+	レジスタER2をpushする。
+	レジスタER0に0をセットする。（ER0を別用途に使ったと考える）
+	レジスタER1に0をセットする。（ER1を別用途に使ったと考える）
+	レジスタER2に0をセットする。（ER2を別用途に使ったと考える）
+	レジスタER2にpopする。
+	レジスタER1にpopする。
+	レジスタER0にpopする。
+
+	作成したプログラム本体を報告に載せなさい。
+
+	1命令ずつ実行すると
+	ER0,ER1,ER2,PC（プログラムカウンタ）SP（スタックポインタ，ER7と同じ）,FFEF0からFFF00までのメモリの様子はどうなるか，
+	観察して，全実行結果を報告しなさい。
+	各 push命令実行直前のスタックポインタの値，実行直後のスタックポインタの値，
+	どのレジスタの内容がどこのアドレスのメモリに格納されたのか
+	（ここでは 4バイトの値のはずなので，何番地から何番地までのメモリに格納されたのか），
+	関連を考えて考察の文中に盛り込みなさい。
+	各pop命令実行直前のスタックポインタの値，実行直後のスタックポインタの値，
+	どこのメモリの内容がどこのレジスタに書き戻されたか
+	（ここでは4バイトの値のはずなので，何番地から何番地までのメモリから書き戻されたのか），
+	関連を考えて考察の文中に盛り込みなさい。
+
+2．使用したプログラム・実行結果
+	teratarmのログを以下に示す．
+
+	  H8/3048 Series Advanced Mode Monitor Ver. 3.0A
+	 Copyright (C) 2003 Renesas Technology Corp.
+	
+	/*プログラム入力部*/
+	: a ff200
+	  FF200   >  mov.l #fff00:32,er7
+	  FF206   >  mov.l #1122eeff:32,er0
+	  FF20C   >  mov.l #aabb4477:32,er1
+	  FF212   >  mov.l #34567890:32,er2
+	  FF218   >  push.l er0
+	  FF21C   >  push.l er1
+	  FF220   >  push.l er2
+	  FF224   >  mov.l #0:32,er0
+	  FF22A   >  mov.l #0:32,er1
+	  FF230   >  mov.l #0:32,er2
+	  FF236   >  pop.l er2
+	  FF23A   >  pop.l er1
+	  FF23E   >  pop.l er0
+	  FF242   >  .
+	
+	/*逆アセンブルで確認*/
+	: da ff200 ff23e
+	  <ADDR>  <CODE>                <MNEMONIC> <OPERAND>
+	  FF200   7A07000FFF00          MOV.L      #H'000FFF00:32,ER7
+	  FF206   7A001122EEFF          MOV.L      #H'1122EEFF:32,ER0
+	  FF20C   7A01AABB4477          MOV.L      #H'AABB4477:32,ER1
+	  FF212   7A0234567890          MOV.L      #H'34567890:32,ER2
+	  FF218   01006DF0              PUSH.L     ER0
+	  FF21C   01006DF1              PUSH.L     ER1
+	  FF220   01006DF2              PUSH.L     ER2
+	  FF224   7A0000000000          MOV.L      #H'00000000:32,ER0
+	  FF22A   7A0100000000          MOV.L      #H'00000000:32,ER1
+	  FF230   7A0200000000          MOV.L      #H'00000000:32,ER2
+	  FF236   01006D72              POP.L      ER2
+	  FF23A   01006D71              POP.L      ER1
+	  FF23E   01006D70              POP.L      ER0
+	  
+	/*メモリの確認*/
+	: d ffef0 fff00
+	  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+	  FFEF0   FF FE F3 97 FF CF FE FF  FF 36 6F EF FB FF FA F7   ".........6o....."
+	  FFF00   FF    
+	
+	/*プログラムカウンタをセット*/
+	: .pc
+	  PC=000000  ?  ff200
+	  CCR=80  ?  .
+	
+	/*er0,er1,er2の初期化*/
+	: .er0
+	  ER0=00000000  ?  0
+	  ER1=00000000  ?  0
+	  ER2=00000000  ?  0
+	  ER3=00000000  ?  .
+  
+	/*プログラムカウンタの確認*/
+	: r
+	  PC=0FF200  CCR=80:I.......  SP=000FFF00
+	  ER0=00000000  ER1=00000000  ER2=00000000  ER3=00000000
+	  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFF00
+	
+	/*実行*/
+	: s
+	  PC=0FF206  CCR=80:I.......  SP=000FFF00
+	  ER0=00000000  ER1=00000000  ER2=00000000  ER3=00000000
+	  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFF00
+	  FF200   7A07000FFF00          MOV.L      #H'000FFF00:32,ER7
+	: s
+	  PC=0FF20C  CCR=80:I.......  SP=000FFF00
+	  ER0=1122EEFF  ER1=00000000  ER2=00000000  ER3=00000000
+	  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFF00
+	  FF206   7A001122EEFF          MOV.L      #H'1122EEFF:32,ER0
+	: s
+	  PC=0FF212  CCR=88:I...N...  SP=000FFF00
+	  ER0=1122EEFF  ER1=AABB4477  ER2=00000000  ER3=00000000
+	  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFF00
+	  FF20C   7A01AABB4477          MOV.L      #H'AABB4477:32,ER1
+	: s
+	  PC=0FF218  CCR=80:I.......  SP=000FFF00
+	  ER0=1122EEFF  ER1=AABB4477  ER2=34567890  ER3=00000000
+	  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFF00
+	  FF212   7A0234567890          MOV.L      #H'34567890:32,ER2
+	  
+	/*push1*/
+	: s
+	  PC=0FF21C  CCR=80:I.......  SP=000FFEFC
+	  ER0=1122EEFF  ER1=AABB4477  ER2=34567890  ER3=00000000
+	  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFEFC
+	  FF218   01006DF0              PUSH.L     ER0
+	
+	/*メモリの確認*/
+	: d ffef0 fff00
+	  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+	  FFEF0   FF FE F3 97 80 80 28 1A  00 0F F2 1E 11 22 EE FF   "......(......".."
+	  FFF00   FF                                                 "."
+	
+	/*push2*/
+	: s
+	  PC=0FF220  CCR=88:I...N...  SP=000FFEF8
+	  ER0=1122EEFF  ER1=AABB4477  ER2=34567890  ER3=00000000
+	  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFEF8
+	  FF21C   01006DF1              PUSH.L     ER1
+	
+	/*スタックポインタの確認*/
+	: d ffef0 fff00
+	  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+	  FFEF0   88 88 28 1A 00 0F F2 22  AA BB 44 77 11 22 EE FF   "..(...."..Dw.".."
+	  FFF00   FF                                                 "."
+	
+	/*push3*/
+	: s
+	  PC=0FF224  CCR=80:I.......  SP=000FFEF4
+	  ER0=1122EEFF  ER1=AABB4477  ER2=34567890  ER3=00000000
+	  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFEF4
+	  FF220   01006DF2              PUSH.L     ER2
+	
+	/*メモリの確認*/
+	: d ffef0 fff00
+	  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+	  FFEF0   00 0F F2 26 34 56 78 90  AA BB 44 77 11 22 EE FF   "...&4Vx...Dw.".."
+	  FFF00   FF                                                 "."
+	
+	/*ER0,ER1,ER2に0を代入（別用途に使ったと考える）*/
+	: s
+	  PC=0FF22A  CCR=84:I....Z..  SP=000FFEF4
+	  ER0=00000000  ER1=AABB4477  ER2=34567890  ER3=00000000
+	  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFEF4
+	  FF224   7A0000000000          MOV.L      #H'00000000:32,ER0
+	: s
+	  PC=0FF230  CCR=84:I....Z..  SP=000FFEF4
+	  ER0=00000000  ER1=00000000  ER2=34567890  ER3=00000000
+	  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFEF4
+	  FF22A   7A0100000000          MOV.L      #H'00000000:32,ER1
+	: s
+	  PC=0FF236  CCR=84:I....Z..  SP=000FFEF4
+	  ER0=00000000  ER1=00000000  ER2=00000000  ER3=00000000
+	  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFEF4
+	  FF230   7A0200000000          MOV.L      #H'00000000:32,ER2
+	  
+	/*メモリの確認*/
+	: d ffef0 fff00
+	  <ADDR>                  <  D  A  T  A  >                     < ASCII CODE >
+	  FFEF0   80 80 28 1A 00 0F F2 3C  AA BB 44 77 11 22 EE FF   "..(....<..Dw.".."
+	  FFF00   FF 
+	  
+	/*pop*/
+	: s
+	  PC=0FF23A  CCR=80:I.......  SP=000FFEF8
+	  ER0=00000000  ER1=00000000  ER2=34567890  ER3=00000000
+	  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFEF8
+	  FF236   01006D72              POP.L      ER2
+	                                                "."
+	: s
+	  PC=0FF23E  CCR=88:I...N...  SP=000FFEFC
+	  ER0=00000000  ER1=AABB4477  ER2=34567890  ER3=00000000
+	  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFEFC
+	  FF23A   01006D71              POP.L      ER1
+	: s
+	  PC=0FF242  CCR=80:I.......  SP=000FFF00
+	  ER0=1122EEFF  ER1=AABB4477  ER2=34567890  ER3=00000000
+	  ER4=00000000  ER5=00000000  ER6=00000000  ER7=000FFF00
+	  FF23E   01006D70              POP.L      ER0
+
+3．考察
+	1回目のPush:
+		命令前　 >>  命令後　(sp)
+		000FFF00 >>  000FFEFC
+		スタックポインタの値が、
+		FFEF0   FF FE F3 97 FF CF FE FF  FF 36 6F EF FB FF FA F7　から、	
+		FFEF0   FF FE F3 97 80 80 28 1A  00 0F F2 1E 11 22 EE FF　となっているため、
+		pushしたER0の値(1122eeff)がFFEFC-FFEFFに格納されたことがわかる
+	2回目のPush:
+		命令前　 >>  命令後　(sp)
+		000FFEFC >>  000FFEF8
+		FFEF0   FF FE F3 97 80 80 28 1A  00 0F F2 1E 11 22 EE FF　から
+		FFEF0   88 88 28 1A 00 0F F2 22  AA BB 44 77 11 22 EE FF　なったことから
+		pushしたER1の値(aabb4477)がFFE8F-FFEFBに格納されたことがわかる
+	3回目のPush
+		命令前　 >>  命令後　(sp)
+		000FFEF8 >>  000FFEF4
+		FFEF0   88 88 28 1A 00 0F F2 22  AA BB 44 77 11 22 EE FF　から
+		FFEF0   00 0F F2 26 34 56 78 90  AA BB 44 77 11 22 EE FF　なったことから
+		pushしたER2の値(34567890)がFFE4F-FFEF7に格納されたことがわかる
+	スタックポインタに格納したデータを格納しているため、スタックポインタに入れたデータサイズ(バイト)分、
+	スタックポインタの値が低くなっている。
+
+	1回目のpop命令
+		   命令前　 >>  命令後　(sp)
+		SP=000FFEF4 >> SP=000FFEF8
+	1回目のpop命令
+		   命令前　 >>  命令後　(sp)
+		SP=000FFEF8 >> SP=000FFEFC
+	1回目のpop命令
+		   命令前　 >>  命令後　(sp)
+		SP=000FFEFC >> SP=000FFF00
+	4バイトの値を入れたため、すべて4バイトずつ、メモリが書き戻されている。
+
+4．まとめ
+	レジスタの内容をスタック領域に退避させ、そのレジスタを別の用途に使用した後、
+	スタック領域に保存された内容をレジスタに戻すことができる。
+	また、スタックのpush/popについてのスタックポインタの動作・レジスタの動作は
+	mon1ex05で学習した内容と同じため、スムーズに理解できた。

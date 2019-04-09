@@ -1,0 +1,83 @@
+H8S,H8/300 SERIES C COMPILER (Ver. 2.0D for Evaluation)23-Jun-2018  14:04:53  PAGE   1
+
+************ SOURCE LISTING ************
+
+FILE NAME: mon2ex0901.c
+
+  Seq File        Line Pi 0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+
+    1 mon2ex0901     1     short int x00=0xfff5;
+    2 mon2ex0901     2     short int x10=0x0004;
+    3 mon2ex0901     3     short int y0,y1; /* x00 div x10 = y1 ... y0 */
+    4 mon2ex0901     4     
+    5 mon2ex0901     5     int main()
+    6 mon2ex0901     6     {
+    7 mon2ex0901     7         short int x0,x1,x2,x3,xt;
+    8 mon2ex0901     8         short int opecase;
+    9 mon2ex0901     9         x0=x00;
+   10 mon2ex0901    10         x1=x10;
+   11 mon2ex0901    11         xt=x10;
+   12 mon2ex0901    12         /*P-M判定*/
+   13 mon2ex0901    13         if (0<x0) {
+   14 mon2ex0901    14             if (0<x1) {
+   15 mon2ex0901    15                 opecase=0; /*P-P*/
+   16 mon2ex0901    16             } else {
+   17 mon2ex0901    17                 opecase=1; /*P-M*/
+   18 mon2ex0901    18                 x1=-x1;
+   19 mon2ex0901    19             }
+   20 mon2ex0901    20         } else {
+   21 mon2ex0901    21             if (0<x1) {
+   22 mon2ex0901    22                 opecase=2; /*M-P*/
+   23 mon2ex0901    23                 x0=-x0;
+   24 mon2ex0901    24             } else {
+   25 mon2ex0901    25                 opecase=3; /*M-M*/
+   26 mon2ex0901    26                 x1=-x1;
+   27 mon2ex0901    27                 x0=-x0;
+   28 mon2ex0901    28                 xt=-xt;
+   29 mon2ex0901    29             }
+   30 mon2ex0901    30         }
+   31 mon2ex0901    31         /*P-M判定おわり*/
+   32 mon2ex0901    32         x2=0;
+   33 mon2ex0901    33         x3=1;
+   34 mon2ex0901    34         /*割り算のプログラム*/
+   35 mon2ex0901    35         while (x1<x0) {
+   36 mon2ex0901    36             x1<<=1;
+   37 mon2ex0901    37             x3<<=1;
+   38 mon2ex0901    38         }
+   39 mon2ex0901    39         while (x3!=0) {
+   40 mon2ex0901    40             if(x1<=x0) {
+   41 mon2ex0901    41                 x0-=x1;
+   42 mon2ex0901    42                 x2+=x3;
+   43 mon2ex0901    43             }
+   44 mon2ex0901    44             x1>>=1;
+   45 mon2ex0901    45             x3>>=1;
+   46 mon2ex0901    46         }
+   47 mon2ex0901    47         /*割り算終わり*/
+   48 mon2ex0901    48         /*符号変更*/
+   49 mon2ex0901    49         if (opecase==0) {
+   50 mon2ex0901    50         } else if (opecase==1) {
+   51 mon2ex0901    51             x2=-x2;
+   52 mon2ex0901    52         } else  {
+   53 mon2ex0901    53             if (0<x0) {
+   54 mon2ex0901    54                 x0=xt-x0;
+   55 mon2ex0901    55                 x2++;
+   56 mon2ex0901    56             }
+   57 mon2ex0901    57             if (opecase==2) {
+   58 mon2ex0901    58                 x2=-x2;
+   59 mon2ex0901    59             }
+   60 mon2ex0901    60         }
+   61 mon2ex0901    61         y1=x2;
+   62 mon2ex0901    62         y0=x0;
+   63 mon2ex0901    63     }
+H8S,H8/300 SERIES C COMPILER (Ver. 2.0D for Evaluation)23-Jun-2018  14:04:53  PAGE   1
+
+** ASSEMBLER/LINKAGE EDITOR LIMITS INFORMATION **
+
+NUMBER OF EXTERNAL REFERENCE  SYMBOLS:        0 
+NUMBER OF EXTERNAL DEFINITION SYMBOLS:        5 
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:         20 
+
+
+
+********* CPU MODE INFORMATION *********
+
+cpu=300ha

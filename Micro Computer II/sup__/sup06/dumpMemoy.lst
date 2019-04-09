@@ -1,0 +1,78 @@
+H8S,H8/300 SERIES C COMPILER (Ver. 2.0D for Evaluation) 7-Sep-2018  17:13:21  PAGE   1
+
+************ SOURCE LISTING ************
+
+FILE NAME: dumpMemoy.c
+
+  Seq File        Line Pi 0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+
+    1 dumpMemoy.     1     /**********************************************************
+    2 dumpMemoy.     2     dumpMemory関数でメモリダンプした後
+    3 dumpMemoy.     3     msecwait関数で0.25秒ごとのLEDのON-OFFを行う
+    4 dumpMemoy.     4     **********************************************************/
+    5 dumpMemoy.     5     #include <3048fone.h>
+ 1014 dumpMemoy.     6     #include "h8_3048fone.h"
+ 1998 dumpMemoy.     7     
+ 1999 dumpMemoy.     8     void msecwait(int msec)
+ 2000 dumpMemoy.     9     {
+ 2001 dumpMemoy.    10         int i,j;
+ 2002 dumpMemoy.    11         for (i=0;i<msec;i++) {
+ 2003 dumpMemoy.    12             for (j=0;j<3352;j++);    /*3352は実測によって求めた値 20MHz駆動*/
+ 2004 dumpMemoy.    13         }
+ 2005 dumpMemoy.    14     }
+ 2006 dumpMemoy.    15     
+ 2007 dumpMemoy.    16     void dumpMemory(long int address, long int tail)
+ 2008 dumpMemoy.    17     {
+ 2009 dumpMemoy.    18         long int i;
+ 2010 dumpMemoy.    19         unsigned char ch;
+ 2011 dumpMemoy.    20         address&=0xfffffff0;
+ 2012 dumpMemoy.    21         tail&=0xfffffff0;
+ 2013 dumpMemoy.    22         SCI1_printf("address +0 +1 +2 +3 +4 +5 +6 +7 +8 +9 +A +B +C +D +E +F   0123456789ABCDEF\n");
+ 2014 dumpMemoy.    23         for (; address<tail; address++) {
+ 2015 dumpMemoy.    24             if (address%0x10==0) SCI1_printf ("%05lx : ",address);
+ 2016 dumpMemoy.    25             SCI1_printf("%02x ",*(unsigned char*)address);
+ 2017 dumpMemoy.    26             if (address%0x10==0xf) {
+ 2018 dumpMemoy.    27                 SCI1_printf(": ");
+ 2019 dumpMemoy.    28                 for (i=-0xf; i<=0; i++) {
+ 2020 dumpMemoy.    29                     ch=*(unsigned char*)(address+i);
+ 2021 dumpMemoy.    30                     SCI1_printf("%c",isprint(ch)?ch:'.');
+ 2022 dumpMemoy.    31                 }
+ 2023 dumpMemoy.    32                 SCI1_printf("\n");
+ 2024 dumpMemoy.    33             }
+ 2025 dumpMemoy.    34         }
+ 2026 dumpMemoy.    35         SCI1_printf("\n");
+ 2027 dumpMemoy.    36     }
+ 2028 dumpMemoy.    37     
+ 2029 dumpMemoy.    38     int count1=0x1234;
+ 2030 dumpMemoy.    39     int count2;
+ 2031 dumpMemoy.    40     
+ 2032 dumpMemoy.    41     main()
+ 2033 dumpMemoy.    42     {
+ 2034 dumpMemoy.    43         int count3=0x3456;
+ 2035 dumpMemoy.    44         count2=0x2345;
+ 2036 dumpMemoy.    45         initSCI1(); /*シリアル通信ユニットSCI1の初期化*/
+ 2037 dumpMemoy.    46         initLed();  /*LED初期化*/
+ 2038 dumpMemoy.    47         dumpMemory(0L,0x1130L); /*ROM領域*/
+ 2039 dumpMemoy.    48         dumpMemory(0xfef10L,0xfef30L); /*RAM領域*/
+ 2040 dumpMemoy.    49         while(1) {
+ 2041 dumpMemoy.    50             SCI1_printf("%4x %4x %4x\n",count1++,count2++,count3++);
+ 2042 dumpMemoy.    51             turnOnLed(0); /*LED0のON*/
+ 2043 dumpMemoy.    52             turnOffLed(1); /*LED1のOFF*/
+ 2044 dumpMemoy.    53             msecwait(250);
+ 2045 dumpMemoy.    54             turnOffLed(0); /*LED0のOFF*/
+ 2046 dumpMemoy.    55             turnOnLed(1); /*LED1のON*/
+ 2047 dumpMemoy.    56             msecwait(250);
+ 2048 dumpMemoy.    57         }
+ 2049 dumpMemoy.    58     }
+H8S,H8/300 SERIES C COMPILER (Ver. 2.0D for Evaluation) 7-Sep-2018  17:13:21  PAGE   1
+
+** ASSEMBLER/LINKAGE EDITOR LIMITS INFORMATION **
+
+NUMBER OF EXTERNAL REFERENCE  SYMBOLS:        6 
+NUMBER OF EXTERNAL DEFINITION SYMBOLS:       43 
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:        239 
+
+
+
+********* CPU MODE INFORMATION *********
+
+cpu=300ha

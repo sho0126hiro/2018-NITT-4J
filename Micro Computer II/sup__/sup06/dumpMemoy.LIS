@@ -1,0 +1,2550 @@
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE     1
+PROGRAM NAME =
+
+    1                             1               .CPU        300HA
+    2                             2               .IMPORT     $MULL$3
+    3                             3               .IMPORT     $DIVL$3
+    4                             4               .IMPORT     $DIVUL$3
+    5                             5               .IMPORT     $sp_regsv$3
+    6                             6               .IMPORT     $spregld2$3
+    7                             7               .IMPORT     _isprint
+    8                             8               .EXPORT     _SCI0device
+    9                             9               .EXPORT     _SCI1device
+   10                            10               .EXPORT     _LCDdevice
+   11                            11               .EXPORT     _STRdevice
+   12                            12               .EXPORT     _initSCI1
+   13                            13               .EXPORT     _SCI1_getChar
+   14                            14               .EXPORT     _SCI1_chkgetChar
+   15                            15               .EXPORT     _SCI1_putString
+   16                            16               .EXPORT     _SCI1_getString
+   17                            17               .EXPORT     _SCI1_putChar
+   18                            18               .EXPORT     _initSCI0
+   19                            19               .EXPORT     _SCI0_getChar
+   20                            20               .EXPORT     _SCI0_chkgetChar
+   21                            21               .EXPORT     _SCI0_putString
+   22                            22               .EXPORT     _SCI0_getString
+   23                            23               .EXPORT     _atoi
+   24                            24               .EXPORT     _SCI1_getInt4
+   25                            25               .EXPORT     _SCI0_getInt4
+   26                            26               .EXPORT     _SCI0_putChar
+   27                            27               .EXPORT     _LCD_putchar
+   28                            28               .EXPORT     _LCD_puts
+   29                            29               .EXPORT     _initLCD
+   30                            30               .EXPORT     _LCD_gotoxy
+   31                            31               .EXPORT     _LCD_clrscr
+   32                            32               .EXPORT     _hexstring
+   33                            33               .EXPORT     _Device_printf
+   34                            34               .EXPORT     _SCI0_printf
+   35                            35               .EXPORT     _SCI1_printf
+   36                            36               .EXPORT     _LCD_printf
+   37                            37               .EXPORT     _sprintf
+   38                            38               .EXPORT     _initLed
+   39                            39               .EXPORT     _turnOnLed
+   40                            40               .EXPORT     _turnOffLed
+   41                            41               .EXPORT     _initPushSW
+   42                            42               .EXPORT     _checkPushSW
+   43                            43               .EXPORT     _init8BitSW
+   44                            44               .EXPORT     _check8BitSW
+   45                            45               .EXPORT     _initTimer1Int
+   46                            46               .EXPORT     _msecwait
+   47                            47               .EXPORT     _dumpMemory
+   48                            48               .EXPORT     _count1
+   49                            49               .EXPORT     _count2
+   50                            50               .EXPORT     _main
+   51 000000                     51               .SECTION    P,CODE,ALIGN=2
+   52                            52     ;*** File h8_3048fon, Line 185   ; block
+   53 000000                     53     _initSCI1:                       ; function: initSCI1
+   54                            54     ;*** File h8_3048fon, Line 186   ; block
+   55                            55     ;*** File h8_3048fon, Line 188   ; expression statement
+   56 000000 1888                56               SUB.B       R0L,R0L
+   57 000002 38BA                57               MOV.B       R0L,@16777146:8
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE     2
+PROGRAM NAME =
+
+   58                            58     ;*** File h8_3048fon, Line 190   ; expression statement
+   59 000004 38B8                59               MOV.B       R0L,@16777144:8
+   60                            60     ;*** File h8_3048fon, Line 191   ; expression statement
+   61 000006 F813                61               MOV.B       #19:8,R0L
+   62 000008 38B9                62               MOV.B       R0L,@16777145:8
+   63                            63     ;*** File h8_3048fon, Line 192   ; expression statement
+   64 00000A 1900                64               SUB.W       R0,R0
+   65                            65     ;*** File h8_3048fon, Line 192   ; do
+   66 00000C                     66     L296:
+   67                            67     ;*** File h8_3048fon, Line 192   ; expression statement
+   68 00000C 0B50                68               INC.W       #1,R0
+   69                            69     ;*** File h8_3048fon, Line 192   ; expression statement
+   70 00000E 792003E8            70               CMP.W       #1000:16,R0
+   71 000012 4DF8                71               BLT         L296:8
+   72                            72     ;*** File h8_3048fon, Line 193   ; expression statement
+   73 000014 F830                73               MOV.B       #48:8,R0L
+   74 000016 38BA                74               MOV.B       R0L,@16777146:8
+   75                            75     ;*** File h8_3048fon, Line 194   ; return
+   76                            76     ;*** File h8_3048fon, Line 195   ; block
+   77 000018 5470                77               RTS
+   78                            78     ;*** File h8_3048fon, Line 200   ; block
+   79 00001A                     79     _SCI1_getChar:                   ; function: SCI1_getChar
+   80                            80     ;*** File h8_3048fon, Line 203   ; block
+   81                            81     ;*** File h8_3048fon, Line 205   ; do
+   82 00001A                     82     L298:
+   83                            83     ;*** File h8_3048fon, Line 205   ; block
+   84                            84     ;*** File h8_3048fon, Line 206   ; expression statement
+   85 00001A 29BC                85               MOV.B       @16777148:8,R1L
+   86 00001C 1751                86               EXTU.W      R1
+   87                            87     ;*** File h8_3048fon, Line 207   ; if
+   88 00001E 0D10                88               MOV.W       R1,R0
+   89 000020 79600038            89               AND.W       #56:16,R0
+   90 000024 4716                90               BEQ         L299:8
+   91                            91     ;*** File h8_3048fon, Line 207   ; block
+   92                            92     ;*** File h8_3048fon, Line 208   ; expression statement
+   93 000026 7FBC7260            93               BCLR.B      #6,@16777148:8
+   94                            94     ;*** File h8_3048fon, Line 209   ; expression statement
+   95 00002A 7FBC7250            95               BCLR.B      #5,@16777148:8
+   96                            96     ;*** File h8_3048fon, Line 210   ; expression statement
+   97 00002E 7FBC7240            97               BCLR.B      #4,@16777148:8
+   98                            98     ;*** File h8_3048fon, Line 211   ; expression statement
+   99 000032 7FBC7230            99               BCLR.B      #3,@16777148:8
+  100                           100     ;*** File h8_3048fon, Line 212   ; return
+  101 000036 7900FFFE           101               MOV.W       #-2:16,R0
+  102 00003A 5470               102               RTS
+  103 00003C                    103     L299:
+  104                           104     ;*** File h8_3048fon, Line 214   ; if
+  105 00003C 7369               105               BTST.B      #6,R1L
+  106 00003E 47DA               106               BEQ         L298:8
+  107                           107     ;*** File h8_3048fon, Line 214   ; block
+  108                           108     ;*** File h8_3048fon, Line 215   ; expression statement
+  109 000040 7FBC7260           109               BCLR.B      #6,@16777148:8
+  110                           110     ;*** File h8_3048fon, Line 216   ; expression statement
+  111 000044 29BD               111               MOV.B       @16777149:8,R1L
+  112 000046 1751               112               EXTU.W      R1
+  113                           113     ;*** File h8_3048fon, Line 217   ; return
+  114 000048 0D10               114               MOV.W       R1,R0
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE     3
+PROGRAM NAME =
+
+  115                           115     ;*** File h8_3048fon, Line 219   ; expression statement
+  116                           116     ;*** File h8_3048fon, Line 220   ; block
+  117 00004A 5470               117               RTS
+  118                           118     ;*** File h8_3048fon, Line 225   ; block
+  119 00004C                    119     _SCI1_chkgetChar:                ; function: SCI1_chkgetChar
+  120                           120     ;*** File h8_3048fon, Line 229   ; block
+  121                           121     ;*** File h8_3048fon, Line 231   ; expression statement
+  122 00004C 29BC               122               MOV.B       @16777148:8,R1L
+  123 00004E 1751               123               EXTU.W      R1
+  124                           124     ;*** File h8_3048fon, Line 232   ; if
+  125 000050 0D10               125               MOV.W       R1,R0
+  126 000052 79600038           126               AND.W       #56:16,R0
+  127 000056 4716               127               BEQ         L302:8
+  128                           128     ;*** File h8_3048fon, Line 232   ; block
+  129                           129     ;*** File h8_3048fon, Line 233   ; expression statement
+  130 000058 7FBC7260           130               BCLR.B      #6,@16777148:8
+  131                           131     ;*** File h8_3048fon, Line 234   ; expression statement
+  132 00005C 7FBC7250           132               BCLR.B      #5,@16777148:8
+  133                           133     ;*** File h8_3048fon, Line 235   ; expression statement
+  134 000060 7FBC7240           134               BCLR.B      #4,@16777148:8
+  135                           135     ;*** File h8_3048fon, Line 236   ; expression statement
+  136 000064 7FBC7230           136               BCLR.B      #3,@16777148:8
+  137                           137     ;*** File h8_3048fon, Line 237   ; return
+  138 000068 7900FFFE           138               MOV.W       #-2:16,R0
+  139 00006C 5470               139               RTS
+  140 00006E                    140     L302:
+  141                           141     ;*** File h8_3048fon, Line 239   ; if
+  142 00006E 7369               142               BTST.B      #6,R1L
+  143 000070 470C               143               BEQ         L304:8
+  144                           144     ;*** File h8_3048fon, Line 239   ; block
+  145                           145     ;*** File h8_3048fon, Line 240   ; expression statement
+  146 000072 29BD               146               MOV.B       @16777149:8,R1L
+  147 000074 1751               147               EXTU.W      R1
+  148                           148     ;*** File h8_3048fon, Line 241   ; expression statement
+  149 000076 7FBC7260           149               BCLR.B      #6,@16777148:8
+  150                           150     ;*** File h8_3048fon, Line 242   ; return
+  151 00007A 0D10               151               MOV.W       R1,R0
+  152 00007C 5470               152               RTS
+  153 00007E                    153     L304:
+  154                           154     ;*** File h8_3048fon, Line 243   ; block
+  155                           155     ;*** File h8_3048fon, Line 244   ; return
+  156 00007E 7900FFFF           156               MOV.W       #-1:16,R0
+  157                           157     ;*** File h8_3048fon, Line 246   ; block
+  158 000082 5470               158               RTS
+  159                           159     ;*** File h8_3048fon, Line 252   ; block
+  160 000084                    160     _SCI1_getString:                 ; function: SCI1_getString
+  161 000084 5E000000           161               JSR         @$sp_regsv$3:24
+  162                           162     ;*** File h8_3048fon, Line 253   ; block
+  163 000088 0F86               163               MOV.L       ER0,ER6
+  164 00008A 0D1D               164               MOV.W       R1,E5
+  165                           165     ;*** File h8_3048fon, Line 255   ; expression statement
+  166 00008C 1955               166               SUB.W       R5,R5
+  167 00008E 1B5D               167               DEC.W       #1,E5
+  168 000090 0DD4               168               MOV.W       E5,R4
+  169                           169     ;*** File h8_3048fon, Line 255   ; for
+  170 000092 4026               170               BRA         L307:8
+  171 000094                    171     L306:
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE     4
+PROGRAM NAME =
+
+  172                           172     ;*** File h8_3048fon, Line 255   ; block
+  173                           173     ;*** File h8_3048fon, Line 256   ; expression statement
+  174 000094 5584               174               BSR         _SCI1_getChar:8
+  175 000096 0D0D               175               MOV.W       R0,E5
+  176                           176     ;*** File h8_3048fon, Line 257   ; expression statement
+  177 000098 68E8               177               MOV.B       R0L,@ER6
+  178                           178     ;*** File h8_3048fon, Line 258   ; if
+  179 00009A A80D               179               CMP.B       #13:8,R0L
+  180 00009C 4720               180               BEQ         L491:8
+  181 00009E 0DDD               181               MOV.W       E5,E5
+  182 0000A0 4D1C               182               BLT         L491:8
+  183                           183     ;*** File h8_3048fon, Line 258   ; block
+  184                           184     ;*** File h8_3048fon, Line 259   ; expression statement
+  185                           185     ;*** File h8_3048fon, Line 260   ; return
+  186                           186     ;*** File h8_3048fon, Line 262   ; if
+  187 0000A2 6868               187               MOV.B       @ER6,R0L
+  188 0000A4 A808               188               CMP.B       #8:8,R0L
+  189 0000A6 4604               189               BNE         L311:8
+  190                           190     ;*** File h8_3048fon, Line 262   ; block
+  191                           191     ;*** File h8_3048fon, Line 263   ; expression statement
+  192 0000A8 1BF6               192               DEC.L       #2,ER6
+  193                           193     ;*** File h8_3048fon, Line 264   ; expression statement
+  194 0000AA 1BD5               194               DEC.W       #2,R5
+  195 0000AC                    195     L311:
+  196                           196     ;*** File h8_3048fon, Line 266   ; if
+  197 0000AC 6868               197               MOV.B       @ER6,R0L
+  198 0000AE A80A               198               CMP.B       #10:8,R0L
+  199 0000B0 4704               199               BEQ         L312:8
+  200                           200     ;*** File h8_3048fon, Line 266   ; expression statement
+  201 0000B2 0B76               201               INC.L       #1,ER6
+  202 0000B4 4002               202               BRA         L313:8
+  203 0000B6                    203     L312:
+  204                           204     ;*** File h8_3048fon, Line 267   ; expression statement
+  205 0000B6 1B55               205               DEC.W       #1,R5
+  206 0000B8                    206     L313:
+  207                           207     ;*** File h8_3048fon, Line 255   ; expression statement
+  208 0000B8 0B55               208               INC.W       #1,R5
+  209 0000BA                    209     L307:
+  210                           210     ;*** File h8_3048fon, Line 255   ; expression statement
+  211 0000BA 1D45               211               CMP.W       R4,R5
+  212 0000BC 4DD6               212               BLT         L306:8
+  213                           213     ;*** File h8_3048fon, Line 269   ; expression statement
+  214                           214     ;*** File h8_3048fon, Line 270   ; return
+  215                           215     ;*** File h8_3048fon, Line 271   ; block
+  216 0000BE                    216     L491:
+  217 0000BE 1888               217               SUB.B       R0L,R0L
+  218 0000C0 68E8               218               MOV.B       R0L,@ER6
+  219 0000C2 0B55               219               INC.W       #1,R5
+  220 0000C4 0D50               220               MOV.W       R5,R0
+  221 0000C6 5A000000           221               JMP         @$spregld2$3:24
+  222                           222     ;*** File h8_3048fon, Line 276   ; block
+  223 0000CA                    223     _SCI1_putChar:                   ; function: SCI1_putChar
+  224 0000CA 6DF6               224               PUSH.W      R6
+  225                           225     ;*** File h8_3048fon, Line 277   ; block
+  226 0000CC 0C86               226               MOV.B       R0L,R6H
+  227                           227     ;*** File h8_3048fon, Line 280   ; if
+  228 0000CE A60A               228               CMP.B       #10:8,R6H
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE     5
+PROGRAM NAME =
+
+  229 0000D0 4604               229               BNE         L314:8
+  230                           230     ;*** File h8_3048fon, Line 280   ; expression statement
+  231 0000D2 F80D               231               MOV.B       #13:8,R0L
+  232 0000D4 55F4               232               BSR         _SCI1_putChar:8
+  233 0000D6                    233     L314:
+  234                           234     ;*** File h8_3048fon, Line 282   ; do
+  235 0000D6                    235     L315:
+  236                           236     ;*** File h8_3048fon, Line 282   ; block
+  237                           237     ;*** File h8_3048fon, Line 283   ; expression statement
+  238 0000D6 28BC               238               MOV.B       @16777148:8,R0L
+  239 0000D8 7378               239               BTST.B      #7,R0L
+  240 0000DA 47FA               240               BEQ         L315:8
+  241                           241     ;*** File h8_3048fon, Line 285   ; expression statement
+  242 0000DC 36BB               242               MOV.B       R6H,@16777147:8
+  243                           243     ;*** File h8_3048fon, Line 286   ; expression statement
+  244 0000DE 7FBC7270           244               BCLR.B      #7,@16777148:8
+  245                           245     ;*** File h8_3048fon, Line 287   ; return
+  246                           246     ;*** File h8_3048fon, Line 288   ; block
+  247 0000E2 6D76               247               POP.W       R6
+  248 0000E4 5470               248               RTS
+  249                           249     ;*** File h8_3048fon, Line 290   ; block
+  250 0000E6                    250     _SCI1_putString:                 ; function: SCI1_putString
+  251 0000E6 01006DF6           251               PUSH.L      ER6
+  252                           252     ;*** File h8_3048fon, Line 291   ; block
+  253 0000EA 0F86               253               MOV.L       ER0,ER6
+  254                           254     ;*** File h8_3048fon, Line 292   ; while
+  255 0000EC 4006               255               BRA         L318:8
+  256 0000EE                    256     L317:
+  257                           257     ;*** File h8_3048fon, Line 292   ; block
+  258                           258     ;*** File h8_3048fon, Line 293   ; expression statement
+  259 0000EE 6868               259               MOV.B       @ER6,R0L
+  260 0000F0 55D8               260               BSR         _SCI1_putChar:8
+  261                           261     ;*** File h8_3048fon, Line 294   ; expression statement
+  262 0000F2 0B76               262               INC.L       #1,ER6
+  263 0000F4                    263     L318:
+  264                           264     ;*** File h8_3048fon, Line 292   ; expression statement
+  265 0000F4 6868               265               MOV.B       @ER6,R0L
+  266 0000F6 46F6               266               BNE         L317:8
+  267                           267     ;*** File h8_3048fon, Line 296   ; block
+  268 0000F8 01006D76           268               POP.L       ER6
+  269 0000FC 5470               269               RTS
+  270                           270     ;*** File h8_3048fon, Line 302   ; block
+  271 0000FE                    271     _initSCI0:                       ; function: initSCI0
+  272                           272     ;*** File h8_3048fon, Line 303   ; block
+  273                           273     ;*** File h8_3048fon, Line 305   ; expression statement
+  274 0000FE 1888               274               SUB.B       R0L,R0L
+  275 000100 38B2               275               MOV.B       R0L,@16777138:8
+  276                           276     ;*** File h8_3048fon, Line 307   ; expression statement
+  277 000102 38B0               277               MOV.B       R0L,@16777136:8
+  278                           278     ;*** File h8_3048fon, Line 308   ; expression statement
+  279 000104 F813               279               MOV.B       #19:8,R0L
+  280 000106 38B1               280               MOV.B       R0L,@16777137:8
+  281                           281     ;*** File h8_3048fon, Line 309   ; expression statement
+  282 000108 1900               282               SUB.W       R0,R0
+  283                           283     ;*** File h8_3048fon, Line 309   ; do
+  284 00010A                    284     L319:
+  285                           285     ;*** File h8_3048fon, Line 309   ; expression statement
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE     6
+PROGRAM NAME =
+
+  286 00010A 0B50               286               INC.W       #1,R0
+  287                           287     ;*** File h8_3048fon, Line 309   ; expression statement
+  288 00010C 792003E8           288               CMP.W       #1000:16,R0
+  289 000110 4DF8               289               BLT         L319:8
+  290                           290     ;*** File h8_3048fon, Line 310   ; expression statement
+  291 000112 F830               291               MOV.B       #48:8,R0L
+  292 000114 38B2               292               MOV.B       R0L,@16777138:8
+  293                           293     ;*** File h8_3048fon, Line 311   ; return
+  294                           294     ;*** File h8_3048fon, Line 312   ; block
+  295 000116 5470               295               RTS
+  296                           296     ;*** File h8_3048fon, Line 317   ; block
+  297 000118                    297     _SCI0_getChar:                   ; function: SCI0_getChar
+  298                           298     ;*** File h8_3048fon, Line 320   ; block
+  299                           299     ;*** File h8_3048fon, Line 322   ; do
+  300 000118                    300     L321:
+  301                           301     ;*** File h8_3048fon, Line 322   ; block
+  302                           302     ;*** File h8_3048fon, Line 323   ; expression statement
+  303 000118 29B4               303               MOV.B       @16777140:8,R1L
+  304 00011A 1751               304               EXTU.W      R1
+  305                           305     ;*** File h8_3048fon, Line 324   ; if
+  306 00011C 0D10               306               MOV.W       R1,R0
+  307 00011E 79600038           307               AND.W       #56:16,R0
+  308 000122 4716               308               BEQ         L322:8
+  309                           309     ;*** File h8_3048fon, Line 324   ; block
+  310                           310     ;*** File h8_3048fon, Line 325   ; expression statement
+  311 000124 7FB47260           311               BCLR.B      #6,@16777140:8
+  312                           312     ;*** File h8_3048fon, Line 326   ; expression statement
+  313 000128 7FB47250           313               BCLR.B      #5,@16777140:8
+  314                           314     ;*** File h8_3048fon, Line 327   ; expression statement
+  315 00012C 7FB47240           315               BCLR.B      #4,@16777140:8
+  316                           316     ;*** File h8_3048fon, Line 328   ; expression statement
+  317 000130 7FB47230           317               BCLR.B      #3,@16777140:8
+  318                           318     ;*** File h8_3048fon, Line 329   ; return
+  319 000134 7900FFFE           319               MOV.W       #-2:16,R0
+  320 000138 5470               320               RTS
+  321 00013A                    321     L322:
+  322                           322     ;*** File h8_3048fon, Line 331   ; if
+  323 00013A 7369               323               BTST.B      #6,R1L
+  324 00013C 47DA               324               BEQ         L321:8
+  325                           325     ;*** File h8_3048fon, Line 331   ; block
+  326                           326     ;*** File h8_3048fon, Line 332   ; expression statement
+  327 00013E 7FB47260           327               BCLR.B      #6,@16777140:8
+  328                           328     ;*** File h8_3048fon, Line 333   ; expression statement
+  329 000142 29B5               329               MOV.B       @16777141:8,R1L
+  330 000144 1751               330               EXTU.W      R1
+  331                           331     ;*** File h8_3048fon, Line 334   ; return
+  332 000146 0D10               332               MOV.W       R1,R0
+  333                           333     ;*** File h8_3048fon, Line 336   ; expression statement
+  334                           334     ;*** File h8_3048fon, Line 337   ; block
+  335 000148 5470               335               RTS
+  336                           336     ;*** File h8_3048fon, Line 342   ; block
+  337 00014A                    337     _SCI0_chkgetChar:                ; function: SCI0_chkgetChar
+  338                           338     ;*** File h8_3048fon, Line 346   ; block
+  339                           339     ;*** File h8_3048fon, Line 348   ; expression statement
+  340 00014A 29B4               340               MOV.B       @16777140:8,R1L
+  341 00014C 1751               341               EXTU.W      R1
+  342                           342     ;*** File h8_3048fon, Line 349   ; if
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE     7
+PROGRAM NAME =
+
+  343 00014E 0D10               343               MOV.W       R1,R0
+  344 000150 79600038           344               AND.W       #56:16,R0
+  345 000154 4716               345               BEQ         L325:8
+  346                           346     ;*** File h8_3048fon, Line 349   ; block
+  347                           347     ;*** File h8_3048fon, Line 350   ; expression statement
+  348 000156 7FB47260           348               BCLR.B      #6,@16777140:8
+  349                           349     ;*** File h8_3048fon, Line 351   ; expression statement
+  350 00015A 7FB47250           350               BCLR.B      #5,@16777140:8
+  351                           351     ;*** File h8_3048fon, Line 352   ; expression statement
+  352 00015E 7FB47240           352               BCLR.B      #4,@16777140:8
+  353                           353     ;*** File h8_3048fon, Line 353   ; expression statement
+  354 000162 7FB47230           354               BCLR.B      #3,@16777140:8
+  355                           355     ;*** File h8_3048fon, Line 354   ; return
+  356 000166 7900FFFE           356               MOV.W       #-2:16,R0
+  357 00016A 5470               357               RTS
+  358 00016C                    358     L325:
+  359                           359     ;*** File h8_3048fon, Line 356   ; if
+  360 00016C 7369               360               BTST.B      #6,R1L
+  361 00016E 470C               361               BEQ         L327:8
+  362                           362     ;*** File h8_3048fon, Line 356   ; block
+  363                           363     ;*** File h8_3048fon, Line 357   ; expression statement
+  364 000170 29B5               364               MOV.B       @16777141:8,R1L
+  365 000172 1751               365               EXTU.W      R1
+  366                           366     ;*** File h8_3048fon, Line 358   ; expression statement
+  367 000174 7FB47260           367               BCLR.B      #6,@16777140:8
+  368                           368     ;*** File h8_3048fon, Line 359   ; return
+  369 000178 0D10               369               MOV.W       R1,R0
+  370 00017A 5470               370               RTS
+  371 00017C                    371     L327:
+  372                           372     ;*** File h8_3048fon, Line 360   ; block
+  373                           373     ;*** File h8_3048fon, Line 361   ; return
+  374 00017C 7900FFFF           374               MOV.W       #-1:16,R0
+  375                           375     ;*** File h8_3048fon, Line 363   ; block
+  376 000180 5470               376               RTS
+  377                           377     ;*** File h8_3048fon, Line 368   ; block
+  378 000182                    378     _SCI0_getString:                 ; function: SCI0_getString
+  379 000182 5E000000           379               JSR         @$sp_regsv$3:24
+  380                           380     ;*** File h8_3048fon, Line 369   ; block
+  381 000186 0F86               381               MOV.L       ER0,ER6
+  382 000188 0D1D               382               MOV.W       R1,E5
+  383                           383     ;*** File h8_3048fon, Line 371   ; expression statement
+  384 00018A 1955               384               SUB.W       R5,R5
+  385 00018C 1B5D               385               DEC.W       #1,E5
+  386 00018E 0DD4               386               MOV.W       E5,R4
+  387                           387     ;*** File h8_3048fon, Line 371   ; for
+  388 000190 4026               388               BRA         L330:8
+  389 000192                    389     L329:
+  390                           390     ;*** File h8_3048fon, Line 371   ; block
+  391                           391     ;*** File h8_3048fon, Line 372   ; expression statement
+  392 000192 5584               392               BSR         _SCI0_getChar:8
+  393 000194 0D0D               393               MOV.W       R0,E5
+  394                           394     ;*** File h8_3048fon, Line 373   ; expression statement
+  395 000196 68E8               395               MOV.B       R0L,@ER6
+  396                           396     ;*** File h8_3048fon, Line 374   ; if
+  397 000198 A80D               397               CMP.B       #13:8,R0L
+  398 00019A 4720               398               BEQ         L492:8
+  399 00019C 0DDD               399               MOV.W       E5,E5
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE     8
+PROGRAM NAME =
+
+  400 00019E 4D1C               400               BLT         L492:8
+  401                           401     ;*** File h8_3048fon, Line 374   ; block
+  402                           402     ;*** File h8_3048fon, Line 375   ; expression statement
+  403                           403     ;*** File h8_3048fon, Line 376   ; return
+  404                           404     ;*** File h8_3048fon, Line 378   ; if
+  405 0001A0 6868               405               MOV.B       @ER6,R0L
+  406 0001A2 A808               406               CMP.B       #8:8,R0L
+  407 0001A4 4604               407               BNE         L334:8
+  408                           408     ;*** File h8_3048fon, Line 378   ; block
+  409                           409     ;*** File h8_3048fon, Line 379   ; expression statement
+  410 0001A6 1BF6               410               DEC.L       #2,ER6
+  411                           411     ;*** File h8_3048fon, Line 380   ; expression statement
+  412 0001A8 1BD5               412               DEC.W       #2,R5
+  413 0001AA                    413     L334:
+  414                           414     ;*** File h8_3048fon, Line 382   ; if
+  415 0001AA 6868               415               MOV.B       @ER6,R0L
+  416 0001AC A80A               416               CMP.B       #10:8,R0L
+  417 0001AE 4704               417               BEQ         L335:8
+  418                           418     ;*** File h8_3048fon, Line 382   ; expression statement
+  419 0001B0 0B76               419               INC.L       #1,ER6
+  420 0001B2 4002               420               BRA         L336:8
+  421 0001B4                    421     L335:
+  422                           422     ;*** File h8_3048fon, Line 383   ; expression statement
+  423 0001B4 1B55               423               DEC.W       #1,R5
+  424 0001B6                    424     L336:
+  425                           425     ;*** File h8_3048fon, Line 371   ; expression statement
+  426 0001B6 0B55               426               INC.W       #1,R5
+  427 0001B8                    427     L330:
+  428                           428     ;*** File h8_3048fon, Line 371   ; expression statement
+  429 0001B8 1D45               429               CMP.W       R4,R5
+  430 0001BA 4DD6               430               BLT         L329:8
+  431                           431     ;*** File h8_3048fon, Line 385   ; expression statement
+  432                           432     ;*** File h8_3048fon, Line 386   ; return
+  433                           433     ;*** File h8_3048fon, Line 387   ; block
+  434 0001BC                    434     L492:
+  435 0001BC 1888               435               SUB.B       R0L,R0L
+  436 0001BE 68E8               436               MOV.B       R0L,@ER6
+  437 0001C0 0B55               437               INC.W       #1,R5
+  438 0001C2 0D50               438               MOV.W       R5,R0
+  439 0001C4 5A000000           439               JMP         @$spregld2$3:24
+  440                           440     ;*** File h8_3048fon, Line 391   ; block
+  441 0001C8                    441     _atoi:                           ; function: atoi
+  442 0001C8 5E000000           442               JSR         @$sp_regsv$3:24
+  443                           443     ;*** File h8_3048fon, Line 392   ; block
+  444 0001CC 0F83               444               MOV.L       ER0,ER3
+  445                           445     ;*** File h8_3048fon, Line 393   ; expression statement
+  446 0001CE 1AD5               446               SUB.L       ER5,ER5
+  447                           447     ;*** File h8_3048fon, Line 394   ; expression statement
+  448 0001D0 1944               448               SUB.W       R4,R4
+  449 0001D2 0D4C               449               MOV.W       R4,E4
+  450                           450     ;*** File h8_3048fon, Line 394   ; expression statement
+  451 0001D4 19EE               451               SUB.W       E6,E6
+  452 0001D6 0DE2               452               MOV.W       E6,R2
+  453                           453     ;*** File h8_3048fon, Line 395   ; expression statement
+  454 0001D8 6838               454               MOV.B       @ER3,R0L
+  455                           455     ;*** File h8_3048fon, Line 396   ; while
+  456 0001DA 5A000000           456               JMP         @L493:24
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE     9
+PROGRAM NAME =
+
+  457 0001DE                    457     L337:
+  458                           458     ;*** File h8_3048fon, Line 396   ; block
+  459                           459     ;*** File h8_3048fon, Line 397   ; if
+  460 0001DE 7926002D           460               CMP.W       #45:16,R6
+  461 0001E2 4604               461               BNE         L339:8
+  462                           462     ;*** File h8_3048fon, Line 397   ; expression statement
+  463 0001E4 790C0001           463               MOV.W       #1:16,E4
+  464 0001E8                    464     L339:
+  465                           465     ;*** File h8_3048fon, Line 398   ; if
+  466 0001E8 79260061           466               CMP.W       #97:16,R6
+  467 0001EC 4D0A               467               BLT         L340:8
+  468 0001EE 7926007A           468               CMP.W       #122:16,R6
+  469 0001F2 4E04               469               BGT         L340:8
+  470                           470     ;*** File h8_3048fon, Line 398   ; expression statement
+  471 0001F4 7916FFE0           471               ADD.W       #-32:16,R6
+  472 0001F8                    472     L340:
+  473                           473     ;*** File h8_3048fon, Line 399   ; if
+  474 0001F8 79260030           474               CMP.W       #48:16,R6
+  475 0001FC 4604               475               BNE         L341:8
+  476                           476     ;*** File h8_3048fon, Line 399   ; expression statement
+  477 0001FE 79040001           477               MOV.W       #1:16,R4
+  478 000202                    478     L341:
+  479                           479     ;*** File h8_3048fon, Line 401   ; if
+  480 000202 792E0001           480               CMP.W       #1:16,E6
+  481 000206 4634               481               BNE         L342:8
+  482                           482     ;*** File h8_3048fon, Line 401   ; block
+  483                           483     ;*** File h8_3048fon, Line 402   ; if
+  484 000208 79260030           484               CMP.W       #48:16,R6
+  485 00020C 4D0C               485               BLT         L343:8
+  486 00020E 79260039           486               CMP.W       #57:16,R6
+  487 000212 4E06               487               BGT         L343:8
+  488                           488     ;*** File h8_3048fon, Line 402   ; block
+  489                           489     ;*** File h8_3048fon, Line 403   ; expression statement
+  490 000214 79360030           490               SUB.W       #48:16,R6
+  491 000218 4010               491               BRA         L344:8
+  492 00021A                    492     L343:
+  493                           493     ;*** File h8_3048fon, Line 405   ; if
+  494 00021A 79260041           494               CMP.W       #65:16,R6
+  495 00021E 4D0A               495               BLT         L345:8
+  496 000220 79260046           496               CMP.W       #70:16,R6
+  497 000224 4E04               497               BGT         L345:8
+  498                           498     ;*** File h8_3048fon, Line 405   ; block
+  499                           499     ;*** File h8_3048fon, Line 406   ; expression statement
+  500 000226 7916FFC9           500               ADD.W       #-55:16,R6
+  501 00022A                    501     L345:
+  502 00022A                    502     L344:
+  503                           503     ;*** File h8_3048fon, Line 408   ; expression statement
+  504 00022A 0FD0               504               MOV.L       ER5,ER0
+  505 00022C 1030               505               SHLL.L      ER0
+  506 00022E 1030               506               SHLL.L      ER0
+  507 000230 1030               507               SHLL.L      ER0
+  508 000232 1030               508               SHLL.L      ER0
+  509 000234 0D61               509               MOV.W       R6,R1
+  510 000236 17F1               510               EXTS.L      ER1
+  511 000238 0A90               511               ADD.L       ER1,ER0
+  512 00023A 0F85               512               MOV.L       ER0,ER5
+  513 00023C                    513     L342:
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    10
+PROGRAM NAME =
+
+  514                           514     ;*** File h8_3048fon, Line 411   ; if
+  515 00023C 79240001           515               CMP.W       #1:16,R4
+  516 000240 460A               516               BNE         L346:8
+  517 000242 79260058           517               CMP.W       #88:16,R6
+  518 000246 4604               518               BNE         L346:8
+  519                           519     ;*** File h8_3048fon, Line 411   ; block
+  520                           520     ;*** File h8_3048fon, Line 412   ; expression statement
+  521 000248 790E0001           521               MOV.W       #1:16,E6
+  522 00024C                    522     L346:
+  523                           523     ;*** File h8_3048fon, Line 415   ; if
+  524 00024C 0DEE               524               MOV.W       E6,E6
+  525 00024E 4624               525               BNE         L347:8
+  526 000250 79260030           526               CMP.W       #48:16,R6
+  527 000254 4D1E               527               BLT         L347:8
+  528 000256 79260039           528               CMP.W       #57:16,R6
+  529 00025A 4E18               529               BGT         L347:8
+  530                           530     ;*** File h8_3048fon, Line 415   ; block
+  531                           531     ;*** File h8_3048fon, Line 416   ; expression statement
+  532 00025C 79360030           532               SUB.W       #48:16,R6
+  533                           533     ;*** File h8_3048fon, Line 417   ; expression statement
+  534 000260 0FD0               534               MOV.L       ER5,ER0
+  535 000262 7A010000000A       535               MOV.L       #10:32,ER1
+  536 000268 5E000000           536               JSR         @$MULL$3:24
+  537 00026C 0D61               537               MOV.W       R6,R1
+  538 00026E 17F1               538               EXTS.L      ER1
+  539 000270 0A90               539               ADD.L       ER1,ER0
+  540 000272 0F85               540               MOV.L       ER0,ER5
+  541 000274                    541     L347:
+  542                           542     ;*** File h8_3048fon, Line 420   ; expression statement
+  543 000274 0D26               543               MOV.W       R2,R6
+  544 000276 0B56               544               INC.W       #1,R6
+  545 000278 0D62               545               MOV.W       R6,R2
+  546 00027A 0D60               546               MOV.W       R6,R0
+  547 00027C 17F0               547               EXTS.L      ER0
+  548 00027E 0AB0               548               ADD.L       ER3,ER0
+  549 000280 6808               549               MOV.B       @ER0,R0L
+  550 000282                    550     L493:
+  551 000282 17D0               551               EXTS.W      R0
+  552 000284 0D06               552               MOV.W       R0,R6
+  553                           553     ;*** File h8_3048fon, Line 396   ; expression statement
+  554 000286 5860FF54           554               BNE         L337:16
+  555                           555     ;*** File h8_3048fon, Line 422   ; if
+  556 00028A 792C0001           556               CMP.W       #1:16,E4
+  557 00028E 4602               557               BNE         L348:8
+  558                           558     ;*** File h8_3048fon, Line 422   ; expression statement
+  559 000290 17B5               559               NEG.L       ER5
+  560 000292                    560     L348:
+  561                           561     ;*** File h8_3048fon, Line 423   ; return
+  562 000292 0FD0               562               MOV.L       ER5,ER0
+  563                           563     ;*** File h8_3048fon, Line 424   ; block
+  564 000294 5A000000           564               JMP         @$spregld2$3:24
+  565                           565     ;*** File h8_3048fon, Line 429   ; block
+  566 000298                    566     _SCI1_getInt4:                   ; function: SCI1_getInt4
+  567 000298 01006DF6           567               PUSH.L      ER6
+  568 00029C 7A3700000010       568               SUB.L       #16:32,SP
+  569                           569     ;*** File h8_3048fon, Line 435   ; block
+  570 0002A2 0F86               570               MOV.L       ER0,ER6
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    11
+PROGRAM NAME =
+
+  571                           571     ;*** File h8_3048fon, Line 437   ; expression statement
+  572 0002A4 5E000000           572               JSR         @_SCI1_putString:24
+  573                           573     ;*** File h8_3048fon, Line 438   ; expression statement
+  574 0002A8 79010010           574               MOV.W       #16:16,R1
+  575 0002AC 0FF0               575               MOV.L       SP,ER0
+  576 0002AE 5E000000           576               JSR         @_SCI1_getString:24
+  577                           577     ;*** File h8_3048fon, Line 439   ; return
+  578 0002B2 0FF0               578               MOV.L       SP,ER0
+  579 0002B4 5E000000           579               JSR         @_atoi:24
+  580                           580     ;*** File h8_3048fon, Line 440   ; block
+  581 0002B8 7A1700000010       581               ADD.L       #16:32,SP
+  582 0002BE 01006D76           582               POP.L       ER6
+  583 0002C2 5470               583               RTS
+  584                           584     ;*** File h8_3048fon, Line 445   ; block
+  585 0002C4                    585     _SCI0_getInt4:                   ; function: SCI0_getInt4
+  586 0002C4 01006DF6           586               PUSH.L      ER6
+  587 0002C8 7A3700000010       587               SUB.L       #16:32,SP
+  588                           588     ;*** File h8_3048fon, Line 451   ; block
+  589 0002CE 0F86               589               MOV.L       ER0,ER6
+  590                           590     ;*** File h8_3048fon, Line 453   ; expression statement
+  591 0002D0 5538               591               BSR         _SCI0_putString:8
+  592                           592     ;*** File h8_3048fon, Line 454   ; expression statement
+  593 0002D2 79010010           593               MOV.W       #16:16,R1
+  594 0002D6 0FF0               594               MOV.L       SP,ER0
+  595 0002D8 5E000000           595               JSR         @_SCI0_getString:24
+  596                           596     ;*** File h8_3048fon, Line 455   ; return
+  597 0002DC 0FF0               597               MOV.L       SP,ER0
+  598 0002DE 5E000000           598               JSR         @_atoi:24
+  599                           599     ;*** File h8_3048fon, Line 456   ; block
+  600 0002E2 7A1700000010       600               ADD.L       #16:32,SP
+  601 0002E8 01006D76           601               POP.L       ER6
+  602 0002EC 5470               602               RTS
+  603                           603     ;*** File h8_3048fon, Line 462   ; block
+  604 0002EE                    604     _SCI0_putChar:                   ; function: SCI0_putChar
+  605 0002EE 6DF6               605               PUSH.W      R6
+  606                           606     ;*** File h8_3048fon, Line 463   ; block
+  607 0002F0 0C86               607               MOV.B       R0L,R6H
+  608                           608     ;*** File h8_3048fon, Line 466   ; if
+  609 0002F2 A60A               609               CMP.B       #10:8,R6H
+  610 0002F4 4604               610               BNE         L352:8
+  611                           611     ;*** File h8_3048fon, Line 466   ; expression statement
+  612 0002F6 F80D               612               MOV.B       #13:8,R0L
+  613 0002F8 55F4               613               BSR         _SCI0_putChar:8
+  614 0002FA                    614     L352:
+  615                           615     ;*** File h8_3048fon, Line 468   ; do
+  616 0002FA                    616     L353:
+  617                           617     ;*** File h8_3048fon, Line 468   ; block
+  618                           618     ;*** File h8_3048fon, Line 469   ; expression statement
+  619 0002FA 28B4               619               MOV.B       @16777140:8,R0L
+  620 0002FC 7378               620               BTST.B      #7,R0L
+  621 0002FE 47FA               621               BEQ         L353:8
+  622                           622     ;*** File h8_3048fon, Line 471   ; expression statement
+  623 000300 36B3               623               MOV.B       R6H,@16777139:8
+  624                           624     ;*** File h8_3048fon, Line 472   ; expression statement
+  625 000302 7FB47270           625               BCLR.B      #7,@16777140:8
+  626                           626     ;*** File h8_3048fon, Line 473   ; return
+  627                           627     ;*** File h8_3048fon, Line 474   ; block
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    12
+PROGRAM NAME =
+
+  628 000306 6D76               628               POP.W       R6
+  629 000308 5470               629               RTS
+  630                           630     ;*** File h8_3048fon, Line 476   ; block
+  631 00030A                    631     _SCI0_putString:                 ; function: SCI0_putString
+  632 00030A 01006DF6           632               PUSH.L      ER6
+  633                           633     ;*** File h8_3048fon, Line 477   ; block
+  634 00030E 0F86               634               MOV.L       ER0,ER6
+  635                           635     ;*** File h8_3048fon, Line 478   ; while
+  636 000310 4006               636               BRA         L356:8
+  637 000312                    637     L355:
+  638                           638     ;*** File h8_3048fon, Line 478   ; block
+  639                           639     ;*** File h8_3048fon, Line 479   ; expression statement
+  640 000312 6868               640               MOV.B       @ER6,R0L
+  641 000314 55D8               641               BSR         _SCI0_putChar:8
+  642                           642     ;*** File h8_3048fon, Line 480   ; expression statement
+  643 000316 0B76               643               INC.L       #1,ER6
+  644 000318                    644     L356:
+  645                           645     ;*** File h8_3048fon, Line 478   ; expression statement
+  646 000318 6868               646               MOV.B       @ER6,R0L
+  647 00031A 46F6               647               BNE         L355:8
+  648                           648     ;*** File h8_3048fon, Line 482   ; block
+  649 00031C 01006D76           649               POP.L       ER6
+  650 000320 5470               650               RTS
+  651                           651     ;*** File h8_3048fon, Line 496   ; block
+  652 000322                    652     L102:                            ; function: LCD_waitmsec
+  653                           653     ;*** File h8_3048fon, Line 498   ; block
+  654                           654     ;*** File h8_3048fon, Line 500   ; expression statement
+  655 000322 1911               655               SUB.W       R1,R1
+  656                           656     ;*** File h8_3048fon, Line 500   ; for
+  657 000324 400A               657               BRA         L358:8
+  658 000326                    658     L357:
+  659                           659     ;*** File h8_3048fon, Line 500   ; block
+  660                           660     ;*** File h8_3048fon, Line 501   ; expression statement
+  661 000326 79081068           661               MOV.W       #4200:16,E0
+  662                           662     ;*** File h8_3048fon, Line 501   ; do
+  663 00032A                    663     L359:
+  664                           664     ;*** File h8_3048fon, Line 501   ; expression statement
+  665 00032A 1B58               665               DEC.W       #1,E0
+  666 00032C 46FC               666               BNE         L359:8
+  667                           667     ;*** File h8_3048fon, Line 500   ; expression statement
+  668 00032E 0B51               668               INC.W       #1,R1
+  669 000330                    669     L358:
+  670                           670     ;*** File h8_3048fon, Line 500   ; expression statement
+  671 000330 1D01               671               CMP.W       R0,R1
+  672 000332 45F2               672               BCS         L357:8
+  673                           673     ;*** File h8_3048fon, Line 503   ; block
+  674 000334 5470               674               RTS
+  675                           675     ;*** File h8_3048fon, Line 505   ; block
+  676 000336                    676     L108:                            ; function: LCD_waitmicrosec
+  677                           677     ;*** File h8_3048fon, Line 506   ; block
+  678                           678     ;*** File h8_3048fon, Line 508   ; expression statement
+  679 000336 1911               679               SUB.W       R1,R1
+  680                           680     ;*** File h8_3048fon, Line 508   ; for
+  681 000338 400A               681               BRA         L361:8
+  682 00033A                    682     L360:
+  683                           683     ;*** File h8_3048fon, Line 508   ; block
+  684                           684     ;*** File h8_3048fon, Line 509   ; expression statement
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    13
+PROGRAM NAME =
+
+  685 00033A 79080004           685               MOV.W       #4:16,E0
+  686                           686     ;*** File h8_3048fon, Line 509   ; do
+  687 00033E                    687     L362:
+  688                           688     ;*** File h8_3048fon, Line 509   ; expression statement
+  689 00033E 1B58               689               DEC.W       #1,E0
+  690 000340 46FC               690               BNE         L362:8
+  691                           691     ;*** File h8_3048fon, Line 508   ; expression statement
+  692 000342 0B51               692               INC.W       #1,R1
+  693 000344                    693     L361:
+  694                           694     ;*** File h8_3048fon, Line 508   ; expression statement
+  695 000344 1D01               695               CMP.W       R0,R1
+  696 000346 45F2               696               BCS         L360:8
+  697                           697     ;*** File h8_3048fon, Line 511   ; block
+  698 000348 5470               698               RTS
+  699                           699     ;*** File h8_3048fon, Line 513   ; block
+  700 00034A                    700     L114:                            ; function: LCD_putCommand
+  701                           701     ;*** File h8_3048fon, Line 514   ; block
+  702 00034A 0C80               702               MOV.B       R0L,R0H
+  703                           703     ;*** File h8_3048fon, Line 515   ; expression statement
+  704 00034C 28C6               704               MOV.B       @16777158:8,R0L
+  705 00034E E8F0               705               AND.B       #-16:8,R0L
+  706 000350 1408               706               OR.B        R0H,R0L
+  707 000352 38C6               707               MOV.B       R0L,@16777158:8
+  708                           708     ;*** File h8_3048fon, Line 516   ; expression statement
+  709 000354 7FC67050           709               BSET.B      #5,@16777158:8
+  710                           710     ;*** File h8_3048fon, Line 517   ; expression statement
+  711 000358 79000005           711               MOV.W       #5:16,R0
+  712 00035C 55D8               712               BSR         L108:8
+  713                           713     ;*** File h8_3048fon, Line 518   ; expression statement
+  714 00035E 7FC67250           714               BCLR.B      #5,@16777158:8
+  715                           715     ;*** File h8_3048fon, Line 519   ; expression statement
+  716 000362 79000028           716               MOV.W       #40:16,R0
+  717 000366 40CE               717               BRA         L108:8
+  718                           718     ;*** File h8_3048fon, Line 520   ; block
+  719                           719     ;*** File h8_3048fon, Line 522   ; block
+  720 000368                    720     L117:                            ; function: LCD_putCommand2
+  721 000368 6DF6               721               PUSH.W      R6
+  722                           722     ;*** File h8_3048fon, Line 523   ; block
+  723 00036A 0C8E               723               MOV.B       R0L,R6L
+  724                           724     ;*** File h8_3048fon, Line 524   ; expression statement
+  725 00036C 1188               725               SHAR.B      R0L
+  726 00036E 1188               726               SHAR.B      R0L
+  727 000370 1188               727               SHAR.B      R0L
+  728 000372 1188               728               SHAR.B      R0L
+  729 000374 E80F               729               AND.B       #15:8,R0L
+  730 000376 55D2               730               BSR         L114:8
+  731                           731     ;*** File h8_3048fon, Line 525   ; expression statement
+  732 000378 EE0F               732               AND.B       #15:8,R6L
+  733 00037A 0CE8               733               MOV.B       R6L,R0L
+  734 00037C 55CC               734               BSR         L114:8
+  735                           735     ;*** File h8_3048fon, Line 526   ; block
+  736 00037E 6D76               736               POP.W       R6
+  737 000380 5470               737               RTS
+  738                           738     ;*** File h8_3048fon, Line 531   ; block
+  739 000382                    739     _LCD_putchar:                    ; function: LCD_putchar
+  740 000382 6DF6               740               PUSH.W      R6
+  741                           741     ;*** File h8_3048fon, Line 532   ; block
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    14
+PROGRAM NAME =
+
+  742 000384 0C8E               742               MOV.B       R0L,R6L
+  743                           743     ;*** File h8_3048fon, Line 533   ; expression statement
+  744 000386 7FC67040           744               BSET.B      #4,@16777158:8
+  745                           745     ;*** File h8_3048fon, Line 534   ; expression statement
+  746 00038A 1188               746               SHAR.B      R0L
+  747 00038C 1188               747               SHAR.B      R0L
+  748 00038E 1188               748               SHAR.B      R0L
+  749 000390 1188               749               SHAR.B      R0L
+  750 000392 E80F               750               AND.B       #15:8,R0L
+  751 000394 55B4               751               BSR         L114:8
+  752                           752     ;*** File h8_3048fon, Line 535   ; expression statement
+  753 000396 EE0F               753               AND.B       #15:8,R6L
+  754 000398 0CE8               754               MOV.B       R6L,R0L
+  755 00039A 55AE               755               BSR         L114:8
+  756                           756     ;*** File h8_3048fon, Line 536   ; expression statement
+  757 00039C 7FC67240           757               BCLR.B      #4,@16777158:8
+  758                           758     ;*** File h8_3048fon, Line 537   ; block
+  759 0003A0 6D76               759               POP.W       R6
+  760 0003A2 5470               760               RTS
+  761                           761     ;*** File h8_3048fon, Line 542   ; block
+  762 0003A4                    762     _LCD_puts:                       ; function: LCD_puts
+  763 0003A4 01006DF6           763               PUSH.L      ER6
+  764                           764     ;*** File h8_3048fon, Line 543   ; block
+  765 0003A8 0F86               765               MOV.L       ER0,ER6
+  766                           766     ;*** File h8_3048fon, Line 544   ; while
+  767 0003AA 4004               767               BRA         L364:8
+  768 0003AC                    768     L363:
+  769                           769     ;*** File h8_3048fon, Line 544   ; expression statement
+  770 0003AC 6C68               770               MOV.B       @ER6+,R0L
+  771 0003AE 55D2               771               BSR         _LCD_putchar:8
+  772 0003B0                    772     L364:
+  773                           773     ;*** File h8_3048fon, Line 544   ; expression statement
+  774 0003B0 6868               774               MOV.B       @ER6,R0L
+  775 0003B2 46F8               775               BNE         L363:8
+  776                           776     ;*** File h8_3048fon, Line 545   ; block
+  777 0003B4 01006D76           777               POP.L       ER6
+  778 0003B8 5470               778               RTS
+  779                           779     ;*** File h8_3048fon, Line 550   ; block
+  780 0003BA                    780     _initLCD:                        ; function: initLCD
+  781 0003BA 6DF6               781               PUSH.W      R6
+  782                           782     ;*** File h8_3048fon, Line 551   ; block
+  783                           783     ;*** File h8_3048fon, Line 552   ; expression statement
+  784 0003BC F83F               784               MOV.B       #63:8,R0L
+  785 0003BE 38C4               785               MOV.B       R0L,@16777156:8
+  786                           786     ;*** File h8_3048fon, Line 553   ; expression statement
+  787 0003C0 28C6               787               MOV.B       @16777158:8,R0L
+  788 0003C2 E8C0               788               AND.B       #-64:8,R0L
+  789 0003C4 38C6               789               MOV.B       R0L,@16777158:8
+  790                           790     ;*** File h8_3048fon, Line 554   ; expression statement
+  791 0003C6 7900001E           791               MOV.W       #30:16,R0
+  792 0003CA 5E000000           792               JSR         @L102:24
+  793                           793     ;*** File h8_3048fon, Line 555   ; expression statement
+  794 0003CE FE03               794               MOV.B       #3:8,R6L
+  795 0003D0 0CE8               795               MOV.B       R6L,R0L
+  796 0003D2 5E000000           796               JSR         @L114:24
+  797                           797     ;*** File h8_3048fon, Line 556   ; expression statement
+  798 0003D6 79001004           798               MOV.W       #4100:16,R0
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    15
+PROGRAM NAME =
+
+  799 0003DA 5E000000           799               JSR         @L108:24
+  800                           800     ;*** File h8_3048fon, Line 557   ; expression statement
+  801 0003DE 0CE8               801               MOV.B       R6L,R0L
+  802 0003E0 5E000000           802               JSR         @L114:24
+  803                           803     ;*** File h8_3048fon, Line 558   ; expression statement
+  804 0003E4 79000064           804               MOV.W       #100:16,R0
+  805 0003E8 5E000000           805               JSR         @L108:24
+  806                           806     ;*** File h8_3048fon, Line 559   ; expression statement
+  807 0003EC 0CE8               807               MOV.B       R6L,R0L
+  808 0003EE 5E000000           808               JSR         @L114:24
+  809                           809     ;*** File h8_3048fon, Line 560   ; expression statement
+  810 0003F2 79000064           810               MOV.W       #100:16,R0
+  811 0003F6 5E000000           811               JSR         @L108:24
+  812                           812     ;*** File h8_3048fon, Line 561   ; expression statement
+  813 0003FA F802               813               MOV.B       #2:8,R0L
+  814 0003FC 5E000000           814               JSR         @L114:24
+  815                           815     ;*** File h8_3048fon, Line 562   ; expression statement
+  816 000400 F828               816               MOV.B       #40:8,R0L
+  817 000402 5E000000           817               JSR         @L117:24
+  818                           818     ;*** File h8_3048fon, Line 563   ; expression statement
+  819 000406 F80C               819               MOV.B       #12:8,R0L
+  820 000408 5E000000           820               JSR         @L117:24
+  821                           821     ;*** File h8_3048fon, Line 564   ; expression statement
+  822 00040C F806               822               MOV.B       #6:8,R0L
+  823 00040E 5E000000           823               JSR         @L117:24
+  824                           824     ;*** File h8_3048fon, Line 565   ; expression statement
+  825 000412 F801               825               MOV.B       #1:8,R0L
+  826 000414 5E000000           826               JSR         @L117:24
+  827                           827     ;*** File h8_3048fon, Line 566   ; expression statement
+  828 000418 79000668           828               MOV.W       #1640:16,R0
+  829 00041C 5E000000           829               JSR         @L108:24
+  830                           830     ;*** File h8_3048fon, Line 567   ; block
+  831 000420 6D76               831               POP.W       R6
+  832 000422 5470               832               RTS
+  833                           833     ;*** File h8_3048fon, Line 573   ; block
+  834 000424                    834     _LCD_gotoxy:                     ; function: LCD_gotoxy
+  835 000424 01006DF6           835               PUSH.L      ER6
+  836                           836     ;*** File h8_3048fon, Line 574   ; block
+  837 000428 0D0E               837               MOV.W       R0,E6
+  838 00042A 0D86               838               MOV.W       E0,R6
+  839                           839     ;*** File h8_3048fon, Line 576   ; expression statement
+  840 00042C F640               840               MOV.B       #64:8,R6H
+  841 00042E 5066               841               MULXU.B     R6H,R6
+  842 000430 088E               842               ADD.B       R0L,R6L
+  843 000432 8E80               843               ADD.B       #-128:8,R6L
+  844                           844     ;*** File h8_3048fon, Line 577   ; expression statement
+  845 000434 0CE8               845               MOV.B       R6L,R0L
+  846 000436 5E000000           846               JSR         @L117:24
+  847                           847     ;*** File h8_3048fon, Line 578   ; block
+  848 00043A 01006D76           848               POP.L       ER6
+  849 00043E 5470               849               RTS
+  850                           850     ;*** File h8_3048fon, Line 583   ; block
+  851 000440                    851     _LCD_clrscr:                     ; function: LCD_clrscr
+  852                           852     ;*** File h8_3048fon, Line 584   ; block
+  853                           853     ;*** File h8_3048fon, Line 585   ; expression statement
+  854 000440 F801               854               MOV.B       #1:8,R0L
+  855 000442 5E000000           855               JSR         @L117:24
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    16
+PROGRAM NAME =
+
+  856                           856     ;*** File h8_3048fon, Line 586   ; expression statement
+  857 000446 79000668           857               MOV.W       #1640:16,R0
+  858 00044A 5A000000           858               JMP         @L108:24
+  859                           859     ;*** File h8_3048fon, Line 587   ; block
+  860                           860     ;*** File h8_3048fon, Line 590   ; block
+  861 00044E                    861     L136:                            ; function: STR_putChar
+  862 00044E 6DF5               862               PUSH.W      R5
+  863                           863     ;*** File h8_3048fon, Line 591   ; block
+  864 000450 0C8D               864               MOV.B       R0L,R5L
+  865                           865     ;*** File h8_3048fon, Line 592   ; expression statement
+  866 000452 7A0100000000       866               MOV.L       #L134:32,ER1
+  867 000458 01006910           867               MOV.L       @ER1,ER0
+  868 00045C 688D               868               MOV.B       R5L,@ER0
+  869 00045E 01006910           869               MOV.L       @ER1,ER0
+  870 000462 0B70               870               INC.L       #1,ER0
+  871 000464 01006990           871               MOV.L       ER0,@ER1
+  872                           872     ;*** File h8_3048fon, Line 593   ; expression statement
+  873 000468 01006911           873               MOV.L       @ER1,ER1
+  874 00046C 1888               874               SUB.B       R0L,R0L
+  875 00046E 6898               875               MOV.B       R0L,@ER1
+  876                           876     ;*** File h8_3048fon, Line 594   ; block
+  877 000470 6D75               877               POP.W       R5
+  878 000472 5470               878               RTS
+  879                           879     ;*** File h8_3048fon, Line 596   ; block
+  880 000474                    880     L139:                            ; function: STR_putString
+  881 000474 01006DF6           881               PUSH.L      ER6
+  882                           882     ;*** File h8_3048fon, Line 597   ; block
+  883 000478 0F86               883               MOV.L       ER0,ER6
+  884                           884     ;*** File h8_3048fon, Line 598   ; while
+  885 00047A 4004               885               BRA         L366:8
+  886 00047C                    886     L365:
+  887                           887     ;*** File h8_3048fon, Line 598   ; expression statement
+  888 00047C 6C68               888               MOV.B       @ER6+,R0L
+  889 00047E 55CE               889               BSR         L136:8
+  890 000480                    890     L366:
+  891                           891     ;*** File h8_3048fon, Line 598   ; expression statement
+  892 000480 6868               892               MOV.B       @ER6,R0L
+  893 000482 46F8               893               BNE         L365:8
+  894                           894     ;*** File h8_3048fon, Line 599   ; block
+  895 000484 01006D76           895               POP.L       ER6
+  896 000488 5470               896               RTS
+  897                           897     ;*** File h8_3048fon, Line 605   ; block
+  898 00048A                    898     _Device_printf:                  ; function: Device_printf
+  899 00048A 5E000000           899               JSR         @$sp_regsv$3:24
+  900 00048E 7A3700000044       900               SUB.L       #68:32,SP
+  901                           901     ;*** File h8_3048fon, Line 606   ; block
+  902 000494 0D0D               902               MOV.W       R0,E5
+  903 000496 01006FF1002E       903               MOV.L       ER1,@(46:16,SP)
+  904 00049C 01006F76005C       904               MOV.L       @(92:16,SP),ER6
+  905                           905     ;*** File h8_3048fon, Line 611   ; expression statement
+  906 0004A2 1855               906               SUB.B       R5H,R5H
+  907 0004A4 0C54               907               MOV.B       R5H,R4H
+  908                           908     ;*** File h8_3048fon, Line 612   ; expression statement
+  909 0004A6 1888               909               SUB.B       R0L,R0L
+  910 0004A8 6EF8003A           910               MOV.B       R0L,@(58:16,SP)
+  911                           911     ;*** File h8_3048fon, Line 613   ; expression statement
+  912 0004AC F820               912               MOV.B       #32:8,R0L
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    17
+PROGRAM NAME =
+
+  913 0004AE 6EF80032           913               MOV.B       R0L,@(50:16,SP)
+  914                           914     ;*** File h8_3048fon, Line 614   ; expression statement
+  915 0004B2 F80A               915               MOV.B       #10:8,R0L
+  916 0004B4 6EF8003B           916               MOV.B       R0L,@(59:16,SP)
+  917                           917     ;*** File h8_3048fon, Line 615   ; expression statement
+  918 0004B8 F820               918               MOV.B       #32:8,R0L
+  919 0004BA 6EF80039           919               MOV.B       R0L,@(57:16,SP)
+  920                           920     ;*** File h8_3048fon, Line 616   ; expression statement
+  921 0004BE 0FF3               921               MOV.L       SP,ER3
+  922 0004C0 0B93               922               ADDS.L      #4,ER3
+  923                           923     ;*** File h8_3048fon, Line 618   ; expression statement
+  924 0004C2 18DD               924               SUB.B       R5L,R5L
+  925 0004C4 6EFD0033           925               MOV.B       R5L,@(51:16,SP)
+  926                           926     ;*** File h8_3048fon, Line 620   ; expression statement
+  927 0004C8 1A80               927               SUB.L       ER0,ER0
+  928 0004CA 0F82               928               MOV.L       ER0,ER2
+  929                           929     ;*** File h8_3048fon, Line 621   ; if
+  930 0004CC 6B2000000000       930               MOV.W       @_SCI0device:24,R0
+  931 0004D2 1D0D               931               CMP.W       R0,E5
+  932 0004D4 461A               932               BNE         L367:8
+  933                           933     ;*** File h8_3048fon, Line 621   ; block
+  934                           934     ;*** File h8_3048fon, Line 622   ; expression statement
+  935 0004D6 7A0000000000       935               MOV.L       #_SCI0_putChar:32,ER0
+  936 0004DC 01006FF0003C       936               MOV.L       ER0,@(60:16,SP)
+  937                           937     ;*** File h8_3048fon, Line 623   ; expression statement
+  938 0004E2 7A0000000000       938               MOV.L       #_SCI0_putString:32,ER0
+  939 0004E8 01006FF00034       939               MOV.L       ER0,@(52:16,SP)
+  940 0004EE 405A               940               BRA         L368:8
+  941 0004F0                    941     L367:
+  942                           942     ;*** File h8_3048fon, Line 624   ; if
+  943 0004F0 6B2000000000       943               MOV.W       @_SCI1device:24,R0
+  944 0004F6 1D0D               944               CMP.W       R0,E5
+  945 0004F8 461A               945               BNE         L369:8
+  946                           946     ;*** File h8_3048fon, Line 624   ; block
+  947                           947     ;*** File h8_3048fon, Line 625   ; expression statement
+  948 0004FA 7A0000000000       948               MOV.L       #_SCI1_putChar:32,ER0
+  949 000500 01006FF0003C       949               MOV.L       ER0,@(60:16,SP)
+  950                           950     ;*** File h8_3048fon, Line 626   ; expression statement
+  951 000506 7A0000000000       951               MOV.L       #_SCI1_putString:32,ER0
+  952 00050C 01006FF00034       952               MOV.L       ER0,@(52:16,SP)
+  953 000512 4036               953               BRA         L370:8
+  954 000514                    954     L369:
+  955                           955     ;*** File h8_3048fon, Line 627   ; if
+  956 000514 6B2000000000       956               MOV.W       @_LCDdevice:24,R0
+  957 00051A 1D0D               957               CMP.W       R0,E5
+  958 00051C 4614               958               BNE         L371:8
+  959                           959     ;*** File h8_3048fon, Line 627   ; block
+  960                           960     ;*** File h8_3048fon, Line 628   ; expression statement
+  961 00051E 7A0000000000       961               MOV.L       #_LCD_putchar:32,ER0
+  962 000524 01006FF0003C       962               MOV.L       ER0,@(60:16,SP)
+  963                           963     ;*** File h8_3048fon, Line 629   ; expression statement
+  964 00052A 7A0000000000       964               MOV.L       #_LCD_puts:32,ER0
+  965 000530 4012               965               BRA         L494:8
+  966 000532                    966     L371:
+  967                           967     ;*** File h8_3048fon, Line 630   ; block
+  968                           968     ;*** File h8_3048fon, Line 631   ; expression statement
+  969 000532 7A0000000000       969               MOV.L       #L136:32,ER0
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    18
+PROGRAM NAME =
+
+  970 000538 01006FF0003C       970               MOV.L       ER0,@(60:16,SP)
+  971                           971     ;*** File h8_3048fon, Line 632   ; expression statement
+  972 00053E 7A0000000000       972               MOV.L       #L139:32,ER0
+  973 000544                    973     L494:
+  974 000544 01006FF00034       974               MOV.L       ER0,@(52:16,SP)
+  975 00054A                    975     L370:
+  976 00054A                    976     L368:
+  977 00054A 7A0000000025       977               MOV.L       #37:32,ER0
+  978 000550 0AF0               978               ADD.L       SP,ER0
+  979 000552 01006FF0002A       979               MOV.L       ER0,@(42:16,SP)
+  980                           980     ;*** File h8_3048fon, Line 635   ; while
+  981 000558 5A000000           981               JMP         @L374:24
+  982 00055C                    982     L373:
+  983                           983     ;*** File h8_3048fon, Line 635   ; block
+  984                           984     ;*** File h8_3048fon, Line 636   ; expression statement
+  985 00055C 01006F70002E       985               MOV.L       @(46:16,SP),ER0
+  986 000562 680C               986               MOV.B       @ER0,R4L
+  987                           987     ;*** File h8_3048fon, Line 637   ; if
+  988 000564 0C44               988               MOV.B       R4H,R4H
+  989 000566 4644               989               BNE         L375:8
+  990                           990     ;*** File h8_3048fon, Line 637   ; block
+  991                           991     ;*** File h8_3048fon, Line 638   ; if
+  992 000568 AC25               992               CMP.B       #37:8,R4L
+  993 00056A 4632               993               BNE         L376:8
+  994                           994     ;*** File h8_3048fon, Line 638   ; block
+  995                           995     ;*** File h8_3048fon, Line 639   ; expression statement
+  996 00056C F401               996               MOV.B       #1:8,R4H
+  997                           997     ;*** File h8_3048fon, Line 640   ; expression statement
+  998 00056E 1855               998               SUB.B       R5H,R5H
+  999                           999     ;*** File h8_3048fon, Line 641   ; expression statement
+ 1000 000570 F820              1000               MOV.B       #32:8,R0L
+ 1001 000572 6EF80032          1001               MOV.B       R0L,@(50:16,SP)
+ 1002                          1002     ;*** File h8_3048fon, Line 643   ; expression statement
+ 1003 000576 1888              1003               SUB.B       R0L,R0L
+ 1004 000578 6EF8003B          1004               MOV.B       R0L,@(59:16,SP)
+ 1005 00057C 6EF8003A          1005               MOV.B       R0L,@(58:16,SP)
+ 1006                          1006     ;*** File h8_3048fon, Line 644   ; expression statement
+ 1007 000580 01006F73002A      1007               MOV.L       @(42:16,SP),ER3
+ 1008                          1008     ;*** File h8_3048fon, Line 645   ; expression statement
+ 1009 000586 0FB0              1009               MOV.L       ER3,ER0
+ 1010 000588 1B73              1010               DEC.L       #1,ER3
+ 1011 00058A 1899              1011               SUB.B       R1L,R1L
+ 1012 00058C 6889              1012               MOV.B       R1L,@ER0
+ 1013                          1013     ;*** File h8_3048fon, Line 647   ; expression statement
+ 1014 00058E 18DD              1014               SUB.B       R5L,R5L
+ 1015 000590 6EFD0033          1015               MOV.B       R5L,@(51:16,SP)
+ 1016                          1016     ;*** File h8_3048fon, Line 648   ; expression statement
+ 1017 000594 F82B              1017               MOV.B       #43:8,R0L
+ 1018 000596 6EF80039          1018               MOV.B       R0L,@(57:16,SP)
+ 1019 00059A 5A000000          1019               JMP         @L378:24
+ 1020 00059E                   1020     L376:
+ 1021                          1021     ;*** File h8_3048fon, Line 649   ; block
+ 1022                          1022     ;*** File h8_3048fon, Line 650   ; expression statement
+ 1023 00059E 0CC8              1023               MOV.B       R4L,R0L
+ 1024 0005A0 01006F71003C      1024               MOV.L       @(60:16,SP),ER1
+ 1025 0005A6 5D10              1025               JSR         @ER1
+ 1026 0005A8 5A000000          1026               JMP         @L378:24
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    19
+PROGRAM NAME =
+
+ 1027 0005AC                   1027     L375:
+ 1028                          1028     ;*** File h8_3048fon, Line 652   ; block
+ 1029                          1029     ;*** File h8_3048fon, Line 653   ; if
+ 1030 0005AC AC6C              1030               CMP.B       #108:8,R4L
+ 1031 0005AE 4606              1031               BNE         L379:8
+ 1032                          1032     ;*** File h8_3048fon, Line 653   ; block
+ 1033                          1033     ;*** File h8_3048fon, Line 654   ; expression statement
+ 1034 0005B0 7014              1034               BSET.B      #1,R4H
+ 1035 0005B2 5A000000          1035               JMP         @L380:24
+ 1036 0005B6                   1036     L379:
+ 1037                          1037     ;*** File h8_3048fon, Line 655   ; if
+ 1038 0005B6 AC30              1038               CMP.B       #48:8,R4L
+ 1039 0005B8 4D2C              1039               BLT         L381:8
+ 1040 0005BA AC39              1040               CMP.B       #57:8,R4L
+ 1041 0005BC 4E28              1041               BGT         L381:8
+ 1042                          1042     ;*** File h8_3048fon, Line 655   ; block
+ 1043                          1043     ;*** File h8_3048fon, Line 656   ; if
+ 1044 0005BE 0C55              1044               MOV.B       R5H,R5H
+ 1045 0005C0 460E              1045               BNE         L382:8
+ 1046 0005C2 AC30              1046               CMP.B       #48:8,R4L
+ 1047 0005C4 460A              1047               BNE         L382:8
+ 1048                          1048     ;*** File h8_3048fon, Line 656   ; block
+ 1049                          1049     ;*** File h8_3048fon, Line 657   ; expression statement
+ 1050 0005C6 F830              1050               MOV.B       #48:8,R0L
+ 1051 0005C8 6EF80032          1051               MOV.B       R0L,@(50:16,SP)
+ 1052 0005CC 5A000000          1052               JMP         @L385:24
+ 1053 0005D0                   1053     L382:
+ 1054                          1054     ;*** File h8_3048fon, Line 658   ; block
+ 1055                          1055     ;*** File h8_3048fon, Line 659   ; expression statement
+ 1056 0005D0 F80A              1056               MOV.B       #10:8,R0L
+ 1057 0005D2 5050              1057               MULXU.B     R5H,R0
+ 1058 0005D4 08C8              1058               ADD.B       R4L,R0L
+ 1059 0005D6 88D0              1059               ADD.B       #-48:8,R0L
+ 1060 0005D8 0C85              1060               MOV.B       R0L,R5H
+ 1061                          1061     ;*** File h8_3048fon, Line 660   ; if
+ 1062 0005DA A820              1062               CMP.B       #32:8,R0L
+ 1063 0005DC 58300198          1063               BLS         L385:16
+ 1064                          1064     ;*** File h8_3048fon, Line 660   ; expression statement
+ 1065 0005E0 F520              1065               MOV.B       #32:8,R5H
+ 1066 0005E2 5A000000          1066               JMP         @L385:24
+ 1067 0005E6                   1067     L381:
+ 1068                          1068     ;*** File h8_3048fon, Line 662   ; if
+ 1069 0005E6 AC2D              1069               CMP.B       #45:8,R4L
+ 1070 0005E8 460A              1070               BNE         L386:8
+ 1071                          1071     ;*** File h8_3048fon, Line 662   ; block
+ 1072                          1072     ;*** File h8_3048fon, Line 663   ; expression statement
+ 1073 0005EA F801              1073               MOV.B       #1:8,R0L
+ 1074 0005EC 6EF8003A          1074               MOV.B       R0L,@(58:16,SP)
+ 1075 0005F0 5A000000          1075               JMP         @L387:24
+ 1076 0005F4                   1076     L386:
+ 1077                          1077     ;*** File h8_3048fon, Line 664   ; if
+ 1078 0005F4 AC64              1078               CMP.B       #100:8,R4L
+ 1079 0005F6 460C              1079               BNE         L388:8
+ 1080                          1080     ;*** File h8_3048fon, Line 664   ; block
+ 1081                          1081     ;*** File h8_3048fon, Line 665   ; expression statement
+ 1082 0005F8 7024              1082               BSET.B      #2,R4H
+ 1083                          1083     ;*** File h8_3048fon, Line 666   ; expression statement
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    20
+PROGRAM NAME =
+
+ 1084 0005FA F80A              1084               MOV.B       #10:8,R0L
+ 1085 0005FC 6EF8003B          1085               MOV.B       R0L,@(59:16,SP)
+ 1086 000600 5A000000          1086               JMP         @L389:24
+ 1087 000604                   1087     L388:
+ 1088                          1088     ;*** File h8_3048fon, Line 667   ; if
+ 1089 000604 AC75              1089               CMP.B       #117:8,R4L
+ 1090 000606 460A              1090               BNE         L390:8
+ 1091                          1091     ;*** File h8_3048fon, Line 667   ; block
+ 1092                          1092     ;*** File h8_3048fon, Line 668   ; expression statement
+ 1093 000608 F80A              1093               MOV.B       #10:8,R0L
+ 1094 00060A 6EF8003B          1094               MOV.B       R0L,@(59:16,SP)
+ 1095 00060E 5A000000          1095               JMP         @L391:24
+ 1096 000612                   1096     L390:
+ 1097                          1097     ;*** File h8_3048fon, Line 669   ; if
+ 1098 000612 AC78              1098               CMP.B       #120:8,R4L
+ 1099 000614 460A              1099               BNE         L392:8
+ 1100                          1100     ;*** File h8_3048fon, Line 669   ; block
+ 1101                          1101     ;*** File h8_3048fon, Line 670   ; expression statement
+ 1102 000616 F810              1102               MOV.B       #16:8,R0L
+ 1103 000618 6EF8003B          1103               MOV.B       R0L,@(59:16,SP)
+ 1104 00061C 5A000000          1104               JMP         @L393:24
+ 1105 000620                   1105     L392:
+ 1106                          1106     ;*** File h8_3048fon, Line 671   ; if
+ 1107 000620 AC58              1107               CMP.B       #88:8,R4L
+ 1108 000622 460E              1108               BNE         L394:8
+ 1109                          1109     ;*** File h8_3048fon, Line 671   ; block
+ 1110                          1110     ;*** File h8_3048fon, Line 672   ; expression statement
+ 1111 000624 F810              1111               MOV.B       #16:8,R0L
+ 1112 000626 6EF80033          1112               MOV.B       R0L,@(51:16,SP)
+ 1113 00062A 6EF8003B          1113               MOV.B       R0L,@(59:16,SP)
+ 1114 00062E 5A000000          1114               JMP         @L395:24
+ 1115 000632                   1115     L394:
+ 1116                          1116     ;*** File h8_3048fon, Line 673   ; if
+ 1117 000632 AC6F              1117               CMP.B       #111:8,R4L
+ 1118 000634 460A              1118               BNE         L396:8
+ 1119                          1119     ;*** File h8_3048fon, Line 673   ; block
+ 1120                          1120     ;*** File h8_3048fon, Line 674   ; expression statement
+ 1121 000636 F808              1121               MOV.B       #8:8,R0L
+ 1122 000638 6EF8003B          1122               MOV.B       R0L,@(59:16,SP)
+ 1123 00063C 5A000000          1123               JMP         @L397:24
+ 1124 000640                   1124     L396:
+ 1125                          1125     ;*** File h8_3048fon, Line 675   ; if
+ 1126 000640 AC62              1126               CMP.B       #98:8,R4L
+ 1127 000642 460A              1127               BNE         L398:8
+ 1128                          1128     ;*** File h8_3048fon, Line 675   ; block
+ 1129                          1129     ;*** File h8_3048fon, Line 676   ; expression statement
+ 1130 000644 F802              1130               MOV.B       #2:8,R0L
+ 1131 000646 6EF8003B          1131               MOV.B       R0L,@(59:16,SP)
+ 1132 00064A 5A000000          1132               JMP         @L399:24
+ 1133 00064E                   1133     L398:
+ 1134                          1134     ;*** File h8_3048fon, Line 677   ; if
+ 1135 00064E AC70              1135               CMP.B       #112:8,R4L
+ 1136 000650 4618              1136               BNE         L400:8
+ 1137                          1137     ;*** File h8_3048fon, Line 677   ; block
+ 1138                          1138     ;*** File h8_3048fon, Line 678   ; expression statement
+ 1139 000652 F810              1139               MOV.B       #16:8,R0L
+ 1140 000654 6EF80033          1140               MOV.B       R0L,@(51:16,SP)
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    21
+PROGRAM NAME =
+
+ 1141 000658 6EF8003B          1141               MOV.B       R0L,@(59:16,SP)
+ 1142                          1142     ;*** File h8_3048fon, Line 678   ; expression statement
+ 1143 00065C F508              1143               MOV.B       #8:8,R5H
+ 1144                          1144     ;*** File h8_3048fon, Line 678   ; expression statement
+ 1145 00065E F830              1145               MOV.B       #48:8,R0L
+ 1146 000660 6EF80032          1146               MOV.B       R0L,@(50:16,SP)
+ 1147                          1147     ;*** File h8_3048fon, Line 678   ; expression statement
+ 1148 000664 7014              1148               BSET.B      #1,R4H
+ 1149 000666 5A000000          1149               JMP         @L401:24
+ 1150 00066A                   1150     L400:
+ 1151                          1151     ;*** File h8_3048fon, Line 679   ; if
+ 1152 00066A AC63              1152               CMP.B       #99:8,R4L
+ 1153 00066C 463C              1153               BNE         L402:8
+ 1154                          1154     ;*** File h8_3048fon, Line 679   ; block
+ 1155                          1155     ;*** File h8_3048fon, Line 680   ; expression statement
+ 1156 00066E 0FE0              1156               MOV.L       ER6,ER0
+ 1157 000670 0BF0              1157               INC.L       #2,ER0
+ 1158 000672 01006FF00026      1158               MOV.L       ER0,@(38:16,SP)
+ 1159 000678 7308              1159               BTST.B      #0,R0L
+ 1160 00067A 4704              1160               BEQ         L403:8
+ 1161 00067C 0B70              1161               INC.L       #1,ER0
+ 1162 00067E 4006              1162               BRA         L404:8
+ 1163 000680                   1163     L403:
+ 1164 000680 01006F700026      1164               MOV.L       @(38:16,SP),ER0
+ 1165 000686                   1165     L404:
+ 1166 000686 0F86              1166               MOV.L       ER0,ER6
+ 1167 000688 1BF0              1167               DEC.L       #2,ER0
+ 1168 00068A 0F84              1168               MOV.L       ER0,ER4
+ 1169 00068C 7308              1169               BTST.B      #0,R0L
+ 1170 00068E 4706              1170               BEQ         L405:8
+ 1171 000690 0FC1              1171               MOV.L       ER4,ER1
+ 1172 000692 1B71              1172               DEC.L       #1,ER1
+ 1173 000694 4002              1173               BRA         L406:8
+ 1174 000696                   1174     L405:
+ 1175 000696 0FC1              1175               MOV.L       ER4,ER1
+ 1176 000698                   1176     L406:
+ 1177 000698 6E180001          1177               MOV.B       @(1:16,ER1),R0L
+ 1178 00069C 01006F71003C      1178               MOV.L       @(60:16,SP),ER1
+ 1179 0006A2 5D10              1179               JSR         @ER1
+ 1180                          1180     ;*** File h8_3048fon, Line 681   ; expression statement
+ 1181 0006A4 1844              1181               SUB.B       R4H,R4H
+ 1182 0006A6 5A000000          1182               JMP         @L407:24
+ 1183 0006AA                   1183     L402:
+ 1184                          1184     ;*** File h8_3048fon, Line 682   ; if
+ 1185 0006AA AC73              1185               CMP.B       #115:8,R4L
+ 1186 0006AC 586000BC          1186               BNE         L408:16
+ 1187                          1187     ;*** File h8_3048fon, Line 682   ; block
+ 1188                          1188     ;*** File h8_3048fon, Line 683   ; if
+ 1189 0006B0 0C55              1189               MOV.B       R5H,R5H
+ 1190 0006B2 5870007E          1190               BEQ         L409:16
+ 1191                          1191     ;*** File h8_3048fon, Line 683   ; block
+ 1192                          1192     ;*** File h8_3048fon, Line 684   ; expression statement
+ 1193 0006B6 18DD              1193               SUB.B       R5L,R5L
+ 1194                          1194     ;*** File h8_3048fon, Line 684   ; expression statement
+ 1195 0006B8 0FE0              1195               MOV.L       ER6,ER0
+ 1196 0006BA 0B90              1196               ADDS.L      #4,ER0
+ 1197 0006BC 01006FF00026      1197               MOV.L       ER0,@(38:16,SP)
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    22
+PROGRAM NAME =
+
+ 1198 0006C2 7308              1198               BTST.B      #0,R0L
+ 1199 0006C4 4704              1199               BEQ         L410:8
+ 1200 0006C6 0B70              1200               INC.L       #1,ER0
+ 1201 0006C8 4006              1201               BRA         L411:8
+ 1202 0006CA                   1202     L410:
+ 1203 0006CA 01006F700026      1203               MOV.L       @(38:16,SP),ER0
+ 1204 0006D0                   1204     L411:
+ 1205 0006D0 0F86              1205               MOV.L       ER0,ER6
+ 1206 0006D2 1B90              1206               SUBS.L      #4,ER0
+ 1207 0006D4 0F84              1207               MOV.L       ER0,ER4
+ 1208 0006D6 7308              1208               BTST.B      #0,R0L
+ 1209 0006D8 4704              1209               BEQ         L412:8
+ 1210 0006DA 1B70              1210               DEC.L       #1,ER0
+ 1211 0006DC 4002              1211               BRA         L413:8
+ 1212 0006DE                   1212     L412:
+ 1213 0006DE 0FC0              1213               MOV.L       ER4,ER0
+ 1214 0006E0                   1214     L413:
+ 1215 0006E0 01006903          1215               MOV.L       @ER0,ER3
+ 1216                          1216     ;*** File h8_3048fon, Line 685   ; while
+ 1217 0006E4 4002              1217               BRA         L415:8
+ 1218 0006E6                   1218     L414:
+ 1219                          1219     ;*** File h8_3048fon, Line 685   ; expression statement
+ 1220 0006E6 0A0D              1220               INC.B       R5L
+ 1221 0006E8                   1221     L415:
+ 1222                          1222     ;*** File h8_3048fon, Line 685   ; expression statement
+ 1223 0006E8 0CD8              1223               MOV.B       R5L,R0L
+ 1224 0006EA 1750              1224               EXTU.W      R0
+ 1225 0006EC 1770              1225               EXTU.L      ER0
+ 1226 0006EE 0AB0              1226               ADD.L       ER3,ER0
+ 1227 0006F0 6809              1227               MOV.B       @ER0,R1L
+ 1228 0006F2 46F2              1228               BNE         L414:8
+ 1229                          1229     ;*** File h8_3048fon, Line 686   ; if
+ 1230 0006F4 6E78003A          1230               MOV.B       @(58:16,SP),R0L
+ 1231 0006F8 4614              1231               BNE         L416:8
+ 1232                          1232     ;*** File h8_3048fon, Line 686   ; expression statement
+ 1233 0006FA 0CDC              1233               MOV.B       R5L,R4L
+ 1234                          1234     ;*** File h8_3048fon, Line 686   ; for
+ 1235 0006FC 400C              1235               BRA         L418:8
+ 1236 0006FE                   1236     L417:
+ 1237                          1237     ;*** File h8_3048fon, Line 686   ; expression statement
+ 1238 0006FE F820              1238               MOV.B       #32:8,R0L
+ 1239 000700 01006F71003C      1239               MOV.L       @(60:16,SP),ER1
+ 1240 000706 5D10              1240               JSR         @ER1
+ 1241                          1241     ;*** File h8_3048fon, Line 686   ; expression statement
+ 1242 000708 0A0C              1242               INC.B       R4L
+ 1243 00070A                   1243     L418:
+ 1244                          1244     ;*** File h8_3048fon, Line 686   ; expression statement
+ 1245 00070A 1C5C              1245               CMP.B       R5H,R4L
+ 1246 00070C 45F0              1246               BCS         L417:8
+ 1247 00070E                   1247     L416:
+ 1248                          1248     ;*** File h8_3048fon, Line 687   ; expression statement
+ 1249 00070E 0FB0              1249               MOV.L       ER3,ER0
+ 1250 000710 01006F710034      1250               MOV.L       @(52:16,SP),ER1
+ 1251 000716 5D10              1251               JSR         @ER1
+ 1252                          1252     ;*** File h8_3048fon, Line 688   ; if
+ 1253 000718 6E78003A          1253               MOV.B       @(58:16,SP),R0L
+ 1254 00071C 4758              1254               BEQ         L495:8
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    23
+PROGRAM NAME =
+
+ 1255                          1255     ;*** File h8_3048fon, Line 688   ; expression statement
+ 1256 00071E 0CDC              1256               MOV.B       R5L,R4L
+ 1257                          1257     ;*** File h8_3048fon, Line 688   ; for
+ 1258 000720 400C              1258               BRA         L421:8
+ 1259 000722                   1259     L420:
+ 1260                          1260     ;*** File h8_3048fon, Line 688   ; expression statement
+ 1261 000722 F820              1261               MOV.B       #32:8,R0L
+ 1262 000724 01006F71003C      1262               MOV.L       @(60:16,SP),ER1
+ 1263 00072A 5D10              1263               JSR         @ER1
+ 1264                          1264     ;*** File h8_3048fon, Line 688   ; expression statement
+ 1265 00072C 0A0C              1265               INC.B       R4L
+ 1266 00072E                   1266     L421:
+ 1267                          1267     ;*** File h8_3048fon, Line 688   ; expression statement
+ 1268 00072E 1C5C              1268               CMP.B       R5H,R4L
+ 1269 000730 45F0              1269               BCS         L420:8
+ 1270 000732 4042              1270               BRA         L495:8
+ 1271 000734                   1271     L409:
+ 1272                          1272     ;*** File h8_3048fon, Line 689   ; block
+ 1273                          1273     ;*** File h8_3048fon, Line 690   ; expression statement
+ 1274 000734 0FE0              1274               MOV.L       ER6,ER0
+ 1275 000736 0B90              1275               ADDS.L      #4,ER0
+ 1276 000738 01006FF00026      1276               MOV.L       ER0,@(38:16,SP)
+ 1277 00073E 7308              1277               BTST.B      #0,R0L
+ 1278 000740 4704              1278               BEQ         L423:8
+ 1279 000742 0B70              1279               INC.L       #1,ER0
+ 1280 000744 4006              1280               BRA         L424:8
+ 1281 000746                   1281     L423:
+ 1282 000746 01006F700026      1282               MOV.L       @(38:16,SP),ER0
+ 1283 00074C                   1283     L424:
+ 1284 00074C 0F86              1284               MOV.L       ER0,ER6
+ 1285 00074E 1B90              1285               SUBS.L      #4,ER0
+ 1286 000750 0F84              1286               MOV.L       ER0,ER4
+ 1287 000752 7308              1287               BTST.B      #0,R0L
+ 1288 000754 4706              1288               BEQ         L425:8
+ 1289 000756 0FC1              1289               MOV.L       ER4,ER1
+ 1290 000758 1B71              1290               DEC.L       #1,ER1
+ 1291 00075A 4002              1291               BRA         L426:8
+ 1292 00075C                   1292     L425:
+ 1293 00075C 0FC1              1293               MOV.L       ER4,ER1
+ 1294 00075E                   1294     L426:
+ 1295 00075E 01006910          1295               MOV.L       @ER1,ER0
+ 1296 000762 01006F710034      1296               MOV.L       @(52:16,SP),ER1
+ 1297 000768 5D10              1297               JSR         @ER1
+ 1298                          1298     ;*** File h8_3048fon, Line 692   ; expression statement
+ 1299 00076A 400A              1299               BRA         L495:8
+ 1300 00076C                   1300     L408:
+ 1301                          1301     ;*** File h8_3048fon, Line 693   ; block
+ 1302                          1302     ;*** File h8_3048fon, Line 694   ; expression statement
+ 1303 00076C 0CC8              1303               MOV.B       R4L,R0L
+ 1304 00076E 01006F71003C      1304               MOV.L       @(60:16,SP),ER1
+ 1305 000774 5D10              1305               JSR         @ER1
+ 1306                          1306     ;*** File h8_3048fon, Line 695   ; expression statement
+ 1307 000776                   1307     L495:
+ 1308 000776 1844              1308               SUB.B       R4H,R4H
+ 1309 000778                   1309     L407:
+ 1310 000778                   1310     L401:
+ 1311 000778                   1311     L399:
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    24
+PROGRAM NAME =
+
+ 1312 000778                   1312     L397:
+ 1313 000778                   1313     L395:
+ 1314 000778                   1314     L393:
+ 1315 000778                   1315     L391:
+ 1316 000778                   1316     L389:
+ 1317 000778                   1317     L387:
+ 1318 000778                   1318     L385:
+ 1319 000778                   1319     L380:
+ 1320                          1320     ;*** File h8_3048fon, Line 697   ; if
+ 1321 000778 6E78003B          1321               MOV.B       @(59:16,SP),R0L
+ 1322 00077C 587001D6          1322               BEQ         L428:16
+ 1323                          1323     ;*** File h8_3048fon, Line 697   ; block
+ 1324                          1324     ;*** File h8_3048fon, Line 698   ; switch
+ 1325 000780 E406              1325               AND.B       #6:8,R4H
+ 1326 000782 0C48              1326               MOV.B       R4H,R0L
+ 1327 000784 4712              1327               BEQ         L279:8
+ 1328 000786 A802              1328               CMP.B       #2:8,R0L
+ 1329 000788 473E              1329               BEQ         L280:8
+ 1330 00078A A804              1330               CMP.B       #4:8,R0L
+ 1331 00078C 476A              1331               BEQ         L281:8
+ 1332 00078E A806              1332               CMP.B       #6:8,R0L
+ 1333 000790 58700098          1333               BEQ         L282:16
+ 1334 000794 5A000000          1334               JMP         @L449:24
+ 1335                          1335     ;*** File h8_3048fon, Line 698   ; block
+ 1336                          1336     ;*** File h8_3048fon, Line 699   ; label
+ 1337 000798                   1337     L279:                            ; case label
+ 1338                          1338     ;*** File h8_3048fon, Line 700   ; expression statement
+ 1339 000798 0FE4              1339               MOV.L       ER6,ER4
+ 1340 00079A 0BF4              1340               INC.L       #2,ER4
+ 1341 00079C 730C              1341               BTST.B      #0,R4L
+ 1342 00079E 4706              1342               BEQ         L430:8
+ 1343 0007A0 0FC0              1343               MOV.L       ER4,ER0
+ 1344 0007A2 0B70              1344               INC.L       #1,ER0
+ 1345 0007A4 4002              1345               BRA         L431:8
+ 1346 0007A6                   1346     L430:
+ 1347 0007A6 0FC0              1347               MOV.L       ER4,ER0
+ 1348 0007A8                   1348     L431:
+ 1349 0007A8 0F86              1349               MOV.L       ER0,ER6
+ 1350 0007AA 1BF0              1350               DEC.L       #2,ER0
+ 1351 0007AC 01006FF00026      1351               MOV.L       ER0,@(38:16,SP)
+ 1352 0007B2 7308              1352               BTST.B      #0,R0L
+ 1353 0007B4 4704              1353               BEQ         L432:8
+ 1354 0007B6 1B70              1354               DEC.L       #1,ER0
+ 1355 0007B8 4006              1355               BRA         L433:8
+ 1356 0007BA                   1356     L432:
+ 1357 0007BA 01006F700026      1357               MOV.L       @(38:16,SP),ER0
+ 1358 0007C0                   1358     L433:
+ 1359 0007C0 6900              1359               MOV.W       @ER0,R0
+ 1360 0007C2 1770              1360               EXTU.L      ER0
+ 1361                          1361     ;*** File h8_3048fon, Line 701   ; break
+ 1362 0007C4 5A000000          1362               JMP         @L496:24
+ 1363 0007C8                   1363     L280:                            ; case label
+ 1364                          1364     ;*** File h8_3048fon, Line 703   ; expression statement
+ 1365 0007C8 0FE0              1365               MOV.L       ER6,ER0
+ 1366 0007CA 0B90              1366               ADDS.L      #4,ER0
+ 1367 0007CC 01006FF00026      1367               MOV.L       ER0,@(38:16,SP)
+ 1368 0007D2 7308              1368               BTST.B      #0,R0L
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    25
+PROGRAM NAME =
+
+ 1369 0007D4 4704              1369               BEQ         L434:8
+ 1370 0007D6 0B70              1370               INC.L       #1,ER0
+ 1371 0007D8 4006              1371               BRA         L435:8
+ 1372 0007DA                   1372     L434:
+ 1373 0007DA 01006F700026      1373               MOV.L       @(38:16,SP),ER0
+ 1374 0007E0                   1374     L435:
+ 1375 0007E0 0F86              1375               MOV.L       ER0,ER6
+ 1376 0007E2 1B90              1376               SUBS.L      #4,ER0
+ 1377 0007E4 0F84              1377               MOV.L       ER0,ER4
+ 1378 0007E6 7308              1378               BTST.B      #0,R0L
+ 1379 0007E8 4704              1379               BEQ         L436:8
+ 1380 0007EA 1B70              1380               DEC.L       #1,ER0
+ 1381 0007EC 4002              1381               BRA         L437:8
+ 1382 0007EE                   1382     L436:
+ 1383 0007EE 0FC0              1383               MOV.L       ER4,ER0
+ 1384 0007F0                   1384     L437:
+ 1385 0007F0 01006902          1385               MOV.L       @ER0,ER2
+ 1386                          1386     ;*** File h8_3048fon, Line 704   ; break
+ 1387 0007F4 5A000000          1387               JMP         @L449:24
+ 1388 0007F8                   1388     L281:                            ; case label
+ 1389                          1389     ;*** File h8_3048fon, Line 706   ; expression statement
+ 1390 0007F8 0FE4              1390               MOV.L       ER6,ER4
+ 1391 0007FA 0BF4              1391               INC.L       #2,ER4
+ 1392 0007FC 730C              1392               BTST.B      #0,R4L
+ 1393 0007FE 4706              1393               BEQ         L438:8
+ 1394 000800 0FC0              1394               MOV.L       ER4,ER0
+ 1395 000802 0B70              1395               INC.L       #1,ER0
+ 1396 000804 4002              1396               BRA         L439:8
+ 1397 000806                   1397     L438:
+ 1398 000806 0FC0              1398               MOV.L       ER4,ER0
+ 1399 000808                   1399     L439:
+ 1400 000808 0F86              1400               MOV.L       ER0,ER6
+ 1401 00080A 1BF0              1401               DEC.L       #2,ER0
+ 1402 00080C 0F82              1402               MOV.L       ER0,ER2
+ 1403 00080E 7308              1403               BTST.B      #0,R0L
+ 1404 000810 4704              1404               BEQ         L440:8
+ 1405 000812 1B70              1405               DEC.L       #1,ER0
+ 1406 000814 4002              1406               BRA         L441:8
+ 1407 000816                   1407     L440:
+ 1408 000816 0FA0              1408               MOV.L       ER2,ER0
+ 1409 000818                   1409     L441:
+ 1410 000818 6900              1410               MOV.W       @ER0,R0
+ 1411 00081A 17F0              1411               EXTS.L      ER0
+ 1412 00081C 0F82              1412               MOV.L       ER0,ER2
+ 1413                          1413     ;*** File h8_3048fon, Line 707   ; if
+ 1414 00081E 4C78              1414               BGE         L449:8
+ 1415                          1415     ;*** File h8_3048fon, Line 707   ; block
+ 1416                          1416     ;*** File h8_3048fon, Line 708   ; expression statement
+ 1417 000820 17B0              1417               NEG.L       ER0
+ 1418 000822 0F82              1418               MOV.L       ER0,ER2
+ 1419                          1419     ;*** File h8_3048fon, Line 709   ; expression statement
+ 1420 000824 F82D              1420               MOV.B       #45:8,R0L
+ 1421 000826 6EF80039          1421               MOV.B       R0L,@(57:16,SP)
+ 1422                          1422     ;*** File h8_3048fon, Line 711   ; break
+ 1423 00082A 406C              1423               BRA         L449:8
+ 1424 00082C                   1424     L282:                            ; case label
+ 1425                          1425     ;*** File h8_3048fon, Line 713   ; expression statement
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    26
+PROGRAM NAME =
+
+ 1426 00082C 0FE4              1426               MOV.L       ER6,ER4
+ 1427 00082E 0B94              1427               ADDS.L      #4,ER4
+ 1428 000830 730C              1428               BTST.B      #0,R4L
+ 1429 000832 4706              1429               BEQ         L443:8
+ 1430 000834 0FC0              1430               MOV.L       ER4,ER0
+ 1431 000836 0B70              1431               INC.L       #1,ER0
+ 1432 000838 4002              1432               BRA         L444:8
+ 1433 00083A                   1433     L443:
+ 1434 00083A 0FC0              1434               MOV.L       ER4,ER0
+ 1435 00083C                   1435     L444:
+ 1436 00083C 0F86              1436               MOV.L       ER0,ER6
+ 1437 00083E 1B90              1437               SUBS.L      #4,ER0
+ 1438 000840 0F82              1438               MOV.L       ER0,ER2
+ 1439 000842 7308              1439               BTST.B      #0,R0L
+ 1440 000844 4704              1440               BEQ         L445:8
+ 1441 000846 1B70              1441               DEC.L       #1,ER0
+ 1442 000848 4002              1442               BRA         L446:8
+ 1443 00084A                   1443     L445:
+ 1444 00084A 0FA0              1444               MOV.L       ER2,ER0
+ 1445 00084C                   1445     L446:
+ 1446 00084C 01006900          1446               MOV.L       @ER0,ER0
+ 1447 000850 0F82              1447               MOV.L       ER0,ER2
+ 1448                          1448     ;*** File h8_3048fon, Line 714   ; if
+ 1449 000852 4C44              1449               BGE         L449:8
+ 1450                          1450     ;*** File h8_3048fon, Line 714   ; block
+ 1451                          1451     ;*** File h8_3048fon, Line 715   ; expression statement
+ 1452 000854 17B0              1452               NEG.L       ER0
+ 1453 000856 0F82              1453               MOV.L       ER0,ER2
+ 1454                          1454     ;*** File h8_3048fon, Line 716   ; expression statement
+ 1455 000858 F82D              1455               MOV.B       #45:8,R0L
+ 1456 00085A 6EF80039          1456               MOV.B       R0L,@(57:16,SP)
+ 1457                          1457     ;*** File h8_3048fon, Line 718   ; break
+ 1458 00085E                   1458     L283:                            ; default label
+ 1459                          1459     ;*** File h8_3048fon, Line 720   ; break
+ 1460 00085E                   1460     L429:                            ; default label
+ 1461                          1461     ;*** File h8_3048fon, Line 722   ; while
+ 1462 00085E 4038              1462               BRA         L449:8
+ 1463 000860                   1463     L448:
+ 1464                          1464     ;*** File h8_3048fon, Line 722   ; block
+ 1465                          1465     ;*** File h8_3048fon, Line 723   ; expression statement
+ 1466 000860 0FB0              1466               MOV.L       ER3,ER0
+ 1467 000862 1B73              1467               DEC.L       #1,ER3
+ 1468 000864 1AC4              1468               SUB.L       ER4,ER4
+ 1469 000866 6E7C003B          1469               MOV.B       @(59:16,SP),R4L
+ 1470 00086A 010069F0          1470               MOV.L       ER0,@SP
+ 1471 00086E 0FA0              1471               MOV.L       ER2,ER0
+ 1472 000870 0FC1              1472               MOV.L       ER4,ER1
+ 1473 000872 5E000000          1473               JSR         @$DIVUL$3:24
+ 1474 000876 1A80              1474               SUB.L       ER0,ER0
+ 1475 000878 6E780033          1475               MOV.B       @(51:16,SP),R0L
+ 1476 00087C 0A81              1476               ADD.L       ER0,ER1
+ 1477 00087E 78106A2900000000  1477               MOV.B       @(_hexstring:24,ER1),R1L
+ 1478 000886 01006970          1478               MOV.L       @SP,ER0
+ 1479 00088A 6889              1479               MOV.B       R1L,@ER0
+ 1480                          1480     ;*** File h8_3048fon, Line 724   ; expression statement
+ 1481 00088C 0A0D              1481               INC.B       R5L
+ 1482                          1482     ;*** File h8_3048fon, Line 725   ; expression statement
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    27
+PROGRAM NAME =
+
+ 1483 00088E 0FA0              1483               MOV.L       ER2,ER0
+ 1484 000890 0FC1              1484               MOV.L       ER4,ER1
+ 1485 000892 5E000000          1485               JSR         @$DIVUL$3:24
+ 1486 000896                   1486     L496:
+ 1487 000896 0F82              1487               MOV.L       ER0,ER2
+ 1488 000898                   1488     L449:
+ 1489                          1489     ;*** File h8_3048fon, Line 722   ; expression statement
+ 1490 000898 0FA0              1490               MOV.L       ER2,ER0
+ 1491 00089A 46C4              1491               BNE         L448:8
+ 1492                          1492     ;*** File h8_3048fon, Line 727   ; if
+ 1493 00089C 0CDD              1493               MOV.B       R5L,R5L
+ 1494 00089E 460A              1494               BNE         L450:8
+ 1495                          1495     ;*** File h8_3048fon, Line 727   ; block
+ 1496                          1496     ;*** File h8_3048fon, Line 728   ; expression statement
+ 1497 0008A0 0FB0              1497               MOV.L       ER3,ER0
+ 1498 0008A2 1B73              1498               DEC.L       #1,ER3
+ 1499 0008A4 F930              1499               MOV.B       #48:8,R1L
+ 1500 0008A6 6889              1500               MOV.B       R1L,@ER0
+ 1501                          1501     ;*** File h8_3048fon, Line 729   ; expression statement
+ 1502 0008A8 0A0D              1502               INC.B       R5L
+ 1503 0008AA                   1503     L450:
+ 1504                          1504     ;*** File h8_3048fon, Line 731   ; if
+ 1505 0008AA 6E780032          1505               MOV.B       @(50:16,SP),R0L
+ 1506 0008AE A820              1506               CMP.B       #32:8,R0L
+ 1507 0008B0 4654              1507               BNE         L451:8
+ 1508                          1508     ;*** File h8_3048fon, Line 731   ; block
+ 1509                          1509     ;*** File h8_3048fon, Line 732   ; if
+ 1510 0008B2 6E780039          1510               MOV.B       @(57:16,SP),R0L
+ 1511 0008B6 A82D              1511               CMP.B       #45:8,R0L
+ 1512 0008B8 460A              1512               BNE         L452:8
+ 1513                          1513     ;*** File h8_3048fon, Line 732   ; block
+ 1514                          1514     ;*** File h8_3048fon, Line 733   ; expression statement
+ 1515 0008BA 0FB0              1515               MOV.L       ER3,ER0
+ 1516 0008BC 1B73              1516               DEC.L       #1,ER3
+ 1517 0008BE F92D              1517               MOV.B       #45:8,R1L
+ 1518 0008C0 6889              1518               MOV.B       R1L,@ER0
+ 1519                          1519     ;*** File h8_3048fon, Line 734   ; expression statement
+ 1520 0008C2 0A0D              1520               INC.B       R5L
+ 1521 0008C4                   1521     L452:
+ 1522                          1522     ;*** File h8_3048fon, Line 736   ; if
+ 1523 0008C4 6E78003A          1523               MOV.B       @(58:16,SP),R0L
+ 1524 0008C8 4614              1524               BNE         L453:8
+ 1525                          1525     ;*** File h8_3048fon, Line 736   ; expression statement
+ 1526 0008CA 0CDC              1526               MOV.B       R5L,R4L
+ 1527                          1527     ;*** File h8_3048fon, Line 736   ; for
+ 1528 0008CC 400C              1528               BRA         L455:8
+ 1529 0008CE                   1529     L454:
+ 1530                          1530     ;*** File h8_3048fon, Line 736   ; expression statement
+ 1531 0008CE F820              1531               MOV.B       #32:8,R0L
+ 1532 0008D0 01006F71003C      1532               MOV.L       @(60:16,SP),ER1
+ 1533 0008D6 5D10              1533               JSR         @ER1
+ 1534                          1534     ;*** File h8_3048fon, Line 736   ; expression statement
+ 1535 0008D8 0A0C              1535               INC.B       R4L
+ 1536 0008DA                   1536     L455:
+ 1537                          1537     ;*** File h8_3048fon, Line 736   ; expression statement
+ 1538 0008DA 1C5C              1538               CMP.B       R5H,R4L
+ 1539 0008DC 45F0              1539               BCS         L454:8
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    28
+PROGRAM NAME =
+
+ 1540 0008DE                   1540     L453:
+ 1541                          1541     ;*** File h8_3048fon, Line 737   ; expression statement
+ 1542 0008DE 0B73              1542               INC.L       #1,ER3
+ 1543 0008E0 0FB0              1543               MOV.L       ER3,ER0
+ 1544 0008E2 01006F710034      1544               MOV.L       @(52:16,SP),ER1
+ 1545 0008E8 5D10              1545               JSR         @ER1
+ 1546                          1546     ;*** File h8_3048fon, Line 738   ; if
+ 1547 0008EA 6E78003A          1547               MOV.B       @(58:16,SP),R0L
+ 1548 0008EE 4764              1548               BEQ         L459:8
+ 1549                          1549     ;*** File h8_3048fon, Line 738   ; expression statement
+ 1550 0008F0 0CDC              1550               MOV.B       R5L,R4L
+ 1551                          1551     ;*** File h8_3048fon, Line 738   ; for
+ 1552 0008F2 400C              1552               BRA         L458:8
+ 1553 0008F4                   1553     L457:
+ 1554                          1554     ;*** File h8_3048fon, Line 738   ; expression statement
+ 1555 0008F4 F820              1555               MOV.B       #32:8,R0L
+ 1556 0008F6 01006F71003C      1556               MOV.L       @(60:16,SP),ER1
+ 1557 0008FC 5D10              1557               JSR         @ER1
+ 1558                          1558     ;*** File h8_3048fon, Line 738   ; expression statement
+ 1559 0008FE 0A0C              1559               INC.B       R4L
+ 1560 000900                   1560     L458:
+ 1561                          1561     ;*** File h8_3048fon, Line 738   ; expression statement
+ 1562 000900 1C5C              1562               CMP.B       R5H,R4L
+ 1563 000902 45F0              1563               BCS         L457:8
+ 1564 000904 404E              1564               BRA         L459:8
+ 1565 000906                   1565     L451:
+ 1566                          1566     ;*** File h8_3048fon, Line 739   ; block
+ 1567 000906 0C58              1567               MOV.B       R5H,R0L
+ 1568 000908 1750              1568               EXTU.W      R0
+ 1569 00090A 1B50              1569               DEC.W       #1,R0
+ 1570 00090C 0D0D              1570               MOV.W       R0,E5
+ 1571                          1571     ;*** File h8_3048fon, Line 740   ; for
+ 1572 00090E F930              1572               MOV.B       #48:8,R1L
+ 1573 000910 4008              1573               BRA         L461:8
+ 1574 000912                   1574     L460:
+ 1575                          1575     ;*** File h8_3048fon, Line 740   ; expression statement
+ 1576 000912 0FB0              1576               MOV.L       ER3,ER0
+ 1577 000914 1B73              1577               DEC.L       #1,ER3
+ 1578 000916 6889              1578               MOV.B       R1L,@ER0
+ 1579                          1579     ;*** File h8_3048fon, Line 740   ; expression statement
+ 1580 000918 0A0D              1580               INC.B       R5L
+ 1581 00091A                   1581     L461:
+ 1582                          1582     ;*** File h8_3048fon, Line 740   ; expression statement
+ 1583 00091A 0CD8              1583               MOV.B       R5L,R0L
+ 1584 00091C 1750              1584               EXTU.W      R0
+ 1585 00091E 1DD0              1585               CMP.W       E5,R0
+ 1586 000920 4DF0              1586               BLT         L460:8
+ 1587                          1587     ;*** File h8_3048fon, Line 741   ; if
+ 1588 000922 6E780039          1588               MOV.B       @(57:16,SP),R0L
+ 1589 000926 A82D              1589               CMP.B       #45:8,R0L
+ 1590 000928 470E              1590               BEQ         L462:8
+ 1591 00092A 1C5D              1591               CMP.B       R5H,R5L
+ 1592 00092C 440A              1592               BCC         L462:8
+ 1593                          1593     ;*** File h8_3048fon, Line 741   ; expression statement
+ 1594 00092E 0FB0              1594               MOV.L       ER3,ER0
+ 1595 000930 1B73              1595               DEC.L       #1,ER3
+ 1596 000932 F930              1596               MOV.B       #48:8,R1L
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    29
+PROGRAM NAME =
+
+ 1597 000934 6889              1597               MOV.B       R1L,@ER0
+ 1598 000936 4010              1598               BRA         L463:8
+ 1599 000938                   1599     L462:
+ 1600                          1600     ;*** File h8_3048fon, Line 742   ; if
+ 1601 000938 6E780039          1601               MOV.B       @(57:16,SP),R0L
+ 1602 00093C A82D              1602               CMP.B       #45:8,R0L
+ 1603 00093E 4608              1603               BNE         L464:8
+ 1604                          1604     ;*** File h8_3048fon, Line 742   ; expression statement
+ 1605 000940 0FB0              1605               MOV.L       ER3,ER0
+ 1606 000942 1B73              1606               DEC.L       #1,ER3
+ 1607 000944 F92D              1607               MOV.B       #45:8,R1L
+ 1608 000946 6889              1608               MOV.B       R1L,@ER0
+ 1609 000948                   1609     L464:
+ 1610 000948                   1610     L463:
+ 1611                          1611     ;*** File h8_3048fon, Line 743   ; expression statement
+ 1612 000948 0B73              1612               INC.L       #1,ER3
+ 1613 00094A 0FB0              1613               MOV.L       ER3,ER0
+ 1614 00094C 01006F710034      1614               MOV.L       @(52:16,SP),ER1
+ 1615 000952 5D10              1615               JSR         @ER1
+ 1616 000954                   1616     L459:
+ 1617                          1617     ;*** File h8_3048fon, Line 745   ; expression statement
+ 1618 000954 1844              1618               SUB.B       R4H,R4H
+ 1619 000956                   1619     L428:
+ 1620 000956                   1620     L378:
+ 1621                          1621     ;*** File h8_3048fon, Line 748   ; expression statement
+ 1622 000956 01006F70002E      1622               MOV.L       @(46:16,SP),ER0
+ 1623 00095C 0B70              1623               INC.L       #1,ER0
+ 1624 00095E 01006FF0002E      1624               MOV.L       ER0,@(46:16,SP)
+ 1625 000964                   1625     L374:
+ 1626                          1626     ;*** File h8_3048fon, Line 635   ; expression statement
+ 1627 000964 01006F70002E      1627               MOV.L       @(46:16,SP),ER0
+ 1628 00096A 6809              1628               MOV.B       @ER0,R1L
+ 1629 00096C 5860FBEC          1629               BNE         L373:16
+ 1630                          1630     ;*** File h8_3048fon, Line 751   ; block
+ 1631 000970 7A1700000044      1631               ADD.L       #68:32,SP
+ 1632 000976 5A000000          1632               JMP         @$spregld2$3:24
+ 1633                          1633     ;*** File h8_3048fon, Line 753   ; block
+ 1634 00097A                   1634     _SCI0_printf:                    ; function: SCI0_printf
+ 1635 00097A 01006DF6          1635               PUSH.L      ER6
+ 1636                          1636     ;*** File h8_3048fon, Line 754   ; block
+ 1637                          1637     ;*** File h8_3048fon, Line 756   ; expression statement
+ 1638 00097E 7A0600000004      1638               MOV.L       #4:32,ER6
+ 1639 000984 7A0000000008      1639               MOV.L       #8:32,ER0
+ 1640 00098A 0AF0              1640               ADD.L       SP,ER0
+ 1641 00098C 0AE0              1641               ADD.L       ER6,ER0
+ 1642 00098E 7308              1642               BTST.B      #0,R0L
+ 1643 000990 470E              1643               BEQ         L465:8
+ 1644 000992 7A0000000008      1644               MOV.L       #8:32,ER0
+ 1645 000998 0AF0              1645               ADD.L       SP,ER0
+ 1646 00099A 0AE0              1646               ADD.L       ER6,ER0
+ 1647 00099C 0B70              1647               INC.L       #1,ER0
+ 1648 00099E 400A              1648               BRA         L466:8
+ 1649 0009A0                   1649     L465:
+ 1650 0009A0 7A0000000008      1650               MOV.L       #8:32,ER0
+ 1651 0009A6 0AF0              1651               ADD.L       SP,ER0
+ 1652 0009A8 0AE0              1652               ADD.L       ER6,ER0
+ 1653 0009AA                   1653     L466:
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    30
+PROGRAM NAME =
+
+ 1654                          1654     ;*** File h8_3048fon, Line 757   ; expression statement
+ 1655 0009AA 01006DF0          1655               PUSH.L      ER0
+ 1656 0009AE 01006F71000C      1656               MOV.L       @(12:16,SP),ER1
+ 1657 0009B4 6B2000000000      1657               MOV.W       @_SCI0device:24,R0
+ 1658 0009BA 5E000000          1658               JSR         @_Device_printf:24
+ 1659 0009BE 0B97              1659               ADDS.L      #4,SP
+ 1660                          1660     ;*** File h8_3048fon, Line 759   ; block
+ 1661 0009C0 01006D76          1661               POP.L       ER6
+ 1662 0009C4 5470              1662               RTS
+ 1663                          1663     ;*** File h8_3048fon, Line 761   ; block
+ 1664 0009C6                   1664     _SCI1_printf:                    ; function: SCI1_printf
+ 1665 0009C6 01006DF6          1665               PUSH.L      ER6
+ 1666                          1666     ;*** File h8_3048fon, Line 762   ; block
+ 1667                          1667     ;*** File h8_3048fon, Line 764   ; expression statement
+ 1668 0009CA 7A0600000004      1668               MOV.L       #4:32,ER6
+ 1669 0009D0 7A0000000008      1669               MOV.L       #8:32,ER0
+ 1670 0009D6 0AF0              1670               ADD.L       SP,ER0
+ 1671 0009D8 0AE0              1671               ADD.L       ER6,ER0
+ 1672 0009DA 7308              1672               BTST.B      #0,R0L
+ 1673 0009DC 470E              1673               BEQ         L467:8
+ 1674 0009DE 7A0000000008      1674               MOV.L       #8:32,ER0
+ 1675 0009E4 0AF0              1675               ADD.L       SP,ER0
+ 1676 0009E6 0AE0              1676               ADD.L       ER6,ER0
+ 1677 0009E8 0B70              1677               INC.L       #1,ER0
+ 1678 0009EA 400A              1678               BRA         L468:8
+ 1679 0009EC                   1679     L467:
+ 1680 0009EC 7A0000000008      1680               MOV.L       #8:32,ER0
+ 1681 0009F2 0AF0              1681               ADD.L       SP,ER0
+ 1682 0009F4 0AE0              1682               ADD.L       ER6,ER0
+ 1683 0009F6                   1683     L468:
+ 1684                          1684     ;*** File h8_3048fon, Line 765   ; expression statement
+ 1685 0009F6 01006DF0          1685               PUSH.L      ER0
+ 1686 0009FA 01006F71000C      1686               MOV.L       @(12:16,SP),ER1
+ 1687 000A00 6B2000000000      1687               MOV.W       @_SCI1device:24,R0
+ 1688 000A06 5E000000          1688               JSR         @_Device_printf:24
+ 1689 000A0A 0B97              1689               ADDS.L      #4,SP
+ 1690                          1690     ;*** File h8_3048fon, Line 767   ; block
+ 1691 000A0C 01006D76          1691               POP.L       ER6
+ 1692 000A10 5470              1692               RTS
+ 1693                          1693     ;*** File h8_3048fon, Line 769   ; block
+ 1694 000A12                   1694     _LCD_printf:                     ; function: LCD_printf
+ 1695 000A12 01006DF6          1695               PUSH.L      ER6
+ 1696                          1696     ;*** File h8_3048fon, Line 770   ; block
+ 1697                          1697     ;*** File h8_3048fon, Line 772   ; expression statement
+ 1698 000A16 7A0600000004      1698               MOV.L       #4:32,ER6
+ 1699 000A1C 7A0000000008      1699               MOV.L       #8:32,ER0
+ 1700 000A22 0AF0              1700               ADD.L       SP,ER0
+ 1701 000A24 0AE0              1701               ADD.L       ER6,ER0
+ 1702 000A26 7308              1702               BTST.B      #0,R0L
+ 1703 000A28 470E              1703               BEQ         L469:8
+ 1704 000A2A 7A0000000008      1704               MOV.L       #8:32,ER0
+ 1705 000A30 0AF0              1705               ADD.L       SP,ER0
+ 1706 000A32 0AE0              1706               ADD.L       ER6,ER0
+ 1707 000A34 0B70              1707               INC.L       #1,ER0
+ 1708 000A36 400A              1708               BRA         L470:8
+ 1709 000A38                   1709     L469:
+ 1710 000A38 7A0000000008      1710               MOV.L       #8:32,ER0
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    31
+PROGRAM NAME =
+
+ 1711 000A3E 0AF0              1711               ADD.L       SP,ER0
+ 1712 000A40 0AE0              1712               ADD.L       ER6,ER0
+ 1713 000A42                   1713     L470:
+ 1714                          1714     ;*** File h8_3048fon, Line 773   ; expression statement
+ 1715 000A42 01006DF0          1715               PUSH.L      ER0
+ 1716 000A46 01006F71000C      1716               MOV.L       @(12:16,SP),ER1
+ 1717 000A4C 6B2000000000      1717               MOV.W       @_LCDdevice:24,R0
+ 1718 000A52 5E000000          1718               JSR         @_Device_printf:24
+ 1719 000A56 0B97              1719               ADDS.L      #4,SP
+ 1720                          1720     ;*** File h8_3048fon, Line 775   ; block
+ 1721 000A58 01006D76          1721               POP.L       ER6
+ 1722 000A5C 5470              1722               RTS
+ 1723                          1723     ;*** File h8_3048fon, Line 777   ; block
+ 1724 000A5E                   1724     _sprintf:                        ; function: sprintf
+ 1725 000A5E 01006DF6          1725               PUSH.L      ER6
+ 1726                          1726     ;*** File h8_3048fon, Line 778   ; block
+ 1727 000A62 0F81              1727               MOV.L       ER0,ER1
+ 1728                          1728     ;*** File h8_3048fon, Line 780   ; expression statement
+ 1729 000A64 7A0600000004      1729               MOV.L       #4:32,ER6
+ 1730 000A6A 7A0000000008      1730               MOV.L       #8:32,ER0
+ 1731 000A70 0AF0              1731               ADD.L       SP,ER0
+ 1732 000A72 0AE0              1732               ADD.L       ER6,ER0
+ 1733 000A74 7308              1733               BTST.B      #0,R0L
+ 1734 000A76 470E              1734               BEQ         L471:8
+ 1735 000A78 7A0000000008      1735               MOV.L       #8:32,ER0
+ 1736 000A7E 0AF0              1736               ADD.L       SP,ER0
+ 1737 000A80 0AE0              1737               ADD.L       ER6,ER0
+ 1738 000A82 0B70              1738               INC.L       #1,ER0
+ 1739 000A84 400A              1739               BRA         L472:8
+ 1740 000A86                   1740     L471:
+ 1741 000A86 7A0000000008      1741               MOV.L       #8:32,ER0
+ 1742 000A8C 0AF0              1742               ADD.L       SP,ER0
+ 1743 000A8E 0AE0              1743               ADD.L       ER6,ER0
+ 1744 000A90                   1744     L472:
+ 1745                          1745     ;*** File h8_3048fon, Line 781   ; expression statement
+ 1746 000A90 01006BA100000000  1746               MOV.L       ER1,@L134:24
+ 1747                          1747     ;*** File h8_3048fon, Line 782   ; expression statement
+ 1748 000A98 01006DF0          1748               PUSH.L      ER0
+ 1749 000A9C 01006F71000C      1749               MOV.L       @(12:16,SP),ER1
+ 1750 000AA2 6B2000000000      1750               MOV.W       @_STRdevice:24,R0
+ 1751 000AA8 5E000000          1751               JSR         @_Device_printf:24
+ 1752 000AAC 0B97              1752               ADDS.L      #4,SP
+ 1753                          1753     ;*** File h8_3048fon, Line 784   ; block
+ 1754 000AAE 01006D76          1754               POP.L       ER6
+ 1755 000AB2 5470              1755               RTS
+ 1756                          1756     ;*** File h8_3048fon, Line 796   ; block
+ 1757 000AB4                   1757     _initLed:                        ; function: initLed
+ 1758                          1758     ;*** File h8_3048fon, Line 797   ; block
+ 1759                          1759     ;*** File h8_3048fon, Line 798   ; expression statement
+ 1760 000AB4 F80F              1760               MOV.B       #15:8,R0L
+ 1761 000AB6 38C8              1761               MOV.B       R0L,@16777160:8
+ 1762                          1762     ;*** File h8_3048fon, Line 799   ; block
+ 1763 000AB8 5470              1763               RTS
+ 1764                          1764     ;*** File h8_3048fon, Line 805   ; block
+ 1765 000ABA                   1765     _turnOnLed:                      ; function: turnOnLed
+ 1766 000ABA 01006DF6          1766               PUSH.L      ER6
+ 1767                          1767     ;*** File h8_3048fon, Line 806   ; block
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    32
+PROGRAM NAME =
+
+ 1768 000ABE 0D06              1768               MOV.W       R0,R6
+ 1769                          1769     ;*** File h8_3048fon, Line 808   ; expression statement
+ 1770 000AC0 17F6              1770               EXTS.L      ER6
+ 1771 000AC2 78606A2E00000000  1771               MOV.B       @(L219:24,ER6),R6L
+ 1772 000ACA 28CA              1772               MOV.B       @16777162:8,R0L
+ 1773 000ACC 14E8              1773               OR.B        R6L,R0L
+ 1774 000ACE 38CA              1774               MOV.B       R0L,@16777162:8
+ 1775                          1775     ;*** File h8_3048fon, Line 809   ; block
+ 1776 000AD0 01006D76          1776               POP.L       ER6
+ 1777 000AD4 5470              1777               RTS
+ 1778                          1778     ;*** File h8_3048fon, Line 815   ; block
+ 1779 000AD6                   1779     _turnOffLed:                     ; function: turnOffLed
+ 1780 000AD6 01006DF6          1780               PUSH.L      ER6
+ 1781                          1781     ;*** File h8_3048fon, Line 816   ; block
+ 1782 000ADA 0D06              1782               MOV.W       R0,R6
+ 1783                          1783     ;*** File h8_3048fon, Line 818   ; expression statement
+ 1784 000ADC 17F6              1784               EXTS.L      ER6
+ 1785 000ADE 78606A2E00000000  1785               MOV.B       @(L223:24,ER6),R6L
+ 1786 000AE6 28CA              1786               MOV.B       @16777162:8,R0L
+ 1787 000AE8 16E8              1787               AND.B       R6L,R0L
+ 1788 000AEA 38CA              1788               MOV.B       R0L,@16777162:8
+ 1789                          1789     ;*** File h8_3048fon, Line 819   ; block
+ 1790 000AEC 01006D76          1790               POP.L       ER6
+ 1791 000AF0 5470              1791               RTS
+ 1792                          1792     ;*** File h8_3048fon, Line 832   ; block
+ 1793 000AF2                   1793     _initPushSW:                     ; function: initPushSW
+ 1794                          1794     ;*** File h8_3048fon, Line 833   ; block
+ 1795                          1795     ;*** File h8_3048fon, Line 834   ; expression statement
+ 1796 000AF2 1888              1796               SUB.B       R0L,R0L
+ 1797 000AF4 38C5              1797               MOV.B       R0L,@16777157:8
+ 1798                          1798     ;*** File h8_3048fon, Line 835   ; expression statement
+ 1799 000AF6 F8F0              1799               MOV.B       #-16:8,R0L
+ 1800 000AF8 38DA              1800               MOV.B       R0L,@16777178:8
+ 1801                          1801     ;*** File h8_3048fon, Line 836   ; block
+ 1802 000AFA 5470              1802               RTS
+ 1803                          1803     ;*** File h8_3048fon, Line 849   ; block
+ 1804 000AFC                   1804     _checkPushSW:                    ; function: checkPushSW
+ 1805 000AFC 01006DF6          1805               PUSH.L      ER6
+ 1806                          1806     ;*** File h8_3048fon, Line 852   ; block
+ 1807 000B00 0D06              1807               MOV.W       R0,R6
+ 1808                          1808     ;*** File h8_3048fon, Line 855   ; if
+ 1809 000B02 17F6              1809               EXTS.L      ER6
+ 1810 000B04 28C7              1810               MOV.B       @16777159:8,R0L
+ 1811 000B06 78606A2E00000000  1811               MOV.B       @(L230:24,ER6),R6L
+ 1812 000B0E 16E8              1812               AND.B       R6L,R0L
+ 1813 000B10 4704              1813               BEQ         L473:8
+ 1814                          1814     ;*** File h8_3048fon, Line 855   ; expression statement
+ 1815 000B12 1966              1815               SUB.W       R6,R6
+ 1816 000B14 4004              1816               BRA         L474:8
+ 1817 000B16                   1817     L473:
+ 1818                          1818     ;*** File h8_3048fon, Line 856   ; expression statement
+ 1819 000B16 79060001          1819               MOV.W       #1:16,R6
+ 1820 000B1A                   1820     L474:
+ 1821                          1821     ;*** File h8_3048fon, Line 857   ; return
+ 1822 000B1A 0D60              1822               MOV.W       R6,R0
+ 1823                          1823     ;*** File h8_3048fon, Line 858   ; block
+ 1824 000B1C 01006D76          1824               POP.L       ER6
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    33
+PROGRAM NAME =
+
+ 1825 000B20 5470              1825               RTS
+ 1826                          1826     ;*** File h8_3048fon, Line 875   ; block
+ 1827 000B22                   1827     _init8BitSW:                     ; function: init8BitSW
+ 1828                          1828     ;*** File h8_3048fon, Line 876   ; block
+ 1829                          1829     ;*** File h8_3048fon, Line 877   ; expression statement
+ 1830 000B22 1888              1830               SUB.B       R0L,R0L
+ 1831 000B24 38C1              1831               MOV.B       R0L,@16777153:8
+ 1832                          1832     ;*** File h8_3048fon, Line 878   ; expression statement
+ 1833 000B26 F8FF              1833               MOV.B       #-1:8,R0L
+ 1834 000B28 38D8              1834               MOV.B       R0L,@16777176:8
+ 1835                          1835     ;*** File h8_3048fon, Line 879   ; block
+ 1836 000B2A 5470              1836               RTS
+ 1837                          1837     ;*** File h8_3048fon, Line 889   ; block
+ 1838 000B2C                   1838     _check8BitSW:                    ; function: check8BitSW
+ 1839 000B2C 01006DF6          1839               PUSH.L      ER6
+ 1840                          1840     ;*** File h8_3048fon, Line 892   ; block
+ 1841 000B30 0D06              1841               MOV.W       R0,R6
+ 1842                          1842     ;*** File h8_3048fon, Line 895   ; if
+ 1843 000B32 17F6              1843               EXTS.L      ER6
+ 1844 000B34 28C3              1844               MOV.B       @16777155:8,R0L
+ 1845 000B36 78606A2E00000000  1845               MOV.B       @(L237:24,ER6),R6L
+ 1846 000B3E 16E8              1846               AND.B       R6L,R0L
+ 1847 000B40 4704              1847               BEQ         L476:8
+ 1848                          1848     ;*** File h8_3048fon, Line 895   ; expression statement
+ 1849 000B42 1966              1849               SUB.W       R6,R6
+ 1850 000B44 4004              1850               BRA         L477:8
+ 1851 000B46                   1851     L476:
+ 1852                          1852     ;*** File h8_3048fon, Line 896   ; expression statement
+ 1853 000B46 79060001          1853               MOV.W       #1:16,R6
+ 1854 000B4A                   1854     L477:
+ 1855                          1855     ;*** File h8_3048fon, Line 897   ; return
+ 1856 000B4A 0D60              1856               MOV.W       R6,R0
+ 1857                          1857     ;*** File h8_3048fon, Line 898   ; block
+ 1858 000B4C 01006D76          1858               POP.L       ER6
+ 1859 000B50 5470              1859               RTS
+ 1860                          1860     ;*** File h8_3048fon, Line 904   ; block
+ 1861 000B52                   1861     _initTimer1Int:                  ; function: initTimer1Int
+ 1862 000B52 01006DF6          1862               PUSH.L      ER6
+ 1863                          1863     ;*** File h8_3048fon, Line 910   ; block
+ 1864 000B56 0D06              1864               MOV.W       R0,R6
+ 1865                          1865     ;*** File h8_3048fon, Line 911   ; expression statement
+ 1866 000B58 790E0019          1866               MOV.W       #25:16,E6
+ 1867 000B5C 52E6              1867               MULXU.W     E6,ER6
+ 1868 000B5E 0B96              1868               ADDS.L      #4,ER6
+ 1869 000B60 11B6              1869               SHAR.L      ER6
+ 1870 000B62 11B6              1870               SHAR.L      ER6
+ 1871 000B64 11B6              1871               SHAR.L      ER6
+ 1872                          1872     ;*** File h8_3048fon, Line 912   ; expression statement
+ 1873 000B66 286E              1873               MOV.B       @16777070:8,R0L
+ 1874 000B68 E89F              1874               AND.B       #-97:8,R0L
+ 1875 000B6A C820              1875               OR.B        #32:8,R0L
+ 1876 000B6C 386E              1876               MOV.B       R0L,@16777070:8
+ 1877                          1877     ;*** File h8_3048fon, Line 913   ; expression statement
+ 1878 000B6E 286E              1878               MOV.B       @16777070:8,R0L
+ 1879 000B70 E8E7              1879               AND.B       #-25:8,R0L
+ 1880 000B72 386E              1880               MOV.B       R0L,@16777070:8
+ 1881                          1881     ;*** File h8_3048fon, Line 914   ; expression statement
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    34
+PROGRAM NAME =
+
+ 1882 000B74 286E              1882               MOV.B       @16777070:8,R0L
+ 1883 000B76 E8F8              1883               AND.B       #-8:8,R0L
+ 1884 000B78 C803              1884               OR.B        #3:8,R0L
+ 1885 000B7A 386E              1885               MOV.B       R0L,@16777070:8
+ 1886                          1886     ;*** File h8_3048fon, Line 915   ; expression statement
+ 1887 000B7C 1B56              1887               DEC.W       #1,R6
+ 1888 000B7E 6B86FF74          1888               MOV.W       R6,@16777076:16
+ 1889                          1889     ;*** File h8_3048fon, Line 916   ; expression statement
+ 1890 000B82 7F707000          1890               BSET.B      #0,@16777072:8
+ 1891                          1891     ;*** File h8_3048fon, Line 917   ; expression statement
+ 1892 000B86 7F707220          1892               BCLR.B      #2,@16777072:8
+ 1893                          1893     ;*** File h8_3048fon, Line 918   ; expression statement
+ 1894 000B8A 7F707210          1894               BCLR.B      #1,@16777072:8
+ 1895                          1895     ;*** File h8_3048fon, Line 919   ; block
+ 1896 000B8E 01006D76          1896               POP.L       ER6
+ 1897 000B92 5470              1897               RTS
+ 1898                          1898     ;*** File dumpMemoy., Line 8     ; block
+ 1899 000B94                   1899     _msecwait:                       ; function: msecwait
+ 1900                          1900     ;*** File dumpMemoy., Line 9     ; block
+ 1901                          1901     ;*** File dumpMemoy., Line 11    ; expression statement
+ 1902 000B94 1911              1902               SUB.W       R1,R1
+ 1903                          1903     ;*** File dumpMemoy., Line 11    ; for
+ 1904 000B96 400A              1904               BRA         L480:8
+ 1905 000B98                   1905     L479:
+ 1906                          1906     ;*** File dumpMemoy., Line 11    ; block
+ 1907                          1907     ;*** File dumpMemoy., Line 12    ; expression statement
+ 1908 000B98 79080D18          1908               MOV.W       #3352:16,E0
+ 1909                          1909     ;*** File dumpMemoy., Line 12    ; do
+ 1910 000B9C                   1910     L481:
+ 1911                          1911     ;*** File dumpMemoy., Line 12    ; expression statement
+ 1912 000B9C 1B58              1912               DEC.W       #1,E0
+ 1913 000B9E 46FC              1913               BNE         L481:8
+ 1914                          1914     ;*** File dumpMemoy., Line 11    ; expression statement
+ 1915 000BA0 0B51              1915               INC.W       #1,R1
+ 1916 000BA2                   1916     L480:
+ 1917                          1917     ;*** File dumpMemoy., Line 11    ; expression statement
+ 1918 000BA2 1D01              1918               CMP.W       R0,R1
+ 1919 000BA4 4DF2              1919               BLT         L479:8
+ 1920                          1920     ;*** File dumpMemoy., Line 14    ; block
+ 1921 000BA6 5470              1921               RTS
+ 1922                          1922     ;*** File dumpMemoy., Line 16    ; block
+ 1923 000BA8                   1923     _dumpMemory:                     ; function: dumpMemory
+ 1924 000BA8 5E000000          1924               JSR         @$sp_regsv$3:24
+ 1925                          1925     ;*** File dumpMemoy., Line 17    ; block
+ 1926 000BAC 0F86              1926               MOV.L       ER0,ER6
+ 1927 000BAE 0F94              1927               MOV.L       ER1,ER4
+ 1928                          1928     ;*** File dumpMemoy., Line 20    ; expression statement
+ 1929 000BB0 7A66FFFFFFF0      1929               AND.L       #-16:32,ER6
+ 1930                          1930     ;*** File dumpMemoy., Line 21    ; expression statement
+ 1931 000BB6 0FC0              1931               MOV.L       ER4,ER0
+ 1932 000BB8 7A60FFFFFFF0      1932               AND.L       #-16:32,ER0
+ 1933 000BBE 0F84              1933               MOV.L       ER0,ER4
+ 1934                          1934     ;*** File dumpMemoy., Line 22    ; expression statement
+ 1935 000BC0 7A0000000000      1935               MOV.L       #L254:32,ER0
+ 1936 000BC6 01006DF0          1936               PUSH.L      ER0
+ 1937 000BCA 5E000000          1937               JSR         @_SCI1_printf:24
+ 1938 000BCE 0B97              1938               ADDS.L      #4,SP
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    35
+PROGRAM NAME =
+
+ 1939                          1939     ;*** File dumpMemoy., Line 23    ; for
+ 1940 000BD0 5A000000          1940               JMP         @L483:24
+ 1941 000BD4                   1941     L482:
+ 1942                          1942     ;*** File dumpMemoy., Line 23    ; block
+ 1943                          1943     ;*** File dumpMemoy., Line 24    ; if
+ 1944 000BD4 0FE0              1944               MOV.L       ER6,ER0
+ 1945 000BD6 7A0100000010      1945               MOV.L       #16:32,ER1
+ 1946 000BDC 5E000000          1946               JSR         @$DIVL$3:24
+ 1947 000BE0 0F95              1947               MOV.L       ER1,ER5
+ 1948 000BE2 4616              1948               BNE         L484:8
+ 1949                          1949     ;*** File dumpMemoy., Line 24    ; expression statement
+ 1950 000BE4 01006DF6          1950               PUSH.L      ER6
+ 1951 000BE8 7A0000000000      1951               MOV.L       #L256:32,ER0
+ 1952 000BEE 01006DF0          1952               PUSH.L      ER0
+ 1953 000BF2 5E000000          1953               JSR         @_SCI1_printf:24
+ 1954 000BF6 0B97              1954               ADDS.L      #4,SP
+ 1955 000BF8 0B97              1955               ADDS.L      #4,SP
+ 1956 000BFA                   1956     L484:
+ 1957                          1957     ;*** File dumpMemoy., Line 25    ; expression statement
+ 1958 000BFA 6868              1958               MOV.B       @ER6,R0L
+ 1959 000BFC 1750              1959               EXTU.W      R0
+ 1960 000BFE 6DF0              1960               PUSH.W      R0
+ 1961 000C00 7A0000000000      1961               MOV.L       #L257:32,ER0
+ 1962 000C06 01006DF0          1962               PUSH.L      ER0
+ 1963 000C0A 5E000000          1963               JSR         @_SCI1_printf:24
+ 1964 000C0E 0B97              1964               ADDS.L      #4,SP
+ 1965 000C10 0B87              1965               ADDS.L      #2,SP
+ 1966                          1966     ;*** File dumpMemoy., Line 26    ; if
+ 1967 000C12 7A250000000F      1967               CMP.L       #15:32,ER5
+ 1968 000C18 465A              1968               BNE         L485:8
+ 1969                          1969     ;*** File dumpMemoy., Line 26    ; block
+ 1970                          1970     ;*** File dumpMemoy., Line 27    ; expression statement
+ 1971 000C1A 7A0000000000      1971               MOV.L       #L259:32,ER0
+ 1972 000C20 01006DF0          1972               PUSH.L      ER0
+ 1973 000C24 5E000000          1973               JSR         @_SCI1_printf:24
+ 1974 000C28 0B97              1974               ADDS.L      #4,SP
+ 1975                          1975     ;*** File dumpMemoy., Line 28    ; expression statement
+ 1976 000C2A 7A05FFFFFFF1      1976               MOV.L       #-15:32,ER5
+ 1977                          1977     ;*** File dumpMemoy., Line 28    ; do
+ 1978 000C30                   1978     L486:
+ 1979                          1979     ;*** File dumpMemoy., Line 28    ; block
+ 1980                          1980     ;*** File dumpMemoy., Line 29    ; expression statement
+ 1981 000C30 0FE3              1981               MOV.L       ER6,ER3
+ 1982 000C32 0AD3              1982               ADD.L       ER5,ER3
+ 1983 000C34 683B              1983               MOV.B       @ER3,R3L
+ 1984                          1984     ;*** File dumpMemoy., Line 30    ; expression statement
+ 1985 000C36 1753              1985               EXTU.W      R3
+ 1986 000C38 0D30              1986               MOV.W       R3,R0
+ 1987 000C3A 5E000000          1987               JSR         @_isprint:24
+ 1988 000C3E 0D00              1988               MOV.W       R0,R0
+ 1989 000C40 4704              1989               BEQ         L487:8
+ 1990 000C42 0D32              1990               MOV.W       R3,R2
+ 1991 000C44 4004              1991               BRA         L488:8
+ 1992 000C46                   1992     L487:
+ 1993 000C46 7902002E          1993               MOV.W       #46:16,R2
+ 1994 000C4A                   1994     L488:
+ 1995 000C4A 6DF2              1995               PUSH.W      R2
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    36
+PROGRAM NAME =
+
+ 1996 000C4C 7A0000000000      1996               MOV.L       #L261:32,ER0
+ 1997 000C52 01006DF0          1997               PUSH.L      ER0
+ 1998 000C56 5E000000          1998               JSR         @_SCI1_printf:24
+ 1999 000C5A 0B97              1999               ADDS.L      #4,SP
+ 2000 000C5C 0B87              2000               ADDS.L      #2,SP
+ 2001                          2001     ;*** File dumpMemoy., Line 28    ; expression statement
+ 2002 000C5E 0B75              2002               INC.L       #1,ER5
+ 2003                          2003     ;*** File dumpMemoy., Line 28    ; expression statement
+ 2004 000C60 0FD5              2004               MOV.L       ER5,ER5
+ 2005 000C62 4FCC              2005               BLE         L486:8
+ 2006                          2006     ;*** File dumpMemoy., Line 32    ; expression statement
+ 2007 000C64 7A0000000000      2007               MOV.L       #L263:32,ER0
+ 2008 000C6A 01006DF0          2008               PUSH.L      ER0
+ 2009 000C6E 5E000000          2009               JSR         @_SCI1_printf:24
+ 2010 000C72 0B97              2010               ADDS.L      #4,SP
+ 2011 000C74                   2011     L485:
+ 2012                          2012     ;*** File dumpMemoy., Line 23    ; expression statement
+ 2013 000C74 0B76              2013               INC.L       #1,ER6
+ 2014 000C76                   2014     L483:
+ 2015                          2015     ;*** File dumpMemoy., Line 23    ; expression statement
+ 2016 000C76 1FC6              2016               CMP.L       ER4,ER6
+ 2017 000C78 58D0FF58          2017               BLT         L482:16
+ 2018                          2018     ;*** File dumpMemoy., Line 35    ; expression statement
+ 2019 000C7C 7A0000000000      2019               MOV.L       #L264:32,ER0
+ 2020 000C82 01006DF0          2020               PUSH.L      ER0
+ 2021 000C86 5E000000          2021               JSR         @_SCI1_printf:24
+ 2022 000C8A 0B97              2022               ADDS.L      #4,SP
+ 2023                          2023     ;*** File dumpMemoy., Line 36    ; block
+ 2024 000C8C 5A000000          2024               JMP         @$spregld2$3:24
+ 2025                          2025     ;*** File dumpMemoy., Line 41    ; block
+ 2026 000C90                   2026     _main:                           ; function: main
+ 2027                          2027     ;*** File dumpMemoy., Line 42    ; block
+ 2028 000C90 1933              2028               SUB.W       R3,R3
+ 2029 000C92 790C0001          2029               MOV.W       #1:16,E4
+ 2030 000C96 790400FA          2030               MOV.W       #250:16,R4
+ 2031 000C9A 7A0500000000      2031               MOV.L       #_count1:32,ER5
+ 2032 000CA0 7A0600000000      2032               MOV.L       #_count2:32,ER6
+ 2033                          2033     ;*** File dumpMemoy., Line 43    ; expression statement
+ 2034 000CA6 790B3456          2034               MOV.W       #13398:16,E3
+ 2035                          2035     ;*** File dumpMemoy., Line 44    ; expression statement
+ 2036 000CAA 79002345          2036               MOV.W       #9029:16,R0
+ 2037 000CAE 69E0              2037               MOV.W       R0,@ER6
+ 2038                          2038     ;*** File dumpMemoy., Line 45    ; expression statement
+ 2039 000CB0 5E000000          2039               JSR         @_initSCI1:24
+ 2040                          2040     ;*** File dumpMemoy., Line 46    ; expression statement
+ 2041 000CB4 5E000000          2041               JSR         @_initLed:24
+ 2042                          2042     ;*** File dumpMemoy., Line 47    ; expression statement
+ 2043 000CB8 7A0100001130      2043               MOV.L       #4400:32,ER1
+ 2044 000CBE 1A80              2044               SUB.L       ER0,ER0
+ 2045 000CC0 5E000000          2045               JSR         @_dumpMemory:24
+ 2046                          2046     ;*** File dumpMemoy., Line 48    ; expression statement
+ 2047 000CC4 7A01000FEF30      2047               MOV.L       #1044272:32,ER1
+ 2048 000CCA 7A00000FEF10      2048               MOV.L       #1044240:32,ER0
+ 2049 000CD0 5E000000          2049               JSR         @_dumpMemory:24
+ 2050                          2050     ;*** File dumpMemoy., Line 49    ; while
+ 2051 000CD4                   2051     L489:
+ 2052                          2052     ;*** File dumpMemoy., Line 49    ; block
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    37
+PROGRAM NAME =
+
+ 2053                          2053     ;*** File dumpMemoy., Line 50    ; expression statement
+ 2054 000CD4 0DB0              2054               MOV.W       E3,R0
+ 2055 000CD6 0B5B              2055               INC.W       #1,E3
+ 2056 000CD8 6DF0              2056               PUSH.W      R0
+ 2057 000CDA 6960              2057               MOV.W       @ER6,R0
+ 2058 000CDC 0B50              2058               INC.W       #1,R0
+ 2059 000CDE 69E0              2059               MOV.W       R0,@ER6
+ 2060 000CE0 1B50              2060               DEC.W       #1,R0
+ 2061 000CE2 6DF0              2061               PUSH.W      R0
+ 2062 000CE4 6950              2062               MOV.W       @ER5,R0
+ 2063 000CE6 0B50              2063               INC.W       #1,R0
+ 2064 000CE8 69D0              2064               MOV.W       R0,@ER5
+ 2065 000CEA 1B50              2065               DEC.W       #1,R0
+ 2066 000CEC 6DF0              2066               PUSH.W      R0
+ 2067 000CEE 7A0000000000      2067               MOV.L       #L271:32,ER0
+ 2068 000CF4 01006DF0          2068               PUSH.L      ER0
+ 2069 000CF8 5E000000          2069               JSR         @_SCI1_printf:24
+ 2070 000CFC 7A170000000A      2070               ADD.L       #10:32,SP
+ 2071                          2071     ;*** File dumpMemoy., Line 51    ; expression statement
+ 2072 000D02 0D30              2072               MOV.W       R3,R0
+ 2073 000D04 5E000000          2073               JSR         @_turnOnLed:24
+ 2074                          2074     ;*** File dumpMemoy., Line 52    ; expression statement
+ 2075 000D08 0DC0              2075               MOV.W       E4,R0
+ 2076 000D0A 5E000000          2076               JSR         @_turnOffLed:24
+ 2077                          2077     ;*** File dumpMemoy., Line 53    ; expression statement
+ 2078 000D0E 0D40              2078               MOV.W       R4,R0
+ 2079 000D10 5E000000          2079               JSR         @_msecwait:24
+ 2080                          2080     ;*** File dumpMemoy., Line 54    ; expression statement
+ 2081 000D14 0D30              2081               MOV.W       R3,R0
+ 2082 000D16 5E000000          2082               JSR         @_turnOffLed:24
+ 2083                          2083     ;*** File dumpMemoy., Line 55    ; expression statement
+ 2084 000D1A 0DC0              2084               MOV.W       E4,R0
+ 2085 000D1C 5E000000          2085               JSR         @_turnOnLed:24
+ 2086                          2086     ;*** File dumpMemoy., Line 56    ; expression statement
+ 2087 000D20 0D40              2087               MOV.W       R4,R0
+ 2088 000D22 5E000000          2088               JSR         @_msecwait:24
+ 2089                          2089     ;*** File dumpMemoy., Line 49    ; expression statement
+ 2090 000D26 40AC              2090               BRA         L489:8
+ 2091                          2091     ;*** File dumpMemoy., Line 58    ; block
+ 2092 000000                   2092               .SECTION    C,DATA,ALIGN=2
+ 2093 000000                   2093     _SCI0device:                     ; static: SCI0device
+ 2094 000000 0000              2094               .DATA.W     H'0000
+ 2095 000002                   2095     _SCI1device:                     ; static: SCI1device
+ 2096 000002 0001              2096               .DATA.W     H'0001
+ 2097 000004                   2097     _LCDdevice:                      ; static: LCDdevice
+ 2098 000004 0002              2098               .DATA.W     H'0002
+ 2099 000006                   2099     _STRdevice:                      ; static: STRdevice
+ 2100 000006 0003              2100               .DATA.W     H'0003
+ 2101 000008                   2101     _hexstring:                      ; static: hexstring
+ 2102 000008 3031323334353637  2102               .SDATAZ     "0123456789abcdef0123456789ABCDEF"
+      000010 3839616263646566
+      000018 3031323334353637
+      000020 3839414243444546
+      000028 00              
+ 2103 000029                   2103     L219:                            ; static: mask
+ 2104 000029 01020408          2104               .DATA.B     H'01,H'02,H'04,H'08
+ 2105 00002D                   2105     L223:                            ; static: mask
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    38
+PROGRAM NAME =
+
+ 2106 00002D FEFDFBF7          2106               .DATA.B     H'FE,H'FD,H'FB,H'F7
+ 2107 000031                   2107     L230:                            ; static: mask
+ 2108 000031 10204080          2108               .DATA.B     H'10,H'20,H'40,H'80
+ 2109 000035                   2109     L237:                            ; static: mask
+ 2110 000035 0102040810204080  2110               .DATA.B     H'01,H'02,H'04,H'08,H'10,H'20,H'40,H'80
+ 2111 000000                   2111               .SECTION    D,DATA,ALIGN=2
+ 2112 000000                   2112     _count1:                         ; static: count1
+ 2113 000000 1234              2113               .DATA.W     H'1234
+ 2114 00003D                   2114               .SECTION    C,DATA,ALIGN=2
+ 2115 00003D                   2115     L254:
+ 2116 00003D 6164647265737320  2116               .SDATA      "address +0 +1 +2 +3 +4 +5 +6 +7 +8 +9 +A +B +C +D +E +F   0123456789A
+      000045 2B30202B31202B32
+      00004D 202B33202B34202B
+      000055 35202B36202B3720
+      00005D 2B38202B39202B41
+      000065 202B42202B43202B
+      00006D 44202B45202B4620
+      000075 2020303132333435
+      00007D 3637383941424344
+      000085 4546            
+ 2117 000087 0A00              2117               .SDATAZ     <H'0A>
+ 2118 000089                   2118     L256:
+ 2119 000089 2530356C78203A20  2119               .SDATAZ     "%05lx : "
+      000091 00              
+ 2120 000092                   2120     L257:
+ 2121 000092 253032782000      2121               .SDATAZ     "%02x "
+ 2122 000098                   2122     L259:
+ 2123 000098 3A2000            2123               .SDATAZ     ": "
+ 2124 00009B                   2124     L261:
+ 2125 00009B 256300            2125               .SDATAZ     "%c"
+ 2126 00009E                   2126     L263:
+ 2127 00009E                   2127     L264:
+ 2128 00009E 0A00              2128               .SDATAZ     <H'0A>
+ 2129 0000A0                   2129     L271:
+ 2130 0000A0 2534782025347820  2130               .SDATAZ     "%4x %4x %4x"<H'0A>
+      0000A8 2534780A00      
+ 2131 000000                   2131               .SECTION    B,DATA,ALIGN=2
+ 2132 000000                   2132     L134:                            ; static: currentstrptr
+ 2133 000000 00000004          2133               .RES.L      1
+ 2134 000004                   2134     _count2:                         ; static: count2
+ 2135 000004 00000002          2135               .RES.W      1
+ 2136                          2136               .END
+  *****TOTAL ERRORS       0
+  *****TOTAL WARNINGS     0
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    39
+
+*** CROSS REFERENCE LIST
+
+NAME                             SECTION  ATTR VALUE             SEQUENCE
+
+$DIVL$3                                   IMPT 00000000      3  1946 
+$DIVUL$3                                  IMPT 00000000      4  1473  1485 
+$MULL$3                                   IMPT 00000000      2   536 
+$sp_regsv$3                               IMPT 00000000      5   161   379   442   899  1924 
+$spregld2$3                               IMPT 00000000      6   221   439   564  1632  2024 
+B                                B        SCT  00000000   2131*
+C                                C        SCT  00000000   2092* 2114*
+D                                D        SCT  00000000   2111*
+L102                             P             00000322    652*  792 
+L108                             P             00000336    676*  712   717   799   805   811   829   858 
+L114                             P             0000034A    700*  730   734   751   755   796   802   808   814 
+L117                             P             00000368    720*  817   820   823   826   846   855 
+L134                             B             00000000    866  1746  2132*
+L136                             P             0000044E    861*  889   969 
+L139                             P             00000474    880*  972 
+L219                             C             00000029   1771  2103*
+L223                             C             0000002D   1785  2105*
+L230                             C             00000031   1811  2107*
+L237                             C             00000035   1845  2109*
+L254                             C             0000003D   1935  2115*
+L256                             C             00000089   1951  2118*
+L257                             C             00000092   1961  2120*
+L259                             C             00000098   1971  2122*
+L261                             C             0000009B   1996  2124*
+L263                             C             0000009E   2007  2126*
+L264                             C             0000009E   2019  2127*
+L271                             C             000000A0   2067  2129*
+L279                             P             00000798   1327  1337*
+L280                             P             000007C8   1329  1363*
+L281                             P             000007F8   1331  1388*
+L282                             P             0000082C   1333  1424*
+L283                             P             0000085E   1458*
+L296                             P             0000000C     66*   71 
+L298                             P             0000001A     82*  106 
+L299                             P             0000003C     90   103*
+L302                             P             0000006E    127   140*
+L304                             P             0000007E    143   153*
+L306                             P             00000094    171*  212 
+L307                             P             000000BA    170   209*
+L311                             P             000000AC    189   195*
+L312                             P             000000B6    199   203*
+L313                             P             000000B8    202   206*
+L314                             P             000000D6    229   233*
+L315                             P             000000D6    235*  240 
+L317                             P             000000EE    256*  266 
+L318                             P             000000F4    255   263*
+L319                             P             0000010A    284*  289 
+L321                             P             00000118    300*  324 
+L322                             P             0000013A    308   321*
+L325                             P             0000016C    345   358*
+L327                             P             0000017C    361   371*
+L329                             P             00000192    389*  430 
+L330                             P             000001B8    388   427*
+L334                             P             000001AA    407   413*
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    40
+
+*** CROSS REFERENCE LIST
+
+NAME                             SECTION  ATTR VALUE             SEQUENCE
+
+L335                             P             000001B4    417   421*
+L336                             P             000001B6    420   424*
+L337                             P             000001DE    457*  554 
+L339                             P             000001E8    461   464*
+L340                             P             000001F8    467   469   472*
+L341                             P             00000202    475   478*
+L342                             P             0000023C    481   513*
+L343                             P             0000021A    485   487   492*
+L344                             P             0000022A    491   502*
+L345                             P             0000022A    495   497   501*
+L346                             P             0000024C    516   518   522*
+L347                             P             00000274    525   527   529   541*
+L348                             P             00000292    557   560*
+L352                             P             000002FA    610   614*
+L353                             P             000002FA    616*  621 
+L355                             P             00000312    637*  647 
+L356                             P             00000318    636   644*
+L357                             P             00000326    658*  672 
+L358                             P             00000330    657   669*
+L359                             P             0000032A    663*  666 
+L360                             P             0000033A    682*  696 
+L361                             P             00000344    681   693*
+L362                             P             0000033E    687*  690 
+L363                             P             000003AC    768*  775 
+L364                             P             000003B0    767   772*
+L365                             P             0000047C    886*  893 
+L366                             P             00000480    885   890*
+L367                             P             000004F0    932   941*
+L368                             P             0000054A    940   976*
+L369                             P             00000514    945   954*
+L370                             P             0000054A    953   975*
+L371                             P             00000532    958   966*
+L373                             P             0000055C    982* 1629 
+L374                             P             00000964    981  1625*
+L375                             P             000005AC    989  1027*
+L376                             P             0000059E    993  1020*
+L378                             P             00000956   1019  1026  1620*
+L379                             P             000005B6   1031  1036*
+L380                             P             00000778   1035  1319*
+L381                             P             000005E6   1039  1041  1067*
+L382                             P             000005D0   1045  1047  1053*
+L385                             P             00000778   1052  1063  1066  1318*
+L386                             P             000005F4   1070  1076*
+L387                             P             00000778   1075  1317*
+L388                             P             00000604   1079  1087*
+L389                             P             00000778   1086  1316*
+L390                             P             00000612   1090  1096*
+L391                             P             00000778   1095  1315*
+L392                             P             00000620   1099  1105*
+L393                             P             00000778   1104  1314*
+L394                             P             00000632   1108  1115*
+L395                             P             00000778   1114  1313*
+L396                             P             00000640   1118  1124*
+L397                             P             00000778   1123  1312*
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    41
+
+*** CROSS REFERENCE LIST
+
+NAME                             SECTION  ATTR VALUE             SEQUENCE
+
+L398                             P             0000064E   1127  1133*
+L399                             P             00000778   1132  1311*
+L400                             P             0000066A   1136  1150*
+L401                             P             00000778   1149  1310*
+L402                             P             000006AA   1153  1183*
+L403                             P             00000680   1160  1163*
+L404                             P             00000686   1162  1165*
+L405                             P             00000696   1170  1174*
+L406                             P             00000698   1173  1176*
+L407                             P             00000778   1182  1309*
+L408                             P             0000076C   1186  1300*
+L409                             P             00000734   1190  1271*
+L410                             P             000006CA   1199  1202*
+L411                             P             000006D0   1201  1204*
+L412                             P             000006DE   1209  1212*
+L413                             P             000006E0   1211  1214*
+L414                             P             000006E6   1218* 1228 
+L415                             P             000006E8   1217  1221*
+L416                             P             0000070E   1231  1247*
+L417                             P             000006FE   1236* 1246 
+L418                             P             0000070A   1235  1243*
+L420                             P             00000722   1259* 1269 
+L421                             P             0000072E   1258  1266*
+L423                             P             00000746   1278  1281*
+L424                             P             0000074C   1280  1283*
+L425                             P             0000075C   1288  1292*
+L426                             P             0000075E   1291  1294*
+L428                             P             00000956   1322  1619*
+L429                             P             0000085E   1460*
+L430                             P             000007A6   1342  1346*
+L431                             P             000007A8   1345  1348*
+L432                             P             000007BA   1353  1356*
+L433                             P             000007C0   1355  1358*
+L434                             P             000007DA   1369  1372*
+L435                             P             000007E0   1371  1374*
+L436                             P             000007EE   1379  1382*
+L437                             P             000007F0   1381  1384*
+L438                             P             00000806   1393  1397*
+L439                             P             00000808   1396  1399*
+L440                             P             00000816   1404  1407*
+L441                             P             00000818   1406  1409*
+L443                             P             0000083A   1429  1433*
+L444                             P             0000083C   1432  1435*
+L445                             P             0000084A   1440  1443*
+L446                             P             0000084C   1442  1445*
+L448                             P             00000860   1463* 1491 
+L449                             P             00000898   1334  1387  1414  1423  1449  1462  1488*
+L450                             P             000008AA   1494  1503*
+L451                             P             00000906   1507  1565*
+L452                             P             000008C4   1512  1521*
+L453                             P             000008DE   1524  1540*
+L454                             P             000008CE   1529* 1539 
+L455                             P             000008DA   1528  1536*
+L457                             P             000008F4   1553* 1563 
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    42
+
+*** CROSS REFERENCE LIST
+
+NAME                             SECTION  ATTR VALUE             SEQUENCE
+
+L458                             P             00000900   1552  1560*
+L459                             P             00000954   1548  1564  1616*
+L460                             P             00000912   1574* 1586 
+L461                             P             0000091A   1573  1581*
+L462                             P             00000938   1590  1592  1599*
+L463                             P             00000948   1598  1610*
+L464                             P             00000948   1603  1609*
+L465                             P             000009A0   1643  1649*
+L466                             P             000009AA   1648  1653*
+L467                             P             000009EC   1673  1679*
+L468                             P             000009F6   1678  1683*
+L469                             P             00000A38   1703  1709*
+L470                             P             00000A42   1708  1713*
+L471                             P             00000A86   1734  1740*
+L472                             P             00000A90   1739  1744*
+L473                             P             00000B16   1813  1817*
+L474                             P             00000B1A   1816  1820*
+L476                             P             00000B46   1847  1851*
+L477                             P             00000B4A   1850  1854*
+L479                             P             00000B98   1905* 1919 
+L480                             P             00000BA2   1904  1916*
+L481                             P             00000B9C   1910* 1913 
+L482                             P             00000BD4   1941* 2017 
+L483                             P             00000C76   1940  2014*
+L484                             P             00000BFA   1948  1956*
+L485                             P             00000C74   1968  2011*
+L486                             P             00000C30   1978* 2005 
+L487                             P             00000C46   1989  1992*
+L488                             P             00000C4A   1991  1994*
+L489                             P             00000CD4   2051* 2090 
+L491                             P             000000BE    180   182   216*
+L492                             P             000001BC    398   400   434*
+L493                             P             00000282    456   550*
+L494                             P             00000544    965   973*
+L495                             P             00000776   1254  1270  1299  1307*
+L496                             P             00000896   1362  1486*
+P                                P        SCT  00000000     51*
+_Device_printf                   P        EXPT 0000048A     33   898* 1658  1688  1718  1751 
+_LCD_clrscr                      P        EXPT 00000440     31   851*
+_LCD_gotoxy                      P        EXPT 00000424     30   834*
+_LCD_printf                      P        EXPT 00000A12     36  1694*
+_LCD_putchar                     P        EXPT 00000382     27   739*  771   961 
+_LCD_puts                        P        EXPT 000003A4     28   762*  964 
+_LCDdevice                       C        EXPT 00000004     10   956  1717  2097*
+_SCI0_chkgetChar                 P        EXPT 0000014A     20   337*
+_SCI0_getChar                    P        EXPT 00000118     19   297*  392 
+_SCI0_getInt4                    P        EXPT 000002C4     25   585*
+_SCI0_getString                  P        EXPT 00000182     22   378*  595 
+_SCI0_printf                     P        EXPT 0000097A     34  1634*
+_SCI0_putChar                    P        EXPT 000002EE     26   604*  613   641   935 
+_SCI0_putString                  P        EXPT 0000030A     21   591   631*  938 
+_SCI0device                      C        EXPT 00000000      8   930  1657  2093*
+_SCI1_chkgetChar                 P        EXPT 0000004C     14   119*
+_SCI1_getChar                    P        EXPT 0000001A     13    79*  174 
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    43
+
+*** CROSS REFERENCE LIST
+
+NAME                             SECTION  ATTR VALUE             SEQUENCE
+
+_SCI1_getInt4                    P        EXPT 00000298     24   566*
+_SCI1_getString                  P        EXPT 00000084     16   160*  576 
+_SCI1_printf                     P        EXPT 000009C6     35  1664* 1937  1953  1963  1973  1998  2009  2021  2069 
+_SCI1_putChar                    P        EXPT 000000CA     17   223*  232   260   948 
+_SCI1_putString                  P        EXPT 000000E6     15   250*  572   951 
+_SCI1device                      C        EXPT 00000002      9   943  1687  2095*
+_STRdevice                       C        EXPT 00000006     11  1750  2099*
+_atoi                            P        EXPT 000001C8     23   441*  579   598 
+_check8BitSW                     P        EXPT 00000B2C     44  1838*
+_checkPushSW                     P        EXPT 00000AFC     42  1804*
+_count1                          D        EXPT 00000000     48  2031  2112*
+_count2                          B        EXPT 00000004     49  2032  2134*
+_dumpMemory                      P        EXPT 00000BA8     47  1923* 2045  2049 
+_hexstring                       C        EXPT 00000008     32  1477  2101*
+_init8BitSW                      P        EXPT 00000B22     43  1827*
+_initLCD                         P        EXPT 000003BA     29   780*
+_initLed                         P        EXPT 00000AB4     38  1757* 2041 
+_initPushSW                      P        EXPT 00000AF2     41  1793*
+_initSCI0                        P        EXPT 000000FE     18   271*
+_initSCI1                        P        EXPT 00000000     12    53* 2039 
+_initTimer1Int                   P        EXPT 00000B52     45  1861*
+_isprint                                  IMPT 00000000      7  1987 
+_main                            P        EXPT 00000C90     50  2026*
+_msecwait                        P        EXPT 00000B94     46  1899* 2079  2088 
+_sprintf                         P        EXPT 00000A5E     37  1724*
+_turnOffLed                      P        EXPT 00000AD6     40  1779* 2076  2082 
+_turnOnLed                       P        EXPT 00000ABA     39  1765* 2073  2085 
+** H8S,H8/300 ASSEMBLER Ver.2.0A Evaluation software ** 09/07/18 17:13:21                                                              PAGE    44
+
+*** SECTION DATA LIST
+
+SECTION                          ATTRIBUTE    SIZE             START
+
+P                                REL-CODE    0000D28          
+C                                REL-DATA    00000AD          
+D                                REL-DATA    0000002          
+B                                REL-DATA    0000006          

@@ -1,0 +1,17 @@
+          .CPU        300HA
+          .EXPORT     _a
+          .EXPORT     _main
+          .SECTION    P,CODE,ALIGN=2
+;*** File test.c    , Line 3     ; block
+_main:                           ; function: main
+;*** File test.c    , Line 3     ; block
+;*** File test.c    , Line 4     ; expression statement
+          MOV.W       @_a:24,R0
+          SHAR.W      R0
+          MOV.W       R0,@_a:24
+;*** File test.c    , Line 5     ; block
+          RTS
+          .SECTION    B,DATA,ALIGN=2
+_a:                              ; static: a
+          .RES.W      1
+          .END
